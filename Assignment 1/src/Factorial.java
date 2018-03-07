@@ -5,12 +5,16 @@
 public class Factorial {
 
     /**
-     * The main method converts the string of the number into an integer and
-     * then calls the factorial methods (using recursive and iterative
+     * The main function converts the string of the number into an integer and
+     * then calls the factorial functions (using recursive and iterative
      * calculations) and prints them correspondingly.
      * @param args receives a string from shell to calculate the factorial of.
      */
     public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println("No input given. Exiting...");
+            return;
+        }
         long userNumber = Long.parseLong(args[0]);
         if (userNumber < 0) {
             System.out.print("Cannot calculate factorial for a negative "
@@ -23,7 +27,7 @@ public class Factorial {
     }
 
     /**
-     * The method calculates the factorial value of the passed integer using
+     * The function calculates the factorial value of the passed integer using
      * a recursive method.
      * @param n the integer we'll calculate the factorial value of.
      * @return returns the factorial value that was calculated.
@@ -37,7 +41,7 @@ public class Factorial {
     }
 
     /**
-     * The method calculates the factorial value of the passed integer using
+     * The function calculates the factorial value of the passed integer using
      * an iterative method.
      * @param n the integer we'll calculate the factorial value of.
      * @return returns the factorial value that was calculated.

@@ -24,7 +24,7 @@ public class DescribeNumbers {
     }
 
     /**
-     * the method performs a loop that converts the strings into integers.
+     * the function performs a loop that converts the strings into integers.
      * @param numbers a string of numbers received from main.
      * @return returns an integer array with the numbers received initially
      */
@@ -37,7 +37,7 @@ public class DescribeNumbers {
     }
 
     /**
-     * the method searches and compares the values of each index
+     * the function searches and compares the values of each index
      * setting the smallest element into the variable when it's found.
      * @param numbers a number array to be checked
      * @return returns the minimal number from the array
@@ -53,7 +53,7 @@ public class DescribeNumbers {
     }
 
     /**
-     * The method searches and compares the values of each index
+     * The function searches and compares the values of each index
      * setting the largest element into the variable when it's found.
      * @param numbers a number array to be checked
      * @return returns the maximal number from the array
@@ -69,7 +69,7 @@ public class DescribeNumbers {
     }
 
     /**
-     * The method sums all the elements in the array and then returns their
+     * The function sums all the elements in the array and then returns their
      * average by dividing the sum by the number of elements.
      * @param numbers a number array to be checked
      * @return returns the sum of all the elements divided by the number
