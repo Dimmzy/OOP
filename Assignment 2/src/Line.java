@@ -63,18 +63,18 @@ public class Line {
     }
 
     /**
-     *
-     * @param other line we check if the current object intersects with
+     * *****Are two equal lines count as intersecting or not?*****
+     * @param other line we check if the current object intersects with.
      * @return
      */
     public boolean isIntersecting(Line other) {
-        return this.findSlope() == other.findSlope();
+        return !(this.findSlope() == other.findSlope());
     }
 
     /**
      *
-     * @param other
-     * @return
+     * @param other line we check intersection point with.
+     * @return returns the intersection point.
      */
     public Point intersectionWith(Line other) {
         if (this.isIntersecting(other) == false) {
@@ -84,9 +84,8 @@ public class Line {
     }
 
     /**
-     *
-     * @param
-     * @return
+     * Finds the slope of the line given two points
+     * @return returns the slope of the line
      */
     public double findSlope() {
         double xValue = (end.getX() - start.getX());
