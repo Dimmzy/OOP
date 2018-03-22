@@ -1,22 +1,30 @@
 /**
- * The Line Class.
+ * The Line class consists of four variables:
+ * Start and End Point objects of the line.
+ * The slope of the line (calculated using deltay/deltax).
+ * The free value of the line's.
+ * The class has methods to calculate the intersection of two lines, the
+ * length of the line and to find the middle point of the line.
  */
 public class Line {
 
     private Point start, end;
+    private double slope;
+    private double freeVal;
 
     /**
-     * EZ line constructor
+     *
      * @param start the starting point of the line
      * @param end the ending point of the line
      */
     public Line(Point start, Point end) {
         this.start = start;
         this.end = end;
+        this.slope = (end.getY() - start.getY()) / (end.getX() - start.getX());
+        this.freeVal = (this.slope * -(start.getX())) + start.getY();
     }
 
     /**
-     * Shittier line constructor
      * @param x1 x value of the start
      * @param y1 y value of the start
      * @param x2 x value of the end
@@ -25,6 +33,8 @@ public class Line {
     public Line(double x1, double y1, double x2, double y2) {
         this.start = new Point(x1, y1);
         this.end = new Point(x2, y2);
+        this.slope = (end.getY() - start.getY()) / (end.getX() - start.getX());
+        this.freeVal = (this.slope * -(start.getX())) + start.getY();
     }
 
     /**
@@ -37,59 +47,109 @@ public class Line {
 
     /**
      * Calculates the middle X and Y points and then creates a Point object
-     * out of the results
+     * using the result.
      * @return returns the middle point between the start and end of the object
      */
     public Point middle() {
-        double midX = (end.getX() - start.getX()) / 2;
-        double midY = (end.getY() - end.getY()) / 2;
-        Point middle = new Point(midX, midY);
-        return middle;
+        double midX = (end.getX() + start.getX()) / 2;
+        double midY = (end.getY() + start.getY()) / 2;
+        return new Point(midX, midY);
     }
 
     /**
-     * @return returns the starting point
+     * @return returns the starting point of the line.
      */
     public Point start() {
         return this.start;
     }
 
     /**
-     *
-     * @return returns the ending point
+     * @return returns the ending point of the line.
      */
     public Point end() {
         return this.end;
     }
 
     /**
-     * *****Are two equal lines count as intersecting or not?*****
+     * The method checks whether this line and the one specified intersect.
+     * It checks for slope equality and then if the intersection point is in
+     * the range of the lines.
      * @param other line we check if the current object intersects with.
-     * @return
+     * @return a boolean expression that states whether the lines intersect
+     * by comaparing their slopes.
      */
     public boolean isIntersecting(Line other) {
-        return !(this.findSlope() == other.findSlope());
+        double xIntersect = this.xIntersect(other);
+        double yIntersect = this.yIntersect(xIntersect);
+        // First case is both have the same slope
+        if (this.slope == other.getSlope()) {
+            return false;
+            // Second case is the intersection point is outside the line's range
+        } else if (this.slope < 0 && (xIntersect < this.start.getX()
+                || yIntersect > this.end.getY())) {
+            return false;
+        } else if (this.slope > 0 && (xIntersect > this.start.getX()
+                || yIntersect < this.end.getY())) {
+            return false;
+        }
+        // Otherwise the lines intersect
+        return true;
+
     }
 
     /**
-     *
-     * @param other line we check intersection point with.
-     * @return returns the intersection point.
+     * The method makes use of the isIntersecting method to see whether the
+     * lines intersect in the interval, if they do it creates a new point
+     * object with the intersection values and returns it.
+     * @param other The line we check the intersection point with.
+     * @return returns a new object, the intersection point.
      */
     public Point intersectionWith(Line other) {
-        if (this.isIntersecting(other) == false) {
+        // If the lines don't intersect returns null
+        if (!this.isIntersecting(other)) {
             return null;
         }
+        // Otherwise creates and returns the intersection point
+        return new Point(this.xIntersect(other),
+                this.yIntersect(this.xIntersect(other)));
+    }
 
+
+    /**
+     * Calculates the x value of the intersection point between two lines
+     * using the delta of the free values divided by the -delta of the slopes.
+     * @param other the other line we calculate the intersection with.
+     * @return returns the x value of the intersection point.
+     */
+    public double xIntersect(Line other) {
+        return (other.getfreeVal() - this.freeVal)
+                / (this.slope - other.getSlope());
     }
 
     /**
-     * Finds the slope of the line given two points
-     * @return returns the slope of the line
+     * Calculates the y value of the intersection point using the linear line
+     * equation and the x value we calculated previously.
+     * (slope * (x_intersection - x_1) + y_1)
+     * @param xIntersect uses the x value of the intersection point to
+     *                   calculate the y value.
+     * @return returns the y value of the intersection point.
      */
-    public double findSlope() {
-        double xValue = (end.getX() - start.getX());
-        double yValue = (end.getY() - start.getY());
-        return yValue / xValue;
+    public double yIntersect(double xIntersect) {
+        return this.slope * xIntersect + this.freeVal;
+    }
+
+    /**
+     * @return returns the slope of the current line
+     */
+
+    public double getSlope() {
+        return this.slope;
+    }
+
+    /**
+     * @return returns the free value of the current line
+     */
+    public double getfreeVal() {
+        return this.freeVal;
     }
 }

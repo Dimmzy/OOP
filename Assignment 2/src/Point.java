@@ -1,12 +1,17 @@
 /**
  * The point class.
+ * Has two variables:
+ * X value of the point
+ * Y value of the point
+ * has methods to calculate the distance between two points and check whether
+ * two points are equal.
  */
 
 public class Point {
 
     private double x, y;
     /**
-     * Point Object Constructor./
+     * Point Object Constructor.
      * @param x the 'x' value of the point
      * @param y the 'y' value of the point
      */
@@ -21,9 +26,8 @@ public class Point {
      * @return the distance between the two points.
      */
     public double distance(Point other) {
-        double distance = Math.sqrt(((this.x - other.x) * (this.x - other.x))
+        return Math.sqrt(((this.x - other.x) * (this.x - other.x))
                 + ((this.y - other.y) * (this.y - other.y)));
-        return distance;
     }
 
     /**
