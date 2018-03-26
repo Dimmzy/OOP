@@ -14,10 +14,10 @@ public class AbstractArtDrawing {
      */
     public Line generateRandomLine() {
         Random rand = new Random();
-        int xStart = rand.nextInt(400) + 1;
-        int yStart = rand.nextInt(400) + 1;
-        int xEnd = rand.nextInt(400) + 1;
-        int yEnd = rand.nextInt(400) + 1;
+        int xStart = rand.nextInt(800);
+        int yStart = rand.nextInt(600);
+        int xEnd = rand.nextInt(800);
+        int yEnd = rand.nextInt(600);
         Line newLine = new Line(xStart, yStart, xEnd, yEnd);
         return newLine;
     }
@@ -40,19 +40,17 @@ public class AbstractArtDrawing {
             surface.drawLine(xStart, yStart, xEnd, yEnd);
         }
         surface.setColor(Color.RED);
-        for (int i = 0;i < 9; i++) {
+        for (int i = 0; i < 8; i++) {
             for (int j = i + 1; j < 10; j++) {
-                if (lineArray[i].isIntersecting(lineArray[j])){
-                    Point intercept = lineArray[i].intersectionWith (
-                    lineArray[j]);
-                    surface.fillCircle((int) intercept.getX(), (int) intercept
-                            .getY(), 3);
+                if (lineArray[i].isIntersecting(lineArray[j]) && lineArray[j].isIntersecting(lineArray[i])){
+                    Point intersect = lineArray[i].intersectionWith(lineArray[j]);
+                    surface.fillCircle((int) intersect.getX(), (int) intersect.getY(),3);
                 }
             }
         }
-        for (int i = 0; i < 10; i++) {
-            int xMid = (int) lineArray[i].middle().getX();
-            int yMid = (int) lineArray[i].middle().getY();
+        for (int k = 0; k < 10; k++) {
+            int xMid = (int) lineArray[k].middle().getX();
+            int yMid = (int) lineArray[k].middle().getY();
             surface.setColor(Color.BLUE);
             surface.fillCircle(xMid, yMid, 3);
         }
