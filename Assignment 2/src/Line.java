@@ -80,7 +80,6 @@ public class Line {
     public boolean isIntersecting(Line other) {
         double xSect = this.xIntersect(other);
         double ySect = this.yIntersect(xSect);
-        Point intersect = new Point(xSect, ySect);
         if (this.getSlope() == other.getSlope()) {
             return false;
         }
