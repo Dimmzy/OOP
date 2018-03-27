@@ -11,6 +11,7 @@ public class Ball {
     private Point center;
     private int radius;
     private java.awt.Color color;
+    private Velocity velocity;
 
     public Ball(Point center, int r, java.awt.Color color) {
         this.center = center;
@@ -24,11 +25,11 @@ public class Ball {
     }
 
     public void setVelocity(Velocity v) {
-
+        this.velocity = v;
     }
 
     public void setVelocity(double dx, double dy) {
-
+        this.velocity = new Velocity (dx,dy);
     }
 
     public void moveOneStep() {
@@ -36,7 +37,7 @@ public class Ball {
     }
 
     public Velocity getVelocity() {
-
+        return this.velocity;
     }
 
     public int getX() {
