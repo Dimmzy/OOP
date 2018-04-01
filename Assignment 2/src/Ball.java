@@ -9,8 +9,10 @@ public class Ball {
     private int radius;
     private java.awt.Color color;
     private Velocity velocity;
-    private int screenWidth;
-    private int screenHeight;
+    private int topLeftBound;
+    private int topRightBound;
+    private int bottomLeftBound;
+    private int bottomRightBound;
 
     public Ball(Point center, int r, java.awt.Color color) {
         this.center = center;
@@ -32,24 +34,26 @@ public class Ball {
     }
 
     public void moveOneStep() {
-        if (velocity.getDx() < 0 && this.center.getX() - this.radius <= 0) {
+        if (velocity.getDx() < 0 && this.center.getX() - this.radius <= topLeftBound) {
             this.setVelocity(-velocity.getDx(), velocity.getDy());
         }
-        else if (velocity.getDx() > 0 && this.center.getX() + this.radius >= screenWidth) {
+        else if (velocity.getDx() > 0 && this.center.getX() + this.radius >= topRightBound) {
             this.setVelocity(-velocity.getDx(), velocity.getDy());
         }
-        if (velocity.getDy() < 0 && this.center.getY() - this.radius <= 0) {
+        if (velocity.getDy() < 0 && this.center.getY() - this.radius <= bottomLeftBound) {
             this.setVelocity(velocity.getDx(), -velocity.getDy());
         }
-        else if (velocity.getDy() > 0 && this.center.getY() + this.radius >= screenHeight) {
+        else if (velocity.getDy() > 0 && this.center.getY() + this.radius >= bottomRightBound) {
             this.setVelocity(velocity.getDx(), -velocity.getDy());
         }
         this.center = this.getVelocity().applyToPoint(this.center);
     }
 
-    public void setSize(int width, int height) {
-        this.screenWidth = width;
-        this.screenHeight = height;
+    public void setBounds(int tL, int tR, int bL, int bR) {
+        this.topLeftBound = tL;
+        this.topRightBound = tR;
+        this.bottomLeftBound = bL;
+        this.bottomRightBound = bR;
     }
 
 

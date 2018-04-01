@@ -6,75 +6,89 @@ import java.awt.Color;
 import java.util.Random;
 
 // Need to check edge cases (Balls too large and stuck in the corner)
+// Try and Catch if given arguments aren't integers.
 
+/**
+ * A class correlating to a program that creates two frames in which half of the balls given as argument bounce in the
+ * first frame and the other in the second frame.
+ */
 public class MultipleFramesBouncingBallsAnimation {
+
+    /**
+     * The main function that draws the graphics on screen and populates the ball array.
+     * @param args radii of the balls we want to draw on screen.
+     */
     public static void main(String[] args) {
-        Random rand = new Random();
-        Sleeper sleeper = new Sleeper();
-        Ball[] grayBalls = new Ball[args.length / 2];
-        if (args.length % 2 != 0) {
-            Ball[] yellowBalls = new Ball[args.length / 2 - 1];
+        if (args.length == 0) {
+            System.out.println("No arguments received, exiting...");
+            return;
         }
-        Ball[] yellowBalls = new Ball[args.length / 2];
-        int graySizeW = rand.nextInt(451) + 50;
-        int graySizeH = rand.nextInt(451) + 50;
-        int yellowSizeW = rand.nextInt(151) + 450;
-        int yellowSizeH = rand.nextInt(151) + 450;
-        GUI guiG = new GUI("Grey Frame", graySizeW, graySizeH);
-        GUI guiY = new GUI("Yellow Frame", yellowSizeW, yellowSizeH);
-        for (int i = 0; i < grayBalls.length; i++) {
-            int radius = Integer.parseInt(args[i]);
-            int centerX = rand.nextInt(200) - radius;
-            int centerY = rand.nextInt(200) - radius;
+        Ball[] ballsArray = new Ball[args.length];
+        GUI gui = new GUI("Two Frames Bouncy Balls", 800, 600);
+        Sleeper sleeper = new Sleeper();
+        for (int i = 0; i < args.length; i++) {
+            ballsArray[i] = createBall(i, args, i % 2);
+        }
+        while (true) {
+            DrawSurface surface = gui.getDrawSurface();
+            surface.setColor(Color.GRAY);
+            surface.fillRectangle(50, 50, 450, 450);
+            surface.setColor(Color.YELLOW);
+            surface.fillRectangle(450, 450, 150, 150);
+            for (int i = 0; i < ballsArray.length; i++) {
+                ballsArray[i].moveOneStep();
+                ballsArray[i].drawOn(surface);
+            }
+            gui.show(surface);
+            sleeper.sleepFor(50);
+        }
+    }
+
+    /**
+     * Creates a ball object from the given parameters and returns it to the calling method.
+     * @param index the index of the taken radius from the main arguments array.
+     * @param args the string array created from user input.
+     * @param rectangle which rectangle the ball belongs to, effects the balls bound area and starting location
+     *                  (0 is the grey rectangle, otherwise it's the yellow one).
+     * @return returns the ball object that was created.
+     */
+
+    public static Ball createBall(int index, String[] args, int rectangle) {
+        Random rand = new Random();
+        if (rectangle == 0) {
+            int radius = Integer.parseInt(args[index]);
+            int centerX = rand.nextInt(450) - radius + 50;
+            int centerY = rand.nextInt(450) - radius + 50;
             int angle = rand.nextInt(360);
             int speed;
             if (radius < 51) {
                 speed = 51 / radius;
             } else {
-                speed = 1;
+                speed = 51;
             }
             Point center = new Point(centerX, centerY);
-            grayBalls[i] = new Ball(center, radius, java.awt.Color.BLACK);
+            Ball newBall = new Ball(center, radius, java.awt.Color.BLUE);
             Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
-            grayBalls[i].setVelocity(v);
-            grayBalls[i].setSize(graySizeW, graySizeH);
-        }
-        for (int i = 0; i < yellowBalls.length; i++) {
-            int radius = Integer.parseInt(args[args.length / 2 + i]);
-            int centerX = rand.nextInt(200) - radius;
-            int centerY = rand.nextInt(200) - radius;
+            newBall.setVelocity(v);
+            newBall.setBounds(50, 500, 50, 500);
+            return newBall;
+        } else {
+            int radius = Integer.parseInt(args[index]);
+            int centerX = rand.nextInt(150) - radius + 450;
+            int centerY = rand.nextInt(150) - radius + 450;
             int angle = rand.nextInt(360);
-            double speed;
+            int speed;
             if (radius < 51) {
                 speed = 51 / radius;
             } else {
-                speed = 1;
+                speed = 51;
             }
             Point center = new Point(centerX, centerY);
-            yellowBalls[i] = new Ball(center, radius, java.awt.Color.BLACK);
+            Ball newBall = new Ball(center, radius, java.awt.Color.GREEN);
             Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
-            yellowBalls[i].setVelocity(v);
-            yellowBalls[i].setSize(yellowSizeW, yellowSizeH);
-        }
-        while (true) {
-            DrawSurface surfaceG = guiG.getDrawSurface();
-            surfaceG.setColor(Color.GRAY);
-            surfaceG.fillRectangle(0, 0, graySizeW, graySizeH);
-            for (int i = 0; i < grayBalls.length; i++) {
-                grayBalls[i].moveOneStep();
-                grayBalls[i].drawOn(surfaceG);
-            }
-            guiG.show(surfaceG);
-            DrawSurface surfaceY = guiY.getDrawSurface();
-            surfaceY.setColor(Color.YELLOW);
-            surfaceY.fillRectangle(0,0, yellowSizeW, yellowSizeH);
-            for (int i = 0; i < yellowBalls.length; i++) {
-                yellowBalls[i].moveOneStep();
-                yellowBalls[i].drawOn(surfaceY);
-            }
-            guiY.show(surfaceY);
-            sleeper.sleepFor(5);
+            newBall.setVelocity(v);
+            newBall.setBounds(450, 600, 450, 600);
+            return newBall;
         }
     }
-
 }
