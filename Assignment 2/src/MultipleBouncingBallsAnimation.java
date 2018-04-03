@@ -25,8 +25,14 @@ public class MultipleBouncingBallsAnimation {
         int height = 600;
         GUI gui = new GUI("Many Bouncy Balls", width, height);
         Sleeper sleeper = new Sleeper();
-        for (int i = 0; i < args.length; i++) {
-            ballsArray[i] = createBall(i, args, 800, 600);
+        try {
+            for (int i = 0; i < args.length; i++) {
+                ballsArray[i] = createBall(i, args, 800, 600);
+            }
+        } catch (Exception outOfBounds) {
+            System.out.println("Caught Exception: " + outOfBounds.getMessage());
+            gui.close();
+            return;
         }
         while (true) {
             DrawSurface surface = gui.getDrawSurface();
@@ -45,11 +51,17 @@ public class MultipleBouncingBallsAnimation {
      * @param args the arguments array we're given from user input through main.
      * @param width the width of the drawn frame.
      * @param height the height of the drawn frame.
+     * @throws Exception throws an exception if the given radius is out of the bounds of the rectangle.
      * @return returns the created ball object.
      */
-    public static Ball createBall(int index, String[] args, int width, int height) {
+    public static Ball createBall(int index, String[] args, int width, int height) throws Exception {
         Random rand = new Random();
+        int maxRadius = (int) Math.sqrt(width * width + height * height);
+        final int topBound = 0;
         int radius = Integer.parseInt(args[index]);
+        if (radius <= 0 || radius >= maxRadius) {
+            throw new Exception("Given radius is larger than the rectangle or smaller than zero");
+        }
         int centerX = rand.nextInt(200) - radius;
         int centerY = rand.nextInt(200) - radius;
         int angle = rand.nextInt(360);
@@ -60,10 +72,9 @@ public class MultipleBouncingBallsAnimation {
             speed = 51;
         }
         Point center = new Point(centerX, centerY);
-        Ball newBall =  new Ball(center, radius, java.awt.Color.BLUE);
+        Ball newBall =  new Ball(center, radius, java.awt.Color.BLUE, topBound, width, topBound, height);
         Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
         newBall.setVelocity(v);
-        newBall.setBounds(0, width, 0 , height);
         return newBall;
     }
 }

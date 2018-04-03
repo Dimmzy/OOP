@@ -37,11 +37,7 @@ public class Point {
      * @return true if the points are equal, false if they aren't
      */
     public boolean equals(Point other) {
-        if (this.distance(other) == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.distance(other) == 0;
     }
 
     /**

@@ -5,12 +5,13 @@ import java.util.Random;
 import java.awt.Color;
 
 /**
- *
+ * Draws an abstract art of ten randomized lines.
  */
 public class AbstractArtDrawing {
 
     /**
-     * @return a new line object with random values
+     * Creates a random line using the random integer generator function, that will be drawn in our frame.
+     * @return a new line object with random values.
      */
     public Line generateRandomLine() {
         Random rand = new Random();
@@ -23,7 +24,8 @@ public class AbstractArtDrawing {
     }
 
     /**
-     *
+     * Using the GUI and DrawSurface classes, we'll be drawing on a 800 by 600 pixel frame ten lines in random
+     * locations and with random lengths. We'll mark the intersection points and the middle point of the lines.
      */
     public void drawLines() {
         GUI gui = new GUI("Random Lines", 800, 600);
@@ -42,9 +44,9 @@ public class AbstractArtDrawing {
         surface.setColor(Color.RED);
         for (int i = 0; i < 8; i++) {
             for (int j = i + 1; j < 10; j++) {
-                if (lineArray[i].isIntersecting(lineArray[j]) && lineArray[j].isIntersecting(lineArray[i])){
+                if (lineArray[i].isIntersecting(lineArray[j]) && lineArray[j].isIntersecting(lineArray[i])) {
                     Point intersect = lineArray[i].intersectionWith(lineArray[j]);
-                    surface.fillCircle((int) intersect.getX(), (int) intersect.getY(),3);
+                    surface.fillCircle((int) intersect.getX(), (int) intersect.getY(), 3);
                 }
             }
         }
@@ -58,11 +60,11 @@ public class AbstractArtDrawing {
     }
 
     /**
-     *
+     * The main function which creates a new AbstractArtDrawing object and then draws lines on it.
      * @param args not used.
      */
     public static void main(String[] args) {
-        AbstractArtDrawing example = new AbstractArtDrawing();
-        example.drawLines();
+        AbstractArtDrawing newArt = new AbstractArtDrawing();
+        newArt.drawLines();
     }
 }

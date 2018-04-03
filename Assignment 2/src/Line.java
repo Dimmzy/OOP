@@ -82,28 +82,23 @@ public class Line {
         double ySect = this.yIntersect(xSect);
         if (this.getSlope() == other.getSlope()) {
             return false;
-        }
-        else if (this.getSlope() > 0) {
+        } else if (this.getSlope() > 0) {
             if (this.start.getX() > this.end.getX()) {
                 return this.start.getX() >= xSect && this.end.getX() <= xSect
                         || this.start.getY() >= ySect && this.end.getY() <= ySect;
-            }
-            else {
+            } else {
                 return this.start.getX() <= xSect && this.end.getX() >= xSect
                         || this.start.getY() <= ySect && this.end.getY() >= ySect;
             }
-        }
-        else if (this.getSlope() < 0) {
+        } else if (this.getSlope() < 0) {
             if (this.start.getX() > this.end.getX()) {
                 return this.start.getX() <= xSect && this.end.getX() >= xSect
                         || this.start.getY() <= ySect && this.end.getY() >= ySect;
-            }
-            else {
+            } else {
                 return this.start.getX() >= xSect && this.end.getX() <= xSect
                         || this.start.getY() >= ySect && this.end.getY() <= ySect;
             }
-        }
-        else {
+        } else {
             return this.start.getX() <= xSect && xSect <= this.end.getX();
         }
     }
