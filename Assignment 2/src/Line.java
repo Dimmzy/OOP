@@ -7,8 +7,6 @@
  * length of the line and to find the middle point of the line.
  */
 
-// Need to add edge cases for the intersection (vertical/horizontal lines)
-// Need to fix comments
 
 public class Line {
 
@@ -80,8 +78,14 @@ public class Line {
     public boolean isIntersecting(Line other) {
         double xSect = this.xIntersect(other);
         double ySect = this.yIntersect(xSect);
+        // If the slopes are equal the lines do not intersect
         if (this.getSlope() == other.getSlope()) {
             return false;
+        /*
+         * Otherwise, we'll perform comparisons to check whether the two lines intersect within their actual length
+         * (since they're not infinite). We check the line from both size, incase it's start point value is actually
+         * the end of the line.
+         */
         } else if (this.getSlope() > 0) {
             if (this.start.getX() > this.end.getX()) {
                 return this.start.getX() >= xSect && this.end.getX() <= xSect

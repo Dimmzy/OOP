@@ -11,6 +11,9 @@ import java.util.Random;
  * A class correlating to a program that draws multiple bouncing balls inside a single frame.
  */
 public class MultipleBouncingBallsAnimation {
+
+    // Constant variables that define the programs operation
+    private static final int WIDTH = 800, HEIGHT = 600, ANGLE_BOUND = 360, SLEEP_TIMER = 50, SPEED_CONST = 51;
     /**
      * the main method that populates the ball arrays from given input and draws it on screen.
      * @param args the radii of the balls we'll draw, given as user input.
@@ -21,14 +24,18 @@ public class MultipleBouncingBallsAnimation {
             return;
         }
         Ball[] ballsArray = new Ball[args.length];
-        int width = 800;
-        int height = 600;
-        GUI gui = new GUI("Many Bouncy Balls", width, height);
+        GUI gui = new GUI("Many Bouncy Balls", WIDTH, HEIGHT);
         Sleeper sleeper = new Sleeper();
         try {
             for (int i = 0; i < args.length; i++) {
-                ballsArray[i] = createBall(i, args, 800, 600);
+                ballsArray[i] = createBall(i, args);
+                // If the createBall function failed to parseInt from the array, exits.
+                if (ballsArray[i] == null) {
+                    gui.close();
+                    return;
+                }
             }
+        // "Deals" with the exception thrown when the ball created would've been out of bounds/
         } catch (Exception outOfBounds) {
             System.out.println("Caught Exception: " + outOfBounds.getMessage());
             gui.close();
@@ -41,7 +48,7 @@ public class MultipleBouncingBallsAnimation {
                 ballsArray[i].drawOn(surface);
             }
             gui.show(surface);
-            sleeper.sleepFor(50);
+            sleeper.sleepFor(SLEEP_TIMER);
         }
     }
 
@@ -49,30 +56,38 @@ public class MultipleBouncingBallsAnimation {
      * Creates a ball object from the given parameters and returns it to the calling method.
      * @param index the index we'll extract the radius from the arguments array.
      * @param args the arguments array we're given from user input through main.
-     * @param width the width of the drawn frame.
-     * @param height the height of the drawn frame.
      * @throws Exception throws an exception if the given radius is out of the bounds of the rectangle.
      * @return returns the created ball object.
      */
-    public static Ball createBall(int index, String[] args, int width, int height) throws Exception {
+    public static Ball createBall(int index, String[] args) throws Exception {
         Random rand = new Random();
-        int maxRadius = (int) Math.sqrt(width * width + height * height);
+        // Calculates the maximum radius of the ball to check with
+        int maxRadius = (int) Math.sqrt(WIDTH * WIDTH + HEIGHT * HEIGHT);
         final int topBound = 0;
-        int radius = Integer.parseInt(args[index]);
-        if (radius <= 0 || radius >= maxRadius) {
-            throw new Exception("Given radius is larger than the rectangle or smaller than zero");
+        int radius;
+        // Tries to parse int for the arguments, if it's not an int throws exception and returns null
+        try {
+            radius = Integer.parseInt(args[index]);
+        } catch (Exception e) {
+            System.out.println("Found non-integer number, exiting!");
+            return null;
         }
-        int centerX = rand.nextInt(200) - radius;
-        int centerY = rand.nextInt(200) - radius;
-        int angle = rand.nextInt(360);
+        // Checks our radius isn't too large for the frame
+        if (radius <= 0 || radius >= maxRadius) {
+            throw new Exception("Given radius is larger than possible in the rectangle or smaller than zero");
+        }
+        int centerX = rand.nextInt(WIDTH - HEIGHT) - radius;
+        int centerY = rand.nextInt(WIDTH - HEIGHT) - radius;
+        int angle = rand.nextInt(ANGLE_BOUND);
         int speed;
-        if (radius < 51) {
-            speed = 51 / radius;
+        // We'll use 51 as a reference constant that we'll derive the balls speed by size from
+        if (radius < SPEED_CONST) {
+            speed = SPEED_CONST / radius;
         } else {
-            speed = 51;
+            speed = SPEED_CONST;
         }
         Point center = new Point(centerX, centerY);
-        Ball newBall =  new Ball(center, radius, java.awt.Color.BLUE, topBound, width, topBound, height);
+        Ball newBall =  new Ball(center, radius, java.awt.Color.BLUE, topBound, WIDTH, topBound, HEIGHT);
         Velocity v = Velocity.fromAngleAndSpeed(angle, speed);
         newBall.setVelocity(v);
         return newBall;

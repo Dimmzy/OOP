@@ -1,10 +1,7 @@
 /**
  * The point class.
- * Has two variables:
- * X value of the point
- * Y value of the point
- * has methods to calculate the distance between two points and check whether
- * two points are equal.
+ * Holds two variables: the X value of the point and the Y value of the point
+ * Has methods to calculate the distance between two points and check whether wo points are equal.
  */
 
 public class Point {

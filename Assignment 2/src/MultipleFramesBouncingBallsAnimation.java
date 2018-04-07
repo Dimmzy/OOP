@@ -5,8 +5,6 @@ import biuoop.Sleeper;
 import java.awt.Color;
 import java.util.Random;
 
-// Need to check edge cases (Balls too large and stuck in the corner)
-// Try and Catch if given arguments aren't integers.
 
 /**
  * A class correlating to a program that creates two frames in which half of the balls given as argument bounce in the
@@ -14,19 +12,23 @@ import java.util.Random;
  */
 public class MultipleFramesBouncingBallsAnimation {
 
+    // Constant variables that define the programs operation
     private static final int LEFT_BOUND_GRAY = 50, RIGHT_BOUND_GRAY = 500, LEFT_BOUND_YELLOW = 450,
-            RIGHT_BOUND_YELLOW = 600;
+            RIGHT_BOUND_YELLOW = 600, SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600, ANGLE_BOUND = 360, SLEEP_TIMER = 50,
+            SPEED_CONST = 51;
     /**
      * The main function that draws the graphics on screen and populates the ball array.
      * @param args radii of the balls we want to draw on screen.
      */
     public static void main(String[] args) {
+        // Checks we actually have any balls to draw
         if (args.length == 0) {
             System.out.println("No arguments received, exiting...");
             return;
         }
-            MultipleFramesBouncingBallsAnimation newGfx = new MultipleFramesBouncingBallsAnimation();
-            newGfx.generateGraphics(args);
+
+        MultipleFramesBouncingBallsAnimation newGfx = new MultipleFramesBouncingBallsAnimation();
+        newGfx.generateGraphics(args);
     }
 
     /**
@@ -37,29 +39,37 @@ public class MultipleFramesBouncingBallsAnimation {
     public void generateGraphics(String[] args) {
 
         Ball[] ballsArray = new Ball[args.length];
-        GUI gui = new GUI("Two Frames Bouncy Balls", 800, 600);
+        GUI gui = new GUI("Two Frames Bouncy Balls", SCREEN_WIDTH, SCREEN_HEIGHT);
         Sleeper sleeper = new Sleeper();
+        // We'll use try/catch to find any issues with the parameters given.
         try {
             for (int i = 0; i < args.length; i++) {
                 ballsArray[i] = createBall(i, args, i % 2);
+                // ballsArray[i] will be null if createBall found that the argument is not an integer.
+                if (ballsArray[i] == null) {
+                    gui.close();
+                    return;
+                }
             }
-        } catch (Exception outOfBounds) {
-            System.out.println("Caught Exception: " + outOfBounds.getMessage());
+        } catch (Exception e) {
+            System.out.println("Caught Exception: " + e.getMessage());
             gui.close();
             return;
         }
         while (true) {
             DrawSurface surface = gui.getDrawSurface();
             surface.setColor(Color.GRAY);
-            surface.fillRectangle(50, 50, 450, 450);
+            surface.fillRectangle(LEFT_BOUND_GRAY, LEFT_BOUND_GRAY, RIGHT_BOUND_GRAY - LEFT_BOUND_GRAY,
+                    RIGHT_BOUND_GRAY - LEFT_BOUND_GRAY);
             surface.setColor(Color.YELLOW);
-            surface.fillRectangle(450, 450, 150, 150);
+            surface.fillRectangle(LEFT_BOUND_YELLOW, LEFT_BOUND_YELLOW, RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW,
+                    RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW);
             for (int i = 0; i < ballsArray.length; i++) {
                 ballsArray[i].moveOneStep();
                 ballsArray[i].drawOn(surface);
             }
             gui.show(surface);
-            sleeper.sleepFor(50);
+            sleeper.sleepFor(SLEEP_TIMER);
         }
     }
 
@@ -75,19 +85,28 @@ public class MultipleFramesBouncingBallsAnimation {
 
     public Ball createBall(int index, String[] args, int rectangle) throws Exception {
         Random rand = new Random();
+        int radius;
         if (rectangle == 0) {
-            int radius = Integer.parseInt(args[index]);
-            if (radius <= 0 || radius >= 225) {
-                throw new Exception("Given radius is larger than the rectangle or smaller than zero");
+            try {
+                radius = Integer.parseInt(args[index]);
+            } catch (Exception e) {
+                System.out.println("Found non-integer number, exiting!");
+                return null;
             }
-            int centerX = rand.nextInt(450) - radius + 50;
-            int centerY = rand.nextInt(450) - radius + 50;
-            int angle = rand.nextInt(360);
+            // Checks if the ball's radius is negative/zero or larger than the frame times 2
+            if (radius <= 0 || radius >= (RIGHT_BOUND_GRAY - LEFT_BOUND_GRAY) / 2) {
+                throw new Exception("Given radius is larger than possible in the rectangle or smaller than zero");
+            }
+            // Sets the center of the ball to be a value inside of the frame
+            int centerX = rand.nextInt(RIGHT_BOUND_GRAY - LEFT_BOUND_GRAY) - radius + LEFT_BOUND_GRAY;
+            int centerY = rand.nextInt(RIGHT_BOUND_GRAY - LEFT_BOUND_GRAY) - radius + LEFT_BOUND_GRAY;
+            int angle = rand.nextInt(ANGLE_BOUND);
             int speed;
-            if (radius < 51) {
-                speed = 51 / radius;
+            // We'll use 51 as a reference constant that we'll derive the balls speed by size from
+            if (radius < SPEED_CONST) {
+                speed = SPEED_CONST / radius;
             } else {
-                speed = 51;
+                speed = SPEED_CONST;
             }
             Point center = new Point(centerX, centerY);
             Ball newBall = new Ball(center, radius, java.awt.Color.BLUE, LEFT_BOUND_GRAY, RIGHT_BOUND_GRAY,
@@ -96,18 +115,23 @@ public class MultipleFramesBouncingBallsAnimation {
             newBall.setVelocity(v);
             return newBall;
         } else {
-            int radius = Integer.parseInt(args[index]);
-            if (radius <= 0 || radius >= 75) {
-                throw new Exception("Given radius is larger than the rectangle or smaller than zero");
+            try {
+                radius = Integer.parseInt(args[index]);
+            } catch (Exception e) {
+                System.out.println("Found non-integer number, exiting!");
+                return null;
             }
-            int centerX = rand.nextInt(150) - radius + 450;
-            int centerY = rand.nextInt(150) - radius + 450;
-            int angle = rand.nextInt(360);
+            if (radius <= 0 || radius >= (RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW) / 2) {
+                throw new Exception("Given radius is larger than possible in the rectangle or smaller than zero");
+            }
+            int centerX = rand.nextInt(RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW) - radius + LEFT_BOUND_YELLOW;
+            int centerY = rand.nextInt(RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW) - radius + LEFT_BOUND_YELLOW;
+            int angle = rand.nextInt(ANGLE_BOUND);
             int speed;
-            if (radius < 51) {
-                speed = 51 / radius;
+            if (radius < SPEED_CONST) {
+                speed = SPEED_CONST / radius;
             } else {
-                speed = 51;
+                speed = SPEED_CONST;
             }
             Point center = new Point(centerX, centerY);
             Ball newBall = new Ball(center, radius, java.awt.Color.GREEN, LEFT_BOUND_YELLOW, RIGHT_BOUND_YELLOW,
