@@ -34,6 +34,7 @@ public class AbstractArtDrawing {
         DrawSurface surface = gui.getDrawSurface();
         surface.setColor(Color.BLACK);
         Line[] lineArray = new Line[NUM_OF_LINES];
+        // Populates the linearray with random lines generated through the generateRandomLine method then draws thems
         for (int i = 0; i < NUM_OF_LINES; i++) {
             Line randLine = generateRandomLine();
             lineArray[i] = randLine;
@@ -43,6 +44,7 @@ public class AbstractArtDrawing {
             int yEnd = (int) randLine.end().getY();
             surface.drawLine(xStart, yStart, xEnd, yEnd);
         }
+        // Sets the drawing color to red and draws circles on the intersection points
         surface.setColor(Color.RED);
         for (int i = 0; i < NUM_OF_LINES - 1; i++) {
             for (int j = i + 1; j < NUM_OF_LINES; j++) {
@@ -52,12 +54,14 @@ public class AbstractArtDrawing {
                 }
             }
         }
+        // Sets the drawing color to blue and draws circles on the middle point of each line
+        surface.setColor(Color.BLUE);
         for (int k = 0; k < NUM_OF_LINES; k++) {
             int xMid = (int) lineArray[k].middle().getX();
             int yMid = (int) lineArray[k].middle().getY();
-            surface.setColor(Color.BLUE);
             surface.fillCircle(xMid, yMid, CIRCLE_RADIUS);
         }
+        // Finally, shows the finished surface with the intersecting lines
         gui.show(surface);
     }
 

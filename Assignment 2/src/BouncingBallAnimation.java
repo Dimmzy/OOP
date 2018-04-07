@@ -24,6 +24,7 @@ public class BouncingBallAnimation {
         // Sets arbitrary speed and angle to the ball.
         Velocity v = Velocity.fromAngleAndSpeed(48.21, 5);
         ball.setVelocity(v);
+        // Creates a drawing surface and draws teh ball on it, then waits 50ms before drawing the next frame
         while (true) {
             ball.moveOneStep();
             DrawSurface d = gui.getDrawSurface();

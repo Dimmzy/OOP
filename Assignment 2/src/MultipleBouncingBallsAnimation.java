@@ -41,11 +41,12 @@ public class MultipleBouncingBallsAnimation {
             gui.close();
             return;
         }
+        // Creates a drawing surface and then loops through all the balls, draws them and then moves them
         while (true) {
             DrawSurface surface = gui.getDrawSurface();
             for (int i = 0; i < ballsArray.length; i++) {
-                ballsArray[i].moveOneStep();
                 ballsArray[i].drawOn(surface);
+                ballsArray[i].moveOneStep();
             }
             gui.show(surface);
             sleeper.sleepFor(SLEEP_TIMER);
@@ -72,7 +73,7 @@ public class MultipleBouncingBallsAnimation {
             System.out.println("Found non-integer number, exiting!");
             return null;
         }
-        // Checks our radius isn't too large for the frame
+        // Checks if our radius isn't too large for the frame
         if (radius <= 0 || radius >= maxRadius) {
             throw new Exception("Given radius is larger than possible in the rectangle or smaller than zero");
         }

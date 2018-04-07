@@ -56,7 +56,9 @@ public class MultipleFramesBouncingBallsAnimation {
             gui.close();
             return;
         }
+        // Begins drawing the animation
         while (true) {
+          // Creates a new drawing surface and draws a gray and yellow rectangles in the required sizes
             DrawSurface surface = gui.getDrawSurface();
             surface.setColor(Color.GRAY);
             surface.fillRectangle(LEFT_BOUND_GRAY, LEFT_BOUND_GRAY, RIGHT_BOUND_GRAY - LEFT_BOUND_GRAY,
@@ -64,10 +66,12 @@ public class MultipleFramesBouncingBallsAnimation {
             surface.setColor(Color.YELLOW);
             surface.fillRectangle(LEFT_BOUND_YELLOW, LEFT_BOUND_YELLOW, RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW,
                     RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW);
+            // a loop that draws and moves each of the balls in the array
             for (int i = 0; i < ballsArray.length; i++) {
-                ballsArray[i].moveOneStep();
                 ballsArray[i].drawOn(surface);
+                ballsArray[i].moveOneStep();
             }
+            // Finally shows the frame with everything drawn on it, waits 50ms and moves everything and redraws.
             gui.show(surface);
             sleeper.sleepFor(SLEEP_TIMER);
         }
