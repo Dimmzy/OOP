@@ -24,9 +24,9 @@ public class Velocity {
      * @return returns a new velocity object after converting the angle and speed to dx dy.
      */
     public static Velocity fromAngleAndSpeed(double angle, double speed) {
-        double angleRadians = Math.toRadians(angle + 90);
-        double dx = Math.cos(angleRadians) * speed;
-        double dy = Math.sin(angleRadians) * speed;
+        double dx = Math.sin(Math.toRadians(angle)) * speed;
+        // Multiplies dy by -1 because we're dealing with inverted axis
+        double dy = Math.cos(Math.toRadians(angle)) * speed * -1;
         return new Velocity(dx, dy);
     }
 

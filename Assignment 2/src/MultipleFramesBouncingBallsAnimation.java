@@ -14,7 +14,7 @@ public class MultipleFramesBouncingBallsAnimation {
 
     // Constant variables that define the programs operation
     private static final int LEFT_BOUND_GRAY = 50, RIGHT_BOUND_GRAY = 500, LEFT_BOUND_YELLOW = 450,
-            RIGHT_BOUND_YELLOW = 600, SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600, ANGLE_BOUND = 360, SLEEP_TIMER = 50,
+            RIGHT_BOUND_YELLOW = 600, SCREEN_WIDTH = 1024, SCREEN_HEIGHT = 768, ANGLE_BOUND = 360, SLEEP_TIMER = 50,
             SPEED_CONST = 51;
     /**
      * The main function that draws the graphics on screen and populates the ball array.
@@ -39,7 +39,7 @@ public class MultipleFramesBouncingBallsAnimation {
     public void generateGraphics(String[] args) {
 
         Ball[] ballsArray = new Ball[args.length];
-        GUI gui = new GUI("Two Frames Bouncy Balls", SCREEN_WIDTH, SCREEN_HEIGHT);
+        GUI gui = new GUI("Two Frames Bouncy Balls", SCREEN_WIDTH + 200, SCREEN_HEIGHT + 200);
         Sleeper sleeper = new Sleeper();
         // We'll use try/catch to find any issues with the parameters given.
         try {

@@ -19,8 +19,8 @@ public class BouncingBallAnimation {
         Sleeper sleeper = new Sleeper();
         Point center = new Point(0, 0);
         // Creates a new ball object with a radius of 30
-        Ball ball = new Ball(center, 30, java.awt.Color.BLACK, MAX_POSITION, START_POSITION, MAX_POSITION,
-                START_POSITION);
+        Ball ball = new Ball(center, 30, java.awt.Color.BLACK, START_POSITION, MAX_POSITION, START_POSITION,
+                MAX_POSITION);
         // Sets arbitrary speed and angle to the ball.
         Velocity v = Velocity.fromAngleAndSpeed(48.21, 5);
         ball.setVelocity(v);
