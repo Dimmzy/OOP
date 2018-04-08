@@ -77,8 +77,8 @@ public class MultipleBouncingBallsAnimation {
         if (radius <= 0 || radius >= maxRadius) {
             throw new Exception("Given radius is larger than possible in the rectangle or smaller than zero");
         }
-        int centerX = rand.nextInt(WIDTH - HEIGHT) - radius;
-        int centerY = rand.nextInt(WIDTH - HEIGHT) - radius;
+        int centerX = rand.nextInt(WIDTH - HEIGHT - 2 * radius) + radius;
+        int centerY = rand.nextInt(WIDTH - HEIGHT - 2 * radius) + radius;
         int angle = rand.nextInt(ANGLE_BOUND);
         int speed;
         // We'll use 51 as a reference constant that we'll derive the balls speed by size from
