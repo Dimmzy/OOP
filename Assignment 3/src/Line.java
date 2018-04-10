@@ -164,10 +164,13 @@ public class Line {
         if (intersectionPoints.isEmpty()) {
             return null;
         }
-        Point closestIntersect = intersectionPoints[0];
+        Point closestIntersect = intersectionPoints.get(0);
         for(int i = 1; i < 4; i++) {
-            if ()
+            if (closestIntersect.distance(this.start) > intersectionPoints.get(i).distance(this.start)) {
+                closestIntersect = intersectionPoints.get(i);
+            }
         }
+        return closestIntersect;
     }
 
     /**

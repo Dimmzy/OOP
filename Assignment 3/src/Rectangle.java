@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,7 +28,7 @@ public class Rectangle {
 
     public java.util.List intersectionPoints(Line line) {
         Line[] rectEdges = new Line[4];
-        List<Point> intersectList = new List<Point>;
+        List<Point> intersectList = new ArrayList<Point>;
         // Defines the rectangle edge's by creating line objects for each edge
         rectEdges[0] = new Line(upperLeft, bottomLeft);
         rectEdges[1] = new Line(upperRight, bottomRight);
@@ -40,6 +41,7 @@ public class Rectangle {
         }
         return intersectList;
     }
+
 
     public double getWidth() {
         return this.width;
