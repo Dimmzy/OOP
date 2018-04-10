@@ -39,7 +39,7 @@ public class MultipleFramesBouncingBallsAnimation {
     public void generateGraphics(String[] args) {
 
         Ball[] ballsArray = new Ball[args.length];
-        GUI gui = new GUI("Two Frames Bouncy Balls", SCREEN_WIDTH + 200, SCREEN_HEIGHT + 200);
+        GUI gui = new GUI("Two Frames Bouncy Balls", SCREEN_WIDTH, SCREEN_HEIGHT);
         Sleeper sleeper = new Sleeper();
         // We'll use try/catch to find any issues with the parameters given.
         try {
@@ -102,8 +102,10 @@ public class MultipleFramesBouncingBallsAnimation {
                 throw new Exception("Given radius is larger than possible in the rectangle or smaller than zero");
             }
             // Sets the center of the ball to be a value inside of the frame
-            int centerX = rand.nextInt(RIGHT_BOUND_GRAY - LEFT_BOUND_GRAY) - radius + LEFT_BOUND_GRAY;
-            int centerY = rand.nextInt(RIGHT_BOUND_GRAY - LEFT_BOUND_GRAY) - radius + LEFT_BOUND_GRAY;
+            int centerX = rand.nextInt(RIGHT_BOUND_GRAY - LEFT_BOUND_GRAY - 2 * radius) + radius
+                    + LEFT_BOUND_GRAY;
+            int centerY = rand.nextInt(RIGHT_BOUND_GRAY - LEFT_BOUND_GRAY - 2 * radius) + radius
+                    + LEFT_BOUND_GRAY;
             int angle = rand.nextInt(ANGLE_BOUND);
             int speed;
             // We'll use 51 as a reference constant that we'll derive the balls speed by size from
@@ -128,8 +130,10 @@ public class MultipleFramesBouncingBallsAnimation {
             if (radius <= 0 || radius >= (RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW) / 2) {
                 throw new Exception("Given radius is larger than possible in the rectangle or smaller than zero");
             }
-            int centerX = rand.nextInt(RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW) - radius + LEFT_BOUND_YELLOW;
-            int centerY = rand.nextInt(RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW) - radius + LEFT_BOUND_YELLOW;
+            int centerX = rand.nextInt(RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW - 2 * radius) + radius
+                    + LEFT_BOUND_YELLOW;
+            int centerY = rand.nextInt(RIGHT_BOUND_YELLOW - LEFT_BOUND_YELLOW - 2 * radius) + radius
+                    + LEFT_BOUND_YELLOW;
             int angle = rand.nextInt(ANGLE_BOUND);
             int speed;
             if (radius < SPEED_CONST) {

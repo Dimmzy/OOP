@@ -81,14 +81,14 @@ public class Ball {
      * it won't then it'll change it's movement direction and bounce it off the surface.
      */
     public void moveOneStep() {
-        if (velocity.getDx() < 0 && this.center.getX() - this.radius <= bottomLeftBound) {
+        if (velocity.getDx() < 0 && this.center.getX() - this.radius < bottomLeftBound) {
             this.setVelocity(-velocity.getDx(), velocity.getDy());
-        } else if (velocity.getDx() > 0 && this.center.getX() + this.radius >= bottomRightBound) {
+        } else if (velocity.getDx() > 0 && this.center.getX() + this.radius > bottomRightBound) {
             this.setVelocity(-velocity.getDx(), velocity.getDy());
         }
-        if (velocity.getDy() < 0 && this.center.getY() - this.radius <= topLeftBound) {
+        if (velocity.getDy() < 0 && this.center.getY() - this.radius < topLeftBound) {
             this.setVelocity(velocity.getDx(), -velocity.getDy());
-        } else if (velocity.getDy() > 0 && this.center.getY() + this.radius >= topRightBound) {
+        } else if (velocity.getDy() > 0 && this.center.getY() + this.radius > topRightBound) {
             this.setVelocity(velocity.getDx(), -velocity.getDy());
         }
         this.center = this.getVelocity().applyToPoint(this.center);
