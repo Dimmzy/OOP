@@ -69,6 +69,44 @@ public class Line {
     }
 
     /**
+     * Calculates the cross product between two lines and returns the orientation of the triplet of points
+     * @param start
+     * @param end
+     * @param orient
+     * @return 0 if all three points are colinear, 1 if the orientation is clockwise and 2 if it's counterclockwise
+     */
+    public int calcXProduct(Point start, Point end, Point orient) {
+        double xProduct = ((end.getY() - start.getY()) * ((orient.getX() - end.getX())) -
+                (end.getX() - start.getX()) * (orient.getY() - end.getY()));
+        if (xProduct == 0) {
+            return 0;
+        }
+        else if (xProduct > 0) {
+            return 1;
+        }
+        else {
+            return 2;
+        }
+    }
+
+    /**
+     *
+     * @param start
+     * @param end
+     * @param orientation
+     * @return
+     */
+    public boolean onLine(Point start, Point end, Point orientation) {
+        if (end.getX() <= Math.max(start.getX(), orientation.getX())
+                && end.getX() >= Math.min(start.getX(), orientation.getX())
+                && end.getY() <= Math.max(start.getY(), orientation.getY())
+                && end.getY() >= Math.min(start.getY(), orientation.getY())) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * The method checks whether this line and the one specified intersect.
      * It checks for slope equality and then if the intersection point is in
      * the range of the lines.
@@ -78,35 +116,35 @@ public class Line {
      * by comparing their slopes.
      */
     public boolean isIntersecting(Line other) {
-        double xSect = this.xIntersect(other);
-        double ySect = this.yIntersect(xSect);
-        // If the slopes are equal the lines do not intersect
-        if (this.getSlope() == other.getSlope()) {
-            return false;
-        /*
-         * Otherwise, we'll perform comparisons to check whether the two lines intersect within their actual length
-         * (since they're not infinite). We check the line from both size, incase it's start point value is actually
-         * the end of the line.
-         */
-        } else if (this.getSlope() > 0) {
-            if (this.start.getX() > this.end.getX()) {
-                return this.start.getX() >= xSect && this.end.getX() <= xSect
-                        || this.start.getY() >= ySect && this.end.getY() <= ySect;
-            } else {
-                return this.start.getX() <= xSect && this.end.getX() >= xSect
-                        || this.start.getY() <= ySect && this.end.getY() >= ySect;
-            }
-        } else if (this.getSlope() < 0) {
-            if (this.start.getX() > this.end.getX()) {
-                return this.start.getX() <= xSect && this.end.getX() >= xSect
-                        || this.start.getY() <= ySect && this.end.getY() >= ySect;
-            } else {
-                return this.start.getX() >= xSect && this.end.getX() <= xSect
-                        || this.start.getY() >= ySect && this.end.getY() <= ySect;
-            }
-        } else {
-            return this.start.getX() <= xSect && xSect <= this.end.getX();
+
+        // Calculates the orienations
+        int orientationOne = calcXProduct(this.start, this.end, other.start);
+        int orientationTwo = calcXProduct(this.start, this.end, other.end);
+        int orientationThree = calcXProduct(other.start, other.end, this.start);
+        int orientationFour = calcXProduct(other.start, other.end, this.end);
+
+        // General case
+        if (orientationOne != orientationTwo && orientationThree != orientationFour) {
+            return true;
         }
+
+        if (orientationOne == 0 && onLine(this.start, this.end, other.start)) {
+            return true;
+        }
+
+        if (orientationTwo == 0 && onLine(this.start, other.end, other.start)) {
+            return true;
+        }
+
+        if (orientationThree == 0 && onLine(other.start, this.start, other.end)) {
+            return true;
+        }
+
+        if (orientationFour == 0 && onLine(other.start, this.end, other.end)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -159,13 +197,13 @@ public class Line {
      * @param rect
      * @return
      */
-    public Point closestIntersectionToStartOfLine(Rectangle rect){
+    public Point closestIntersectionToStartOfLine(Rectangle rect) {
         List<Point> intersectionPoints = rect.intersectionPoints(this);
         if (intersectionPoints.isEmpty()) {
             return null;
         }
         Point closestIntersect = intersectionPoints.get(0);
-        for(int i = 1; i < 4; i++) {
+        for (int i = 0; i < intersectionPoints.size(); i++) {
             if (closestIntersect.distance(this.start) > intersectionPoints.get(i).distance(this.start)) {
                 closestIntersect = intersectionPoints.get(i);
             }

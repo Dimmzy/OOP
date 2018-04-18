@@ -12,42 +12,24 @@ public class Ball {
     private int radius;
     private java.awt.Color color;
     private Velocity velocity;
-    private int bottomLeftBound;
-    private int bottomRightBound;
-    private int topLeftBound;
-    private int topRightBound;
+    private Point resolution;
+    private GameEnvironment gameEnvironment;
+
 
     /**
-     * Constructor: Constructs a ball object according to the given parameters.
-     * @param center the center point of the ball (defined using a point object).
-     * @param r the radius of the ball.
-     * @param color the color of the ball.
+     *
+     * @param center
+     * @param r
+     * @param color
+     * @param environment
+     * @param resolution
      */
-    public Ball(Point center, int r, java.awt.Color color) {
+    public Ball(Point center, int r, java.awt.Color color, GameEnvironment environment, Point resolution) {
         this.center = center;
         this.radius = r;
         this.color = color;
-    }
-
-    /**
-     * Constructor: Constructs a ball with defined bounds that enclose it inside a shape.
-     * @param center the center point of the ball (defined using a point object)
-     * @param r the radius of the ball.
-     * @param color the color of the ball.
-     * @param bottomLeftBound the bottom left bound of the frame.
-     * @param bottomRightBound the bottom right bound of the frame.
-     * @param topLeftBound the top left bound of the frame.
-     * @param topRightBound the top right bound of the frame.
-     */
-    public Ball(Point center, int r, java.awt.Color color, int bottomLeftBound, int bottomRightBound, int
-            topLeftBound, int topRightBound) {
-        this.center = center;
-        this.radius = r;
-        this.color = color;
-        this.bottomLeftBound = bottomLeftBound;
-        this.bottomRightBound = bottomRightBound;
-        this.topLeftBound = topLeftBound;
-        this.topRightBound = topRightBound;
+        this.gameEnvironment = environment;
+        this.resolution = resolution;
     }
 
     /**
@@ -81,17 +63,20 @@ public class Ball {
      * it won't then it'll change it's movement direction and bounce it off the surface.
      */
     public void moveOneStep() {
-        if (velocity.getDx() < 0 && this.center.getX() - this.radius <= bottomLeftBound) {
-            this.setVelocity(-velocity.getDx(), velocity.getDy());
-        } else if (velocity.getDx() > 0 && this.center.getX() + this.radius >= bottomRightBound) {
-            this.setVelocity(-velocity.getDx(), velocity.getDy());
+        Point endPoint = new Point(this.center.getX() + this.velocity.getDx(),
+                this.center.getY() + this.velocity.getDy());
+        Line trajectory = new Line(this.center, endPoint);
+        CollisionInfo collisionCheck = gameEnvironment.getClosestCollision(trajectory);
+        if (collisionCheck == null) {
+            this.center = this.getVelocity().applyToPoint(this.center);
+            return;
         }
-        if (velocity.getDy() < 0 && this.center.getY() - this.radius <= topLeftBound) {
-            this.setVelocity(velocity.getDx(), -velocity.getDy());
-        } else if (velocity.getDy() > 0 && this.center.getY() + this.radius >= topRightBound) {
-            this.setVelocity(velocity.getDx(), -velocity.getDy());
+        else {
+            // Displaces the ball as closely as possible given it's velocity
+            this.velocity = collisionCheck.collisionObject().hit(collisionCheck.collisionPoint(), this.velocity);
+            this.getVelocity().applyToPoint(this.center);
+            return;
         }
-        this.center = this.getVelocity().applyToPoint(this.center);
     }
 
 

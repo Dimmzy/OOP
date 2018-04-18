@@ -1,8 +1,9 @@
+/**
+ * Collidable objects interface.
+ */
 public interface Collidable {
 
     Rectangle getCollisionRectangle();
-
-
     Velocity hit(Point collisionPoint, Velocity currentVelocity);
 
 }
