@@ -6,32 +6,36 @@ import biuoop.DrawSurface;
 /**
  * a Ball class that holds the values that define a Ball object in our program.
  */
-public class Ball {
+public class Ball implements Sprite{
 
     private Point center;
     private int radius;
     private java.awt.Color color;
     private Velocity velocity;
-    private Point resolution;
     private GameEnvironment gameEnvironment;
 
 
     /**
-     *
-     * @param center
-     * @param r
-     * @param color
-     * @param environment
-     * @param resolution
+     * The Ball object constructor.
+     * @param center the center point of the ball.
+     * @param r the raidus of the ball.
+     * @param color the color of the ball.
+     * @param environment the game environment the ball is a part of.
      */
-    public Ball(Point center, int r, java.awt.Color color, GameEnvironment environment, Point resolution) {
+    public Ball(Point center, int r, java.awt.Color color, GameEnvironment environment) {
         this.center = center;
         this.radius = r;
         this.color = color;
         this.gameEnvironment = environment;
-        this.resolution = resolution;
     }
 
+    /**
+     * Adds the ball to the game (as a sprite)
+     * @param game the game object to add the ball to.
+     */
+    public void addToGame(Game game) {
+        game.addSprite(this);
+    }
     /**
      * Draws the ball using it's color and size on the surface.
      * @param surface the surface (defined through the DrawSurface class) to draw the ball on.
@@ -63,6 +67,9 @@ public class Ball {
      * it won't then it'll change it's movement direction and bounce it off the surface.
      */
     public void moveOneStep() {
+        if (this.velocity == null) {
+            return;
+        }
         Point endPoint = new Point(this.center.getX() + this.velocity.getDx(),
                 this.center.getY() + this.velocity.getDy());
         Line trajectory = new Line(this.center, endPoint);
@@ -72,11 +79,19 @@ public class Ball {
             return;
         }
         else {
-            // Displaces the ball as closely as possible given it's velocity
+            Velocity moveClose = new Velocity(Math.floor(this.velocity.getDx()), Math.floor(this.velocity.getDy()));
+            moveClose.applyToPoint(this.center);
             this.velocity = collisionCheck.collisionObject().hit(collisionCheck.collisionPoint(), this.velocity);
             this.getVelocity().applyToPoint(this.center);
             return;
         }
+    }
+
+    /**
+     *
+     */
+    public void timePassed() {
+        this.moveOneStep();
     }
 
 

@@ -3,11 +3,12 @@ import java.util.List;
 
 
 /**
- * Rectangle Class
+ * Rectangle Class.
  */
 public class Rectangle {
 
-    private Point upperLeft, upperRight, bottomLeft, bottomRight;
+    private Point upperLeft;
+    private Line left, right, top, bottom;
     private double width;
     private double height;
 
@@ -19,29 +20,35 @@ public class Rectangle {
      */
     public Rectangle(Point upperLeft, double width, double height) {
         this.upperLeft = upperLeft;
-        this.upperRight = new Point(upperLeft.getX() + width, upperLeft.getY());
-        this.bottomLeft = new Point(upperLeft.getX(), upperLeft.getY() - height);
-        this.bottomRight = new Point(upperLeft.getX() + width, upperLeft.getY() - height);
+        Point upperRight = new Point(upperLeft.getX() + width, upperLeft.getY());
+        Point bottomLeft = new Point(upperLeft.getX(), upperLeft.getY() + height);
+        Point bottomRight = new Point(upperLeft.getX() + width, upperLeft.getY() + height);
+        this.left = new Line(bottomLeft, upperLeft);
+        this.right = new Line(bottomRight, upperRight);
+        this.top = new Line(upperLeft, upperRight);
+        this.bottom = new Line(bottomLeft, bottomRight);
         this.width = width;
         this.height = height;
     }
 
     /**
-     *
-     * @param line
-     * @return
+     * The method creates the rectangles borders by creating lines from each edge, then checks intersection with the
+     * line that is given as a parameter.
+     * @param line the line we check if any of the rectangles borders intersect with
+     * @return returns the list of borders the line intersects with
      */
     public java.util.List intersectionPoints(Line line) {
         Line[] rectEdges = new Line[4];
-        List intersectList = new ArrayList();
+        List<Point> intersectList = new ArrayList();
         // Defines the rectangle edge's by creating line objects for each edge
-        rectEdges[0] = new Line(upperLeft, bottomLeft);
-        rectEdges[1] = new Line(upperRight, bottomRight);
-        rectEdges[2] = new Line(upperLeft, upperRight);
-        rectEdges[3] = new Line(bottomLeft, bottomRight);
+        rectEdges[0] = this.left;
+        rectEdges[1] = this.right;
+        rectEdges[2] = this.top;
+        rectEdges[3] = this.bottom;
         for (int i = 0; i < 4; i++) {
             if (line.isIntersecting(rectEdges[i])){
-                intersectList.add(line.intersectionWith(rectEdges[i]));
+                Point intersectPoint = line.intersectionWith(rectEdges[i]);
+                intersectList.add(intersectPoint);
             }
         }
         return intersectList;
@@ -67,5 +74,46 @@ public class Rectangle {
      */
     public Point getUpperLeft() {
         return this.upperLeft;
+    }
+
+    /**
+     * Moves the rectangle to it's new spot.
+     * @param newLoc the new location of the upper left point.
+     */
+    public void setNewLocation(Point newLoc) {
+        this.upperLeft = newLoc;
+        Point upperRight = new Point(upperLeft.getX() + width, upperLeft.getY());
+        Point bottomLeft = new Point(upperLeft.getX(), upperLeft.getY() + height);
+        Point bottomRight = new Point(upperLeft.getX() + width, upperLeft.getY() + height);
+        this.left.changeStart(upperRight);
+        this.left.changeEnd(bottomRight);
+        this.right.changeStart(upperRight);
+        this.right.changeEnd(bottomRight);
+        this.top.changeStart(upperLeft);
+        this.top.changeEnd(upperRight);
+        this.bottom.changeStart(bottomLeft);
+        this.bottom.changeEnd(bottomRight);
+    }
+    /**
+     * checks on which side of the rectangle the passed point is located
+     * @param point the point to be checked
+     * @return returns the enumerated border on which the point resides
+     */
+    public border pointLocation(Point point) {
+        System.out.println(point.toString());
+        if (this.left.hasPoint(point)) {
+            return border.LEFT;
+        }
+        if (this.right.hasPoint(point)) {
+            return border.RIGHT;
+        }
+        if (this.top.hasPoint(point)) {
+            return border.TOP;
+        }
+        if (this.bottom.hasPoint(point)) {
+            return border.BOTTOM;
+        }
+        // should never get here, make an exception
+        return null;
     }
 }

@@ -1,11 +1,14 @@
 import biuoop.DrawSurface;
 import java.awt.Color;
+import java.util.Random;
+
 /**
  * Block method that consists of rectangles that can be collided with.
  */
-public class Block implements Collidable {
+public class Block implements Collidable, Sprite {
 
     private Rectangle rectangle;
+    private java.awt.Color color;
 
     /**
      * Constructs a new block from a passed rectangle.
@@ -24,6 +27,16 @@ public class Block implements Collidable {
     public Block(Point upperLeft, double width, double height) {
         Rectangle rect = new Rectangle(upperLeft, width, height);
         this.rectangle = rect;
+        this.color =  RandomColor.generateRandomColor();
+    }
+
+    /**
+     * Adds the block to the game (as both a sprite and a collidable object).
+     * @param game the game to add the block to.
+     */
+    public void addToGame(Game game) {
+        game.addSprite(this);
+        game.addCollidable(this);
     }
 
     /**
@@ -41,32 +54,31 @@ public class Block implements Collidable {
      * @return returns to the calling object it's velocity after the hit.
      */
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
-        double deltaX = collisionPoint.getX() - currentVelocity.getDx();
-        double deltaY = collisionPoint.getY() - currentVelocity.getDy();
-        if (deltaX < 0 && deltaY < 0) {
+        border borderHit = this.rectangle.pointLocation(collisionPoint);
+        if (borderHit == border.LEFT || borderHit == border.RIGHT) {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
         }
-        else if (deltaX < 0 && deltaY > 0) {
+        else {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
         }
-        else if (deltaX > 0 && deltaY < 0) {
-            return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
-        }
-        else if (deltaX > 0 && deltaY > 0) {
-            return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
-        }
-        // Not needed?
-        return null;
     }
+
 
     /**
      * draws the rectangle that defines this block on the provided surface.
      * @param surface the surface the rectangle will be drawn on.
      */
     public void drawOn(DrawSurface surface) {
-        surface.setColor(Color.BLUE);
+        surface.setColor(this.color);
         Point topLeft = this.rectangle.getUpperLeft();
         surface.fillRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
                 .rectangle.getHeight());
+    }
+
+    /**
+     * does nothing lul
+     */
+    public void timePassed() {
+
     }
 }

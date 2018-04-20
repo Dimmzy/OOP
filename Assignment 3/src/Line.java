@@ -68,6 +68,14 @@ public class Line {
         return this.end;
     }
 
+    public void changeStart(Point newStart) {
+        this.start = newStart;
+    }
+
+    public void changeEnd(Point newEnd) {
+        this.end = newEnd;
+    }
+
     /**
      * Calculates the cross product between two lines and returns the orientation of the triplet of points
      * @param start
@@ -104,6 +112,16 @@ public class Line {
             return true;
         }
         return false;
+    }
+
+
+    /**
+     * Checks if the point that was passed is on the current line segment
+     * @param point the point to check
+     * @return true if the point is on the line, false otherwise.
+     */
+    public boolean hasPoint(Point point) {
+        return this.start().distance(point) +  point.distance(this.end()) == this.start().distance(this.end);
     }
 
     /**
@@ -161,8 +179,7 @@ public class Line {
             return null;
         }
         // Otherwise creates and returns the intersection point
-        return new Point(this.xIntersect(other),
-                this.yIntersect(this.xIntersect(other)));
+        return calcIntersect(other);
     }
 
 
@@ -172,12 +189,22 @@ public class Line {
      * @param other the other line we calculate the intersection with.
      * @return returns the x value of the intersection point.
      */
-    public double xIntersect(Line other) {
-        double deltaX = this.getSlope() - other.getSlope();
-        double deltaFree = other.getFreeVal() - this.getFreeVal();
-        return deltaFree / deltaX;
+    public Point calcIntersect(Line other) {
+        double x1 = this.start().getX();
+        double y1 = this.start().getY();
+        double x2 = this.end().getX();
+        double y2 = this.end().getY();
+        double x3 = other.start().getX();
+        double y3 = other.start().getY();
+        double x4 = other.end().getX();
+        double y4 = other.end().getY();
+        double numeratorX = (x2 * y1 - x1 * y2) * (x4 - x3) - (x4 * y3 - x3 * y4) * (x2 - x1);
+        double numeratorY =  (x2 * y1 - x1 * y2) * (y4 - y3) - (x4 * y3 - x3 * y4) * (y2 - y1);
+        double denominator = (x2 - x1) * (y4 - y3) - (x4 - x3) * (y2 - y1);
+        return new Point(numeratorX / denominator, numeratorY / denominator);
     }
 
+    /* BACKUP CODE, DELETE WHEN DONE
     /**
      * Calculates the y value of the intersection point using the linear line
      * equation and the x value we calculated previously.
@@ -186,10 +213,18 @@ public class Line {
      * @param xIntersect uses the x value of the intersection point to
      *                   calculate the y value.
      * @return returns the y value of the intersection point.
-     */
-    public double yIntersect(double xIntersect) {
+    public double yIntersect(Line other) {
         return (this.getSlope() * xIntersect) + this.getFreeVal();
     }
+
+    BACKUP OF X:
+            // In our case, we define the slope of both vertical and horizontal lines as "0", and check by-case here.
+        double deltaX = this.getSlope() - other.getSlope();
+        double deltaFree = other.getFreeVal() - this.getFreeVal();
+        return deltaFree / deltaX;
+
+
+    */
 
 
     /**
@@ -208,21 +243,28 @@ public class Line {
                 closestIntersect = intersectionPoints.get(i);
             }
         }
-        return closestIntersect;
+        Point hitPoint = new Point(Math.ceil(closestIntersect.getX()), Math.ceil(closestIntersect.getY()));
+        return hitPoint;
     }
 
+    /* BACKUP CODE, DELETE WHEN DONE
     /**
      * @return returns the slope of the current line
-     */
+
 
     public double getSlope() {
+        // Defines the slope of a vertical line as zero (so it would actually return something as it's undefined)
+        if (end.getX() == start.getX()) {
+            return 0;
+        }
         return (end.getY() - start.getY()) / (end.getX() - start.getX());
     }
 
     /**
      * @return returns the free value of the current line
-     */
+
     public double getFreeVal() {
         return (this.getSlope() * -(start.getX())) + start.getY();
     }
+    */
 }

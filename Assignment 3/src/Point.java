@@ -50,4 +50,11 @@ public class Point {
     public double getY() {
         return this.y;
     }
+
+    /**
+     * @return returns a string that lets us print the x and y values of this point
+     */
+    public String toString() {
+        return "X Value: " + this.getX() + " " + "Y Value: " + this.getY();
+    }
 }
