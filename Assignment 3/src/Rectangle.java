@@ -97,21 +97,21 @@ public class Rectangle {
     /**
      * checks on which side of the rectangle the passed point is located
      * @param point the point to be checked
-     * @return returns the enumerated border on which the point resides
+     * @return returns the enumerated Border on which the point resides
      */
-    public border pointLocation(Point point) {
+    public Border pointLocation(Point point) {
         System.out.println(point.toString());
         if (this.left.hasPoint(point)) {
-            return border.LEFT;
+            return Border.LEFT;
         }
         if (this.right.hasPoint(point)) {
-            return border.RIGHT;
+            return Border.RIGHT;
         }
         if (this.top.hasPoint(point)) {
-            return border.TOP;
+            return Border.TOP;
         }
         if (this.bottom.hasPoint(point)) {
-            return border.BOTTOM;
+            return Border.BOTTOM;
         }
         // should never get here, make an exception
         return null;

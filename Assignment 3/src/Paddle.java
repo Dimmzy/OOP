@@ -1,6 +1,5 @@
 import biuoop.KeyboardSensor;
 import biuoop.DrawSurface;
-import biuoop.GUI;
 
 import java.awt.*;
 
@@ -79,8 +78,8 @@ public class Paddle implements Sprite, Collidable {
      * @return
      */
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
-        border borderHit = this.rectangle.pointLocation(collisionPoint);
-        if (borderHit == border.LEFT || borderHit == border.RIGHT) {
+        Border borderHit = this.rectangle.pointLocation(collisionPoint);
+        if (borderHit == Border.LEFT || borderHit == Border.RIGHT) {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
         }
         else {

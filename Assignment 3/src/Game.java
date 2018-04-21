@@ -26,7 +26,7 @@ public class Game {
     // Initialize a new game: create the Blocks and Ball (and Paddle)
     // and add them to the game.
     public void initialize() {
-        this.gui = new GUI("Woo", 800, 600);
+        this.gui = new GUI("Arkanoid", 800, 600);
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.sleeper = new Sleeper();

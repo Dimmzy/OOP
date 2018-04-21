@@ -1,3 +1,3 @@
-public enum border {
+public enum Border {
     LEFT, RIGHT, BOTTOM, TOP
 }

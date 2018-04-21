@@ -1,6 +1,4 @@
 import biuoop.DrawSurface;
-import java.awt.Color;
-import java.util.Random;
 
 /**
  * Block method that consists of rectangles that can be collided with.
@@ -54,8 +52,8 @@ public class Block implements Collidable, Sprite {
      * @return returns to the calling object it's velocity after the hit.
      */
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
-        border borderHit = this.rectangle.pointLocation(collisionPoint);
-        if (borderHit == border.LEFT || borderHit == border.RIGHT) {
+        Border borderHit = this.rectangle.pointLocation(collisionPoint);
+        if (borderHit == Border.LEFT || borderHit == Border.RIGHT) {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
         }
         else {
