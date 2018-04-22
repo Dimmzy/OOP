@@ -95,7 +95,7 @@ public class Rectangle {
         this.bottom.changeEnd(bottomRight);
     }
     /**
-     * checks on which side of the rectangle the passed point is located
+     * checks on which side of the rectangle the passed point is located.
      * @param point the point to be checked
      * @return returns the enumerated Border on which the point resides
      */
