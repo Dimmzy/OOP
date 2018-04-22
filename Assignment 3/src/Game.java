@@ -34,7 +34,7 @@ public class Game {
         this.createBlocks();
         Ball ball = new Ball(new Point(BALL_START_X, BALL_START_Y), 5, RandomColor.generateRandomColor(),
                 this.environment);
-        ball.setVelocity(Velocity.fromAngleAndSpeed(123, 3));
+        ball.setVelocity(Velocity.fromAngleAndSpeed(123, 2));
         ball.addToGame(this);
         biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
         Paddle paddle = new Paddle(keyboard, new Point(BALL_START_X, BALL_START_Y));
@@ -43,10 +43,10 @@ public class Game {
     }
 
     public void createBorders() {
-        Block top = new Block(new Point(0, 0), WIDTH, 1);
-        Block left = new Block(new Point(0, 0), 1, HEIGHT);
-        Block right = new Block(new Point(WIDTH, 0), 1, HEIGHT);
-        Block bottom = new Block(new Point(0, HEIGHT), WIDTH, 1);
+        Block top = new Block(new Point(0, 0), WIDTH, 0);
+        Block left = new Block(new Point(0, 0), 0, HEIGHT);
+        Block right = new Block(new Point(WIDTH, 0), 0, HEIGHT);
+        Block bottom = new Block(new Point(0, HEIGHT), WIDTH, 0);
         top.addToGame(this);
         left.addToGame(this);
         right.addToGame(this);

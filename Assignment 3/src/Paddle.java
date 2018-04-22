@@ -24,6 +24,10 @@ public class Paddle implements Sprite, Collidable {
      * Displaces the paddle to the left.
      */
     public void moveLeft() {
+        // Check if the paddle isn't going to pass the screen's edge, if it does, don't move.
+        if (this.rectangle.getUpperLeft().getX() - velocity.getDx() < 0) {
+            return;
+        }
         Point moveLeft = new Point(this.rectangle.getUpperLeft().getX() - velocity.getDx(), this.rectangle
                 .getUpperLeft().getY());
         this.rectangle.setNewLocation(moveLeft);
@@ -33,6 +37,9 @@ public class Paddle implements Sprite, Collidable {
      * Displaces the paddle to the right.
      */
     public void moveRight() {
+        if (this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + velocity.getDx() > 800) {
+            return;
+        }
         Point moveRight = new Point(this.rectangle.getUpperLeft().getX() + velocity.getDx(), this.rectangle
                 .getUpperLeft().getY());
         this.rectangle.setNewLocation(moveRight);
@@ -82,8 +89,37 @@ public class Paddle implements Sprite, Collidable {
         if (borderHit == Border.LEFT || borderHit == Border.RIGHT) {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
         }
-        else {
+        else if (borderHit == Border.TOP) {
+            int dXHit = (int) (collisionPoint.getX() - this.rectangle.getUpperLeft().getX());
+            // Change it to keep the current speed instead of assuming it's 3
+            if (dXHit < 10) {
+                System.out.println("zone 1");
+                return Velocity.fromAngleAndSpeed(300, 3);
+            }
+            else if (dXHit < 20) {
+                System.out.println("zone 2");
+                return Velocity.fromAngleAndSpeed(330, 3);
+            }
+            else if (dXHit < 30) {
+                System.out.println("zone 3");
+                return Velocity.fromAngleAndSpeed(0, 3);
+            }
+            else if (dXHit < 40) {
+                System.out.println("zone 4");
+                return Velocity.fromAngleAndSpeed(30 , 3);
+            }
+            else {
+                System.out.println("zone 5");
+                return Velocity.fromAngleAndSpeed(60, 3);
+            }
+        }
+        else if (borderHit == Border.BOTTOM) {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
+        }
+        // Object hits the edge of the paddle
+        else {
+            System.out.println("HIT EDGE!!!!");
+            return new Velocity(-currentVelocity.getDx(), -currentVelocity.getDy());
         }
     }
 

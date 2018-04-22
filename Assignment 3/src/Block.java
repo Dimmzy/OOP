@@ -56,8 +56,11 @@ public class Block implements Collidable, Sprite {
         if (borderHit == Border.LEFT || borderHit == Border.RIGHT) {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
         }
-        else {
+        else if (borderHit == Border.TOP || borderHit == Border.BOTTOM) {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
+        }
+        else {
+            return new Velocity(-currentVelocity.getDx(), -currentVelocity.getDy());
         }
     }
 

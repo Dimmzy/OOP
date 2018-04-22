@@ -102,18 +102,25 @@ public class Rectangle {
     public Border pointLocation(Point point) {
         System.out.println(point.toString());
         if (this.left.hasPoint(point)) {
-            return Border.LEFT;
-        }
-        if (this.right.hasPoint(point)) {
+            System.out.println("Hit Right");
             return Border.RIGHT;
         }
-        if (this.top.hasPoint(point)) {
+        else if (this.right.hasPoint(point)) {
+            System.out.println("Hit Left");
+            return Border.LEFT;
+        }
+        else if (this.top.hasPoint(point)) {
+            System.out.println("Hit Top");
             return Border.TOP;
         }
-        if (this.bottom.hasPoint(point)) {
+        else if (this.bottom.hasPoint(point)) {
+            System.out.println("Hit Bottom");
             return Border.BOTTOM;
         }
         // should never get here, make an exception
-        return null;
+        else {
+            System.out.println("Hit null");
+            return null;
+        }
     }
 }
