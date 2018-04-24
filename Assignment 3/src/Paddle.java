@@ -93,7 +93,13 @@ public class Paddle implements Sprite, Collidable {
      * @return returns a new velocity according to the area that was hit on the paddle.
      */
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
-        Border borderHit = this.rectangle.pointLocation(collisionPoint);
+        Border borderHit;
+        try {
+            borderHit = this.rectangle.pointLocation(collisionPoint);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
         if (borderHit == Border.LEFT || borderHit == Border.RIGHT) {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
         }
@@ -115,6 +121,7 @@ public class Paddle implements Sprite, Collidable {
                 return Velocity.fromAngleAndSpeed(60, this.ballSpeed);
             }
         }
+
         else if (borderHit == Border.BOTTOM) {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
         }

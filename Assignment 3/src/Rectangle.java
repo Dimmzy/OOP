@@ -96,33 +96,33 @@ public class Rectangle {
     }
     /**
      * checks on which side of the rectangle the passed point is located.
-     * @param point the point to be checked
-     * @return returns the enumerated Border on which the point resides
+     * @param point the point to be checked.
+     * @return Returns the enumerated Border on which the point resides.
      */
-    public Border pointLocation(Point point) {
-        if (this.left.hasPoint(point)) {
-            if (this.top.hasPoint(point)) {
-                System.out.println("TRIGHT");;
-                return Border.TRIGHT;
-            }
-            else if (this.bottom.hasPoint(point)) {
-                System.out.println("BRIGHT");
-                return Border.BRIGHT;
-            }
-            System.out.println("RIGHT");
-            return Border.RIGHT;
+    public Border pointLocation(Point point) throws Exception {
+        if (this.left.hasPoint(point) && this.top.hasPoint(point)) {
+            System.out.println("TOP LEFT");
+            return Border.TLEFT;
         }
-        else if (this.right.hasPoint(point)) {
-            if (this.top.hasPoint(point)) {
-                System.out.println("TLEFT");
-                return Border.TLEFT;
-            }
-            else if (this.bottom.hasPoint(point)) {
-                System.out.println("BLEFT");
-                return Border.BLEFT;
-            }
+        else if (this.left.hasPoint(point) && this.bottom.hasPoint(point)) {
+            System.out.println("BOTTOM LEFT");
+            return Border.BLEFT;
+        }
+        else if (this.right.hasPoint(point) && this.top.hasPoint(point)) {
+            System.out.println("TOP RIGHT");
+            return Border.TRIGHT;
+        }
+        else if (this.right.hasPoint(point) && this.bottom.hasPoint(point)) {
+            System.out.println("BOTTOM RIGHT");
+            return Border.BRIGHT;
+        }
+        else if (this.left.hasPoint(point)) {
             System.out.println("LEFT");
             return Border.LEFT;
+        }
+        else if (this.right.hasPoint(point)) {
+            System.out.println("RIGHT");
+            return Border.RIGHT;
         }
         else if (this.top.hasPoint(point)) {
             System.out.println("TOP");
@@ -132,9 +132,9 @@ public class Rectangle {
             System.out.println("BOTTOM");
             return Border.BOTTOM;
         }
-        // should never get here, make an exception
+        // Intersection point is not on any border (shouldn't occur, throws exception incase it does)
         else {
-            return null;
+            throw new Exception("Hit location unknown");
         }
     }
 }

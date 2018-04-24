@@ -65,9 +65,7 @@ public class Line {
 
     public void changeStart(Point newStart) { this.start = newStart; }
 
-    public void changeEnd(Point newEnd) {
-        this.end = newEnd;
-    }
+    public void changeEnd(Point newEnd) { this.end = newEnd; }
 
     /**
      * Calculates the cross product between two lines and returns the orientation of the triplet of points
@@ -92,13 +90,17 @@ public class Line {
 
 
     /**
-     * Checks if the point that was passed is on the current line segment.
+     * Checks if the point that was passed is on the current line segment. Compares distances using a small epsilon.
      * @param point The point to check.
      * @return True if the point is on the line, false otherwise.
      */
     public boolean hasPoint(Point point) {
-        return Math.floor(this.start().distance(point)) +  Math.floor(point.distance(this.end())) == Math.floor(this
-                .start().distance(this.end));
+        double epsilon = 0.01;
+        double deltaDistance = this.start.distance(point) + point.distance(this.end) - this.start.distance(end);
+        if (deltaDistance < epsilon) {
+            return true;
+        }
+        return false;
     }
 
     /**

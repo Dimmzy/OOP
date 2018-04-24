@@ -58,7 +58,13 @@ public class Block implements Collidable, Sprite {
             this.hp = this.hp - 1;
         }
         // Calls pointLocaton to return the enum of the side the the rectangle hit.
-        Border borderHit = this.rectangle.pointLocation(collisionPoint);
+        Border borderHit;
+        try {
+            borderHit = this.rectangle.pointLocation(collisionPoint);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
         // Changes the velocity according to which side wass hit
         if (borderHit == Border.LEFT || borderHit == Border.RIGHT) {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
@@ -66,9 +72,9 @@ public class Block implements Collidable, Sprite {
         else if (borderHit == Border.TOP || borderHit == Border.BOTTOM) {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
         }
-        // If hit exactly in the edge, returns -dx -dy.
+        // If hit exactly in the edge, sends the ball to the opposite direction.
         else {
-            return new Velocity(-currentVelocity.getDx(), -currentVelocity.getDy());
+            return new Velocity(currentVelocity.getDx(), currentVelocity.getDy());
         }
     }
 

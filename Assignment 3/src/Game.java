@@ -14,7 +14,7 @@ public class Game {
     private static final int PADDLE_START_X = 400, PADDLE_START_Y = 555;
     private static final int BALL_ONE_START_X = 400, BALL_ONE_START_Y = 550, BALL_ONE_START_ANGLE = 123;
     private static final int BALL_TWO_START_X = 380, BALL_TWO_START_Y = 550, BALL_TWO_START_ANGLE = 321;
-    private static final int BALL_SPEED = 3;
+    private static final int BALL_SPEED = 7;
     private static final int BALL_RADIUS = 5;
     private SpriteCollection sprites;
     private GameEnvironment environment;
@@ -80,7 +80,7 @@ public class Game {
     public void createBlocks() {
         int yPos = 100;
         int xPos = 122;
-        int xOffset = 51;
+        int xOffset = 50;
         int yOffset = 30;
         int edgeLimit = WIDTH - xOffset;
         for (int i = xPos; i < edgeLimit; i+= xOffset) {

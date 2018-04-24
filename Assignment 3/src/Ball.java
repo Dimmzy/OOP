@@ -82,18 +82,23 @@ public class Ball implements Sprite{
             Rectangle colRect = collisionCheck.collisionObject().getCollisionRectangle();
             // Check if the collision occurs with the paddle.
             if (collisionCheck.collisionObject() instanceof Paddle) {
-                // Checks if the ball is stuck inside of the paddle. If it is, free it by moving it.
+                // Checks if the ball is stuck inside of the paddle. If it is, free it.
                 if (this.center.getY() > colRect.getUpperLeft().getY()
                         && this.center.getY() < colRect.getUpperLeft().getY() + colRect.getHeight()
                         && this.center.getX() < colRect.getUpperLeft().getX() + colRect.getWidth()
                         && this.center.getX() > colRect.getUpperLeft().getX()) {
-                    this.center = new Point(this.center.getX(), this.center.getY() + this.getVelocity().getDy() *
-                            colRect.getHeight());
-
+                    // offsets the ball y location to outside the paddle using the paddle y value and the balls' dy.
+                    this.center = new Point(this.center.getX(), colRect.getUpperLeft().getY() + this.velocity.getDy());
                 }
             }
             // Calculates it's new direction after the hit and sets the ball to move in the new direction.
-            this.velocity = collisionCheck.collisionObject().hit(collisionCheck.collisionPoint(), this.velocity);
+             Velocity newSpeed = collisionCheck.collisionObject().hit(collisionCheck.collisionPoint(), this
+                    .velocity);
+            if (newSpeed == null) {
+                System.out.println("Resetting Ball Position Due to Error");
+                this.center = new Point(500, 500);
+            }
+            this.velocity = newSpeed;
             this.getVelocity().applyToPoint(this.center);
         }
     }
