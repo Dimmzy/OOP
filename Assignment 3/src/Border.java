@@ -1,3 +1,7 @@
+/**
+ * Holds enum values for the borders of the rectangles.
+ */
+
 public enum Border {
-    LEFT, RIGHT, BOTTOM, TOP, ULEFT, URIGHT, BLEFT, BRIGHT
+    LEFT, RIGHT, BOTTOM, TOP, TLEFT, TRIGHT, BLEFT, BRIGHT
 }

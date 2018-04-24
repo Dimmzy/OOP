@@ -14,6 +14,7 @@ public class GameEnvironment {
     public GameEnvironment() {
         this.collidables = new ArrayList<Collidable>();
     }
+
     /**
      * Adds a collidable object into our list.
      * @param c with collidable object we'll append to our list.
@@ -23,9 +24,9 @@ public class GameEnvironment {
     }
 
     /**
-     *
+     * Uses the passed trajectory line and loops over our collidable objects, finding collisions.
      * @param trajectory the trajectory of the ball we'll use to figure the collision point
-     * @return
+     * @return If found, returns the collision point. Otherwise, returns null.
      */
     public CollisionInfo getClosestCollision(Line trajectory) {
         for (int i = 0; i < collidables.size(); i++) {

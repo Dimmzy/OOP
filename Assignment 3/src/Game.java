@@ -3,46 +3,63 @@ import biuoop.GUI;
 import biuoop.Sleeper;
 import java.awt.Color;
 
+/**
+ * The Game Class. Creates the objects and sets the game in motion.
+ */
 
 public class Game {
 
+    // Constant values we'll use to define the the window, blocks size and ball location.
     private static final int WIDTH = 800, HEIGHT = 600, BLOCK_WIDTH = 50, BLOCK_HEIGHT = 30;
-    private static final int BALL_START_X = 400, BALL_START_Y = 500;
+    private static final int PADDLE_START_X = 400, PADDLE_START_Y = 500;
+    private static final int BALL_ONE_START_X = 400, BALL_ONE_START_Y = 550;
+    private static final int BALL_TWO_START_X = 380, BALL_TWO_START_Y = 550;
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
     private Sleeper sleeper;
 
+    /**
+     * Adds the collidable to the environment.
+     * @param c the collidable object to add.
+     */
     public void addCollidable(Collidable c) {
-        environment.addCollidable(c);
-    }
-    public void addSprite(Sprite s) {
-        sprites.addSprite(s);
+        this.environment.addCollidable(c);
     }
 
-    // Initialize a new game: create the Blocks and Ball (and Paddle)
-    // and add them to the game.
+    /**
+     * Adds the sprite to the environment.
+     * @param s the sprite to add.
+     */
+    public void addSprite(Sprite s) {
+        this.sprites.addSprite(s);
+    }
+
+    // Initialize a new game: creates the Blocks, Balls and the Paddle.
     public void initialize() {
-        this.gui = new GUI("Arkanoid", 800, 600);
+        this.gui = new GUI("Arkanoid", WIDTH, HEIGHT);
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.sleeper = new Sleeper();
         this.createBorders();
         this.createBlocks();
-        Ball ballOne = new Ball(new Point(215, 515), 5, Color.BLUE,
+        Ball ballOne = new Ball(new Point(BALL_ONE_START_X, BALL_ONE_START_Y), 5, Color.BLUE,
                 this.environment);
         ballOne.setVelocity(Velocity.fromAngleAndSpeed(321, 3));
         ballOne.addToGame(this);
-        Ball ballTwo = new Ball(new Point(215, 515), 5, Color.RED,
+        Ball ballTwo = new Ball(new Point(BALL_TWO_START_X, BALL_TWO_START_Y), 5, Color.RED,
                 this.environment);
         ballTwo.setVelocity(Velocity.fromAngleAndSpeed(123, 3));
         ballTwo.addToGame(this);
         biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
-        Paddle paddle = new Paddle(keyboard, new Point(BALL_START_X, BALL_START_Y));
+        Paddle paddle = new Paddle(keyboard, new Point(PADDLE_START_X, PADDLE_START_Y));
         paddle.addToGame(this);
     }
 
 
+    /**
+     * Creates blocks in the borders of the game window.
+     */
     public void createBorders() {
         Block top = new Block(new Point(0, 0), WIDTH, 15, Color.LIGHT_GRAY, 1);
         Block left = new Block(new Point(0, 0), 15, HEIGHT, Color.LIGHT_GRAY, 1);
@@ -54,6 +71,10 @@ public class Game {
         bottom.addToGame(this);
     }
 
+    /**
+     * Creates the blocks we'll be hitting and destryoing. Four rows, starting at 12 block and decrementing by one
+     * each row. The distance between each block is defined by the X and Y offsets.
+     */
     public void createBlocks() {
         int yPos = 100;
         int xPos = 122;
@@ -96,6 +117,9 @@ public class Game {
         }
     }
 
+    /**
+     * Runs the game. Draws all the objects and then tells them time passed.
+     */
     public void run() {
         int framesPerSecond = 60;
         int milisecondsPerFrame = 1000 / framesPerSecond;
@@ -105,7 +129,6 @@ public class Game {
             this.sprites.drawAllOn(d);
             gui.show(d);
             this.sprites.notifyAllTimePassed();
-
             long usedTime = System.currentTimeMillis() - startTime;
             long miliSecondLeftToSleep = milisecondsPerFrame - usedTime;
             if (miliSecondLeftToSleep > 0) {

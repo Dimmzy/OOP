@@ -1,11 +1,9 @@
 import biuoop.DrawSurface;
 
-
-// Check the ordering of the methods/accessors
-
 /**
- * a Ball class that holds the values that define a Ball object in our program.
+ * Ball class. Holds the values that define a Ball object in our program and it's movement behavior.
  */
+
 public class Ball implements Sprite{
 
     private Point center;
@@ -14,11 +12,10 @@ public class Ball implements Sprite{
     private Velocity velocity;
     private GameEnvironment gameEnvironment;
 
-
     /**
      * The Ball object constructor.
      * @param center the center point of the ball.
-     * @param r the raidus of the ball.
+     * @param r the radius of the ball.
      * @param color the color of the ball.
      * @param environment the game environment the ball is a part of.
      */
@@ -30,14 +27,15 @@ public class Ball implements Sprite{
     }
 
     /**
-     * Adds the ball to the game (as a sprite)
+     * Adds the ball to the game (as a sprite).
      * @param game the game object to add the ball to.
      */
     public void addToGame(Game game) {
         game.addSprite(this);
     }
+
     /**
-     * Draws the ball using it's color and size on the surface.
+     * Draws the ball using it's color and size on the given surface.
      * @param surface the surface (defined through the DrawSurface class) to draw the ball on.
      */
     public void drawOn(DrawSurface surface) {
@@ -46,7 +44,7 @@ public class Ball implements Sprite{
     }
 
     /**
-     * Sets the velocity field of the ball through the given velocity parameter.
+     * Sets the velocity field of the ball using the given velocity parameter.
      * @param v the velocity to set the ball to.
      */
     public void setVelocity(Velocity v) {
@@ -54,7 +52,7 @@ public class Ball implements Sprite{
     }
 
     /**
-     * Sets the velocity field off the ball by creating a new Velocity object using given dx and dy.
+     * Sets the velocity field of the ball by creating a new Velocity object using given dx and dy.
      * @param dx delta x of the required velocity.
      * @param dy delta y of the required velocity.
      */
@@ -67,26 +65,33 @@ public class Ball implements Sprite{
      * it won't then it'll change it's movement direction and bounce it off the surface.
      */
     public void moveOneStep() {
+        // If the balls speed is zero, do nothing.
         if (this.velocity == null) {
             return;
         }
+        // Calculates the trajectory of the ball by checking it's end point after applying the velocity to the location.
         Point endPoint = new Point(this.center.getX() + this.velocity.getDx(),
                 this.center.getY() + this.velocity.getDy());
-        // find a more elegant method
         Line trajectory = new Line(this.center, endPoint);
         CollisionInfo collisionCheck = gameEnvironment.getClosestCollision(trajectory);
+        // If the ball doesn't collide with anything, move it as it's velocity dictates.
         if (collisionCheck == null) {
             this.center = this.getVelocity().applyToPoint(this.center);
         }
         else {
-            // Checks if we're stuck inside a paddle, teleport the ball upwards if we are.
+            Rectangle colRect = collisionCheck.collisionObject().getCollisionRectangle();
+            // Check if the collision occurs with the paddle.
             if (collisionCheck.collisionObject() instanceof Paddle) {
-                
+                // Checks if the ball is stuck inside of the paddle. If it is, free it by moving it.
+                if (this.center.getY() > colRect.getUpperLeft().getY()
+                        && this.center.getY() < colRect.getUpperLeft().getY() + colRect.getHeight()
+                        && this.center.getX() < colRect.getUpperLeft().getX() + colRect.getWidth()
+                        && this.center.getX() > colRect.getUpperLeft().getX()) {
+                    this.center = new Point(this.center.getX(), this.center.getY() + this.getVelocity().getDy() *
+                            colRect.getHeight());
+
+                }
             }
-                // Moves the ball close to the impact point (80% of the way).
-            Velocity moveClose = new Velocity(Math.floor(this.velocity.getDx() * 0.5), Math.floor(this.velocity.getDy
-                    ()) * 0.5);
-            moveClose.applyToPoint(this.center);
             // Calculates it's new direction after the hit and sets the ball to move in the new direction.
             this.velocity = collisionCheck.collisionObject().hit(collisionCheck.collisionPoint(), this.velocity);
             this.getVelocity().applyToPoint(this.center);
@@ -94,7 +99,7 @@ public class Ball implements Sprite{
     }
 
     /**
-     *
+     * When timePassed is called, moves the ball by using moveOneStep
      */
     public void timePassed() {
         this.moveOneStep();

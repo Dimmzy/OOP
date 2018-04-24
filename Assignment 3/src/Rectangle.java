@@ -13,10 +13,10 @@ public class Rectangle {
     private double height;
 
     /**
-     *
-     * @param upperLeft
-     * @param width
-     * @param height
+     * Constructs a rectangle from given upperLeft point, width and height.
+     * @param upperLeft the Upper Left corner point of the rectangle.
+     * @param width the width of the rectangle.
+     * @param height the height of the rectangle.
      */
     public Rectangle(Point upperLeft, double width, double height) {
         this.upperLeft = upperLeft;
@@ -77,7 +77,7 @@ public class Rectangle {
     }
 
     /**
-     * Moves the rectangle to it's new spot.
+     * Moves the rectangle to a newe location by editing it's fields.
      * @param newLoc the new location of the upper left point.
      */
     public void setNewLocation(Point newLoc) {
@@ -100,41 +100,32 @@ public class Rectangle {
      * @return returns the enumerated Border on which the point resides
      */
     public Border pointLocation(Point point) {
-        if (this.left.hasPoint(point) && this.top.hasPoint(point)) {
-            System.out.println("Hit UpLEFT");
-            return Border.ULEFT;
-        }
-        if (this.left.hasPoint(point) && this.bottom.hasPoint(point)) {
-            System.out.println("Hit BottomLEFT");
-            return Border.BLEFT;
-        }
-        if (this.right.hasPoint(point) && this.top.hasPoint(point)) {
-            System.out.println("Hit UpRIGHT");
-            return Border.URIGHT;
-        }
-        if (this.right.hasPoint(point) && this.bottom.hasPoint(point)) {
-            System.out.println("Hit BottomRIGHT");
-            return Border.BRIGHT;
-        }
         if (this.left.hasPoint(point)) {
-            System.out.println("Hit Right");
+            if (this.top.hasPoint(point)) {
+                return Border.TRIGHT;
+            }
+            else if (this.bottom.hasPoint(point)) {
+                return Border.BRIGHT;
+            }
             return Border.RIGHT;
         }
         else if (this.right.hasPoint(point)) {
-            System.out.println("Hit Left");
+            if (this.top.hasPoint(point)) {
+                return Border.TLEFT;
+            }
+            else if (this.bottom.hasPoint(point)) {
+                return Border.BLEFT;
+            }
             return Border.LEFT;
         }
         else if (this.top.hasPoint(point)) {
-            System.out.println("Hit Top");
             return Border.TOP;
         }
         else if (this.bottom.hasPoint(point)) {
-            System.out.println("Hit Bottom");
             return Border.BOTTOM;
         }
         // should never get here, make an exception
         else {
-            System.out.println("Hit null");
             return null;
         }
     }

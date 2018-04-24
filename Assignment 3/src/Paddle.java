@@ -93,23 +93,18 @@ public class Paddle implements Sprite, Collidable {
             int dXHit = (int) (collisionPoint.getX() - this.rectangle.getUpperLeft().getX());
             // Change it to keep the current speed instead of assuming it's 3
             if (dXHit < 10) {
-                System.out.println("zone 1");
                 return Velocity.fromAngleAndSpeed(300, 3);
             }
             else if (dXHit < 20) {
-                System.out.println("zone 2");
                 return Velocity.fromAngleAndSpeed(330, 3);
             }
             else if (dXHit < 30) {
-                System.out.println("zone 3");
                 return Velocity.fromAngleAndSpeed(0, 3);
             }
             else if (dXHit < 40) {
-                System.out.println("zone 4");
                 return Velocity.fromAngleAndSpeed(30 , 3);
             }
             else {
-                System.out.println("zone 5");
                 return Velocity.fromAngleAndSpeed(60, 3);
             }
         }

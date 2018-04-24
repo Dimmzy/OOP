@@ -41,8 +41,7 @@ public class Block implements Collidable, Sprite {
     }
 
     /**
-     * Returns the current rectangle to the calling method.
-     * @return
+     * @return Returns the current rectangle object to the calling method.
      */
     public Rectangle getCollisionRectangle() {
         return this.rectangle;
@@ -58,13 +57,16 @@ public class Block implements Collidable, Sprite {
         if (this.hp > 0) {
             this.hp = this.hp - 1;
         }
+        // Calls pointLocaton to return the enum of the side the the rectangle hit.
         Border borderHit = this.rectangle.pointLocation(collisionPoint);
+        // Changes the velocity according to which side wass hit
         if (borderHit == Border.LEFT || borderHit == Border.RIGHT) {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
         }
         else if (borderHit == Border.TOP || borderHit == Border.BOTTOM) {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
         }
+        // If hit exactly in the edge, returns -dx -dy.
         else {
             return new Velocity(-currentVelocity.getDx(), -currentVelocity.getDy());
         }
@@ -72,7 +74,7 @@ public class Block implements Collidable, Sprite {
 
 
     /**
-     * draws the rectangle that defines this block on the provided surface.
+     * Draws the rectangle that defines this block on the provided surface.
      * @param surface the surface the rectangle will be drawn on.
      */
     public void drawOn(DrawSurface surface) {
@@ -93,9 +95,7 @@ public class Block implements Collidable, Sprite {
     }
 
     /**
-     * does nothing lul
+     * Required as the class implements Collidable, does nothing (behaviour is through rectangle)
      */
-    public void timePassed() {
-
-    }
+    public void timePassed() { }
 }
