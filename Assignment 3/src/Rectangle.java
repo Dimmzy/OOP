@@ -37,16 +37,16 @@ public class Rectangle {
      * @param line The line we check if any of the rectangles borders intersect with
      * @return Returns the list of borders the line intersects with
      */
-    public java.util.List intersectionPoints(Line line) {
+    public java.util.List<Point> intersectionPoints(Line line) {
         Line[] rectEdges = new Line[4];
-        List<Point> intersectList = new ArrayList();
+        List<Point> intersectList = new ArrayList<>();
         // Defines the rectangle edge's by creating line objects for each edge
         rectEdges[0] = this.left;
         rectEdges[1] = this.right;
         rectEdges[2] = this.top;
         rectEdges[3] = this.bottom;
         for (int i = 0; i < 4; i++) {
-            if (line.isIntersecting(rectEdges[i])){
+            if (line.isIntersecting(rectEdges[i])) {
                 Point intersectPoint = line.intersectionWith(rectEdges[i]);
                 intersectList.add(intersectPoint);
             }
@@ -98,43 +98,28 @@ public class Rectangle {
      * checks on which side of the rectangle the passed point is located.
      * @param point the point to be checked.
      * @return Returns the enumerated Border on which the point resides.
+     * @throws Exception throws exception if hasPoint didnt identify any applicable borders that have been hit.
      */
     public Border pointLocation(Point point) throws Exception {
         if (this.left.hasPoint(point) && this.top.hasPoint(point)) {
-            System.out.println("TOP LEFT");
             return Border.TLEFT;
-        }
-        else if (this.left.hasPoint(point) && this.bottom.hasPoint(point)) {
-            System.out.println("BOTTOM LEFT");
+        } else if (this.left.hasPoint(point) && this.bottom.hasPoint(point)) {
             return Border.BLEFT;
-        }
-        else if (this.right.hasPoint(point) && this.top.hasPoint(point)) {
-            System.out.println("TOP RIGHT");
+        } else if (this.right.hasPoint(point) && this.top.hasPoint(point)) {
             return Border.TRIGHT;
-        }
-        else if (this.right.hasPoint(point) && this.bottom.hasPoint(point)) {
-            System.out.println("BOTTOM RIGHT");
+        } else if (this.right.hasPoint(point) && this.bottom.hasPoint(point)) {
             return Border.BRIGHT;
-        }
-        else if (this.left.hasPoint(point)) {
-            System.out.println("LEFT");
+        } else if (this.left.hasPoint(point)) {
             return Border.LEFT;
-        }
-        else if (this.right.hasPoint(point)) {
-            System.out.println("RIGHT");
+        } else if (this.right.hasPoint(point)) {
             return Border.RIGHT;
-        }
-        else if (this.top.hasPoint(point)) {
-            System.out.println("TOP");
+        } else if (this.top.hasPoint(point)) {
             return Border.TOP;
-        }
-        else if (this.bottom.hasPoint(point)) {
-            System.out.println("BOTTOM");
+        } else if (this.bottom.hasPoint(point)) {
             return Border.BOTTOM;
-        }
-        // Intersection point is not on any border (shouldn't occur, throws exception incase it does)
-        else {
-            throw new Exception("Hit location unknown");
+        } else {
+            // Intersection point isn't on any border. Shouldn't occur, will throw exception to be handled.
+            throw new Exception("Didn't hit any border when supposed to, resetting ball position");
         }
     }
 }

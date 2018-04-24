@@ -17,6 +17,7 @@ public class Paddle implements Sprite, Collidable {
      * Constructs the paddle object.
      * @param keyboard The provided keyboard sensor from the game object that was created through the GUI.
      * @param ballStart The starting location of the ball (The paddle is created beneath the ball).
+     * @param ballSpeed The starting speed of the ball. We store it so we can keep the speed the same between hits.
      */
     public Paddle(biuoop.KeyboardSensor keyboard, Point ballStart, int ballSpeed) {
         this.keyboard = keyboard;
@@ -102,31 +103,23 @@ public class Paddle implements Sprite, Collidable {
         }
         if (borderHit == Border.LEFT || borderHit == Border.RIGHT) {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
-        }
-        else if (borderHit == Border.TOP) {
+        } else if (borderHit == Border.TOP) {
             int dXHit = (int) (collisionPoint.getX() - this.rectangle.getUpperLeft().getX());
             if (dXHit < 10) {
                 return Velocity.fromAngleAndSpeed(300, this.ballSpeed);
-            }
-            else if (dXHit < 20) {
+            } else if (dXHit < 20) {
                 return Velocity.fromAngleAndSpeed(330, this.ballSpeed);
-            }
-            else if (dXHit < 30) {
+            } else if (dXHit < 30) {
                 return Velocity.fromAngleAndSpeed(0, this.ballSpeed);
-            }
-            else if (dXHit < 40) {
+            } else if (dXHit < 40) {
                 return Velocity.fromAngleAndSpeed(30 , this.ballSpeed);
-            }
-            else {
+            } else {
                 return Velocity.fromAngleAndSpeed(60, this.ballSpeed);
             }
-        }
-
-        else if (borderHit == Border.BOTTOM) {
+        } else if (borderHit == Border.BOTTOM) {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
-        }
-        // Object hits the edge of the paddle
-        else {
+        } else {
+            // Object hits the edge of the paddle.
             return new Velocity(-currentVelocity.getDx(), -currentVelocity.getDy());
         }
     }

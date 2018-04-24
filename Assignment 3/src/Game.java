@@ -11,10 +11,11 @@ public class Game {
 
     // Constant values we'll use to define the the window, blocks size and ball location.
     private static final int WIDTH = 800, HEIGHT = 600, BLOCK_WIDTH = 50, BLOCK_HEIGHT = 30;
+    private static final int BORDER_HEIGHT = 15, BORDER_WIDTH = 15;
     private static final int PADDLE_START_X = 400, PADDLE_START_Y = 555;
     private static final int BALL_ONE_START_X = 400, BALL_ONE_START_Y = 550, BALL_ONE_START_ANGLE = 123;
     private static final int BALL_TWO_START_X = 380, BALL_TWO_START_Y = 550, BALL_TWO_START_ANGLE = 321;
-    private static final int BALL_SPEED = 7;
+    private static final int BALL_SPEED = 3;
     private static final int BALL_RADIUS = 5;
     private SpriteCollection sprites;
     private GameEnvironment environment;
@@ -37,7 +38,10 @@ public class Game {
         this.sprites.addSprite(s);
     }
 
-    // Initialize a new game: creates the Blocks, Balls and the Paddle.
+    /**
+     * Initializes all the needed variables for a new game: user interface, sprites, game environment, blocks, balls
+     * and a paddle.
+     */
     public void initialize() {
         this.gui = new GUI("Arkanoid", WIDTH, HEIGHT);
         this.sprites = new SpriteCollection();
@@ -63,10 +67,10 @@ public class Game {
      * Creates blocks in the borders of the game window.
      */
     public void createBorders() {
-        Block top = new Block(new Point(0, 0), WIDTH, 15, Color.LIGHT_GRAY, 1);
-        Block left = new Block(new Point(0, 0), 15, HEIGHT, Color.LIGHT_GRAY, 1);
-        Block right = new Block(new Point(WIDTH-15, 0), 15, HEIGHT, Color.LIGHT_GRAY, 1);
-        Block bottom = new Block(new Point(0, HEIGHT-15), WIDTH, 15, Color.LIGHT_GRAY, 1);
+        Block top = new Block(new Point(0, 0), WIDTH, BORDER_HEIGHT, Color.LIGHT_GRAY, 1);
+        Block left = new Block(new Point(0, 0), BORDER_WIDTH, HEIGHT, Color.LIGHT_GRAY, 1);
+        Block right = new Block(new Point(WIDTH - BORDER_WIDTH, 0), BORDER_WIDTH, HEIGHT, Color.LIGHT_GRAY, 1);
+        Block bottom = new Block(new Point(0, HEIGHT - BORDER_HEIGHT), WIDTH, BORDER_HEIGHT, Color.LIGHT_GRAY, 1);
         top.addToGame(this);
         left.addToGame(this);
         right.addToGame(this);
@@ -79,11 +83,11 @@ public class Game {
      */
     public void createBlocks() {
         int yPos = 100;
-        int xPos = 122;
+        int xPos = 135;
         int xOffset = 50;
         int yOffset = 30;
         int edgeLimit = WIDTH - xOffset;
-        for (int i = xPos; i < edgeLimit; i+= xOffset) {
+        for (int i = xPos; i < edgeLimit; i += xOffset) {
             Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.CYAN, 2);
             newBlock.addToGame(this);
         }

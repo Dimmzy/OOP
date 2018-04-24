@@ -63,27 +63,33 @@ public class Line {
         return this.end;
     }
 
+    /**
+     * Setter: Sets the start point to a new value.
+     * @param newStart the new starting point.
+     */
     public void changeStart(Point newStart) { this.start = newStart; }
 
+    /**
+     * Setter: Sets the end point to a new value.
+     * @param newEnd the new ending point.
+     */
     public void changeEnd(Point newEnd) { this.end = newEnd; }
 
     /**
-     * Calculates the cross product between two lines and returns the orientation of the triplet of points
-     * @param start starting point.
-     * @param end ending point.
+     * Calculates the cross product between two lines and returns the orientation of the triplet of points.
+     * @param starting starting point.
+     * @param ending ending point.
      * @param orient orientation point.
-     * @return 0 if all three points are co-linear, 1 if the orientation is clockwise and 2 if it's counterclockwise
+     * @return 0 if all three points are co-linear, 1 if the orientation is clockwise and 2 if it's counterclockwise.
      */
-    public int calcXProduct(Point start, Point end, Point orient) {
-        double xProduct = ((end.getY() - start.getY()) * ((orient.getX() - end.getX())) -
-                (end.getX() - start.getX()) * (orient.getY() - end.getY()));
+    public int calcXProduct(Point starting, Point ending, Point orient) {
+        double xProduct = ((ending.getY() - starting.getY()) * ((orient.getX() - ending.getX()))
+                - (ending.getX() - starting.getX()) * (orient.getY() - ending.getY()));
         if (xProduct == 0) {
             return 0;
-        }
-        else if (xProduct > 0) {
+        } else if (xProduct > 0) {
             return 1;
-        }
-        else {
+        } else {
             return 2;
         }
     }
@@ -95,12 +101,8 @@ public class Line {
      * @return True if the point is on the line, false otherwise.
      */
     public boolean hasPoint(Point point) {
-        double epsilon = 0.01;
-        double deltaDistance = this.start.distance(point) + point.distance(this.end) - this.start.distance(end);
-        if (deltaDistance < epsilon) {
-            return true;
-        }
-        return false;
+        return Math.round(this.start.distance(point)) + Math.round(point.distance(this.end)) == Math.round(this.start
+                .distance(end));
     }
 
     /**
@@ -117,13 +119,7 @@ public class Line {
         int orientationThree = calcXProduct(other.start, other.end, this.start);
         int orientationFour = calcXProduct(other.start, other.end, this.end);
 
-        if (orientationOne != orientationTwo && orientationThree != orientationFour) {
-            return true;
-        }
-
-        else {
-            return false;
-        }
+        return (orientationOne != orientationTwo && orientationThree != orientationFour);
     }
 
     /**
@@ -145,8 +141,7 @@ public class Line {
             if (this.start().getX() == this.end.getX()) {
                 Point insect =  new Point(this.start.getX(), other.start().getY());
                 return insect;
-            }
-            else {
+            } else {
                 Point insect = new Point(other.start.getX(), this.start().getY());
                 return insect;
             }

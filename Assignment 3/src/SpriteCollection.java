@@ -13,14 +13,14 @@ public class SpriteCollection {
      * SpriteCollection constructor. Creates the list we will populate with sprites.
      */
     public SpriteCollection() {
-        this.spriteList = new ArrayList();
+        this.spriteList = new ArrayList<>();
     }
 
     /**
      * Adds a sprite to the list.
      * @param s The passed Sprite object to add to the list.
      */
-    public void addSprite(Sprite s){
+    public void addSprite(Sprite s) {
         this.spriteList.add(s);
     }
 
@@ -28,7 +28,7 @@ public class SpriteCollection {
      * Iterates through all of the list elements and calls the "timePassed" method that tells them a certain interval
      * has passed and let's them change their behavior/state.
      */
-    public void notifyAllTimePassed(){
+    public void notifyAllTimePassed() {
         for (Sprite sprite : spriteList) {
             sprite.timePassed();
         }
@@ -39,7 +39,7 @@ public class SpriteCollection {
      * surface.
      * @param d The surface on which we'll drive the Sprites on.
      */
-    public void drawAllOn(DrawSurface d){
+    public void drawAllOn(DrawSurface d) {
         for (Sprite sprite : spriteList) {
             sprite.drawOn(d);
         }

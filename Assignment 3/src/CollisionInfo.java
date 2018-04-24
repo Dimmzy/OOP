@@ -8,8 +8,8 @@ public class CollisionInfo {
 
     /**
      * Constructs the collision object from the collision point and the object that was collided with.
-     * @param colPoint
-     * @param collObject
+     * @param colPoint the collision point of the objects.
+     * @param collObject the object that has been collided with.
      */
     public CollisionInfo(Point colPoint, Collidable collObject) {
         this.collisionPoint = colPoint;

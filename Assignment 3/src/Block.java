@@ -23,8 +23,10 @@ public class Block implements Collidable, Sprite {
      * @param upperLeft upper left point of the rectangle.
      * @param width the width of the rectangle.
      * @param height the height of the rectangle.
+     * @param color the color of the block.
+     * @param hp the starting hit points of the block.
      */
-    public Block(Point upperLeft, double width, double height, java.awt.Color color,int hp) {
+    public Block(Point upperLeft, double width, double height, java.awt.Color color, int hp) {
         Rectangle rect = new Rectangle(upperLeft, width, height);
         this.rectangle = rect;
         this.color =  color;
@@ -68,15 +70,17 @@ public class Block implements Collidable, Sprite {
         // Changes the velocity according to which side wass hit
         if (borderHit == Border.LEFT || borderHit == Border.RIGHT) {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
-        }
-        else if (borderHit == Border.TOP || borderHit == Border.BOTTOM) {
+        } else if (borderHit == Border.TOP || borderHit == Border.BOTTOM) {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
-        }
-        // If hit exactly in the edge, sends the ball to the opposite direction.
-        else {
-            return new Velocity(currentVelocity.getDx(), currentVelocity.getDy());
+        } else if (borderHit == Border.BRIGHT || borderHit == Border.BLEFT) {
+            return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
+        } else if (borderHit == Border.TRIGHT || borderHit == Border.TLEFT) {
+            return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
+        } else {
+            return null;
         }
     }
+
 
 
     /**
@@ -93,15 +97,14 @@ public class Block implements Collidable, Sprite {
             surface.drawText((int) (this.rectangle.getUpperLeft().getX() + (this.rectangle.getWidth() / 2)), (int) (this
                             .rectangle.getUpperLeft().getY() + (this.rectangle.getHeight()) / 1.5),
                     Integer.toString(this.hp), 18);
-        }
-        else {
+        } else {
             surface.drawText((int) (this.rectangle.getUpperLeft().getX() + (this.rectangle.getWidth() / 2)), (int) (this
                             .rectangle.getUpperLeft().getY() + (this.rectangle.getHeight()) / 1.5), "X", 18);
         }
     }
 
     /**
-     * Required as the class implements Collidable, does nothing (behaviour is through rectangle)
+     * Required as the class implements Collidable, does nothing (behaviour is through rectangle).
      */
     public void timePassed() { }
 }

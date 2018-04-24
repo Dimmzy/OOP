@@ -4,9 +4,10 @@ import biuoop.DrawSurface;
  * Ball class. Holds the values that define a Ball object in our program and it's movement behavior.
  */
 
-public class Ball implements Sprite{
+public class Ball implements Sprite {
 
     private Point center;
+    private Point startingLoc;
     private int radius;
     private java.awt.Color color;
     private Velocity velocity;
@@ -21,6 +22,7 @@ public class Ball implements Sprite{
      */
     public Ball(Point center, int r, java.awt.Color color, GameEnvironment environment) {
         this.center = center;
+        this.startingLoc = center;
         this.radius = r;
         this.color = color;
         this.gameEnvironment = environment;
@@ -77,8 +79,7 @@ public class Ball implements Sprite{
         // If the ball doesn't collide with anything, move it as it's velocity dictates.
         if (collisionCheck == null) {
             this.center = this.getVelocity().applyToPoint(this.center);
-        }
-        else {
+        } else {
             Rectangle colRect = collisionCheck.collisionObject().getCollisionRectangle();
             // Check if the collision occurs with the paddle.
             if (collisionCheck.collisionObject() instanceof Paddle) {
@@ -92,11 +93,11 @@ public class Ball implements Sprite{
                 }
             }
             // Calculates it's new direction after the hit and sets the ball to move in the new direction.
-             Velocity newSpeed = collisionCheck.collisionObject().hit(collisionCheck.collisionPoint(), this
-                    .velocity);
+            Velocity newSpeed = collisionCheck.collisionObject().hit(collisionCheck.collisionPoint(), this.velocity);
+            // If caught exception , reset the ball into it's starting position.
             if (newSpeed == null) {
-                System.out.println("Resetting Ball Position Due to Error");
-                this.center = new Point(500, 500);
+                this.center = this.startingLoc;
+                return;
             }
             this.velocity = newSpeed;
             this.getVelocity().applyToPoint(this.center);
@@ -104,7 +105,7 @@ public class Ball implements Sprite{
     }
 
     /**
-     * When timePassed is called, moves the ball by using moveOneStep
+     * When timePassed is called, moves the ball by using moveOneStep.
      */
     public void timePassed() {
         this.moveOneStep();
