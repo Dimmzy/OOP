@@ -34,8 +34,8 @@ public class Rectangle {
     /**
      * The method creates the rectangles borders by creating lines from each edge, then checks intersection with the
      * line that is given as a parameter.
-     * @param line the line we check if any of the rectangles borders intersect with
-     * @return returns the list of borders the line intersects with
+     * @param line The line we check if any of the rectangles borders intersect with
+     * @return Returns the list of borders the line intersects with
      */
     public java.util.List intersectionPoints(Line line) {
         Line[] rectEdges = new Line[4];
@@ -102,26 +102,34 @@ public class Rectangle {
     public Border pointLocation(Point point) {
         if (this.left.hasPoint(point)) {
             if (this.top.hasPoint(point)) {
+                System.out.println("TRIGHT");;
                 return Border.TRIGHT;
             }
             else if (this.bottom.hasPoint(point)) {
+                System.out.println("BRIGHT");
                 return Border.BRIGHT;
             }
+            System.out.println("RIGHT");
             return Border.RIGHT;
         }
         else if (this.right.hasPoint(point)) {
             if (this.top.hasPoint(point)) {
+                System.out.println("TLEFT");
                 return Border.TLEFT;
             }
             else if (this.bottom.hasPoint(point)) {
+                System.out.println("BLEFT");
                 return Border.BLEFT;
             }
+            System.out.println("LEFT");
             return Border.LEFT;
         }
         else if (this.top.hasPoint(point)) {
+            System.out.println("TOP");
             return Border.TOP;
         }
         else if (this.bottom.hasPoint(point)) {
+            System.out.println("BOTTOM");
             return Border.BOTTOM;
         }
         // should never get here, make an exception

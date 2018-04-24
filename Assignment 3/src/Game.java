@@ -11,9 +11,11 @@ public class Game {
 
     // Constant values we'll use to define the the window, blocks size and ball location.
     private static final int WIDTH = 800, HEIGHT = 600, BLOCK_WIDTH = 50, BLOCK_HEIGHT = 30;
-    private static final int PADDLE_START_X = 400, PADDLE_START_Y = 500;
-    private static final int BALL_ONE_START_X = 400, BALL_ONE_START_Y = 550;
-    private static final int BALL_TWO_START_X = 380, BALL_TWO_START_Y = 550;
+    private static final int PADDLE_START_X = 400, PADDLE_START_Y = 555;
+    private static final int BALL_ONE_START_X = 400, BALL_ONE_START_Y = 550, BALL_ONE_START_ANGLE = 123;
+    private static final int BALL_TWO_START_X = 380, BALL_TWO_START_Y = 550, BALL_TWO_START_ANGLE = 321;
+    private static final int BALL_SPEED = 3;
+    private static final int BALL_RADIUS = 5;
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
@@ -43,16 +45,16 @@ public class Game {
         this.sleeper = new Sleeper();
         this.createBorders();
         this.createBlocks();
-        Ball ballOne = new Ball(new Point(BALL_ONE_START_X, BALL_ONE_START_Y), 5, Color.BLUE,
+        Ball ballOne = new Ball(new Point(BALL_ONE_START_X, BALL_ONE_START_Y), BALL_RADIUS, Color.BLUE,
                 this.environment);
-        ballOne.setVelocity(Velocity.fromAngleAndSpeed(321, 3));
+        ballOne.setVelocity(Velocity.fromAngleAndSpeed(BALL_ONE_START_ANGLE, BALL_SPEED));
         ballOne.addToGame(this);
-        Ball ballTwo = new Ball(new Point(BALL_TWO_START_X, BALL_TWO_START_Y), 5, Color.RED,
+        Ball ballTwo = new Ball(new Point(BALL_TWO_START_X, BALL_TWO_START_Y), BALL_RADIUS, Color.RED,
                 this.environment);
-        ballTwo.setVelocity(Velocity.fromAngleAndSpeed(123, 3));
+        ballTwo.setVelocity(Velocity.fromAngleAndSpeed(BALL_TWO_START_ANGLE, BALL_SPEED));
         ballTwo.addToGame(this);
         biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
-        Paddle paddle = new Paddle(keyboard, new Point(PADDLE_START_X, PADDLE_START_Y));
+        Paddle paddle = new Paddle(keyboard, new Point(PADDLE_START_X, PADDLE_START_Y), BALL_SPEED);
         paddle.addToGame(this);
     }
 

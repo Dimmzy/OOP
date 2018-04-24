@@ -21,7 +21,7 @@ public class Line {
 
     /**
      * @param x1 x value of the starting point.
-     * @param y1 y value of the starting poin.t
+     * @param y1 y value of the starting point.
      * @param x2 x value of the ending point.
      * @param y2 y value of the ending point.
      */
@@ -41,7 +41,6 @@ public class Line {
     /**
      * Calculates the middle X and Y points and then creates a Point object
      * using the result.
-     *
      * @return returns the middle point between the start and end of the object
      */
     public Point middle() {
@@ -93,9 +92,9 @@ public class Line {
 
 
     /**
-     * Checks if the point that was passed is on the current line segment
-     * @param point the point to check
-     * @return true if the point is on the line, false otherwise.
+     * Checks if the point that was passed is on the current line segment.
+     * @param point The point to check.
+     * @return True if the point is on the line, false otherwise.
      */
     public boolean hasPoint(Point point) {
         return Math.floor(this.start().distance(point)) +  Math.floor(point.distance(this.end())) == Math.floor(this
@@ -105,8 +104,8 @@ public class Line {
     /**
      * Calculates if this line segment intersects with the passed line segment using the cross product and line
      * orientation method.
-     * @param other line we check if the current line segment intersects with.
-     * @return a boolean expression that states whether the lines intersect.
+     * @param other The line we check if the current line segment intersects with.
+     * @return A     boolean expression that states whether the lines intersect.
      */
     public boolean isIntersecting(Line other) {
 
@@ -157,7 +156,7 @@ public class Line {
     /**
      * Calculates the intersection point by using the deltas.
      * @param other the other line we calculate the intersection with.
-     * @return returns the x value of the
+     * @return Returns the intersection point as a Point object.
      */
     public Point calcIntersect(Line other) {
         double x1 = this.start().getX();
@@ -179,9 +178,9 @@ public class Line {
 
 
     /**
-     *
-     * @param rect
-     * @return
+     * Returns the closest intersection point to the rectangle we're checking the intersection with.
+     * @param rect The intersecting rectangle.
+     * @return Returns the closest intersection point to the rectangle.
      */
     public Point closestIntersectionToStartOfLine(Rectangle rect) {
         List<Point> intersectionPoints = rect.intersectionPoints(this);

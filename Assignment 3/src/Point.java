@@ -28,8 +28,7 @@ public class Point {
     }
 
     /**
-     * checks the output from the distance method and returns whether the
-     * points are equal or not.
+     * Checks the output from the distance method and returns whether the points are equal or not.
      * @param other the point to compare this one to.
      * @return true if the points are equal, false if they aren't
      */
