@@ -1,15 +1,12 @@
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
-import java.util.List;
-import java.util.ArrayList;
 import java.awt.Color;
-import java.util.Random;
 
 
 public class Game {
 
-    private static final int WIDTH = 800, HEIGHT = 600, BLOCK_WIDTH = 90, BLOCK_HEIGHT = 30;
+    private static final int WIDTH = 800, HEIGHT = 600, BLOCK_WIDTH = 50, BLOCK_HEIGHT = 30;
     private static final int BALL_START_X = 400, BALL_START_Y = 500;
     private SpriteCollection sprites;
     private GameEnvironment environment;
@@ -32,21 +29,25 @@ public class Game {
         this.sleeper = new Sleeper();
         this.createBorders();
         this.createBlocks();
-        Ball ball = new Ball(new Point(BALL_START_X, BALL_START_Y), 5, RandomColor.generateRandomColor(),
+        Ball ballOne = new Ball(new Point(215, 515), 5, Color.BLUE,
                 this.environment);
-        ball.setVelocity(Velocity.fromAngleAndSpeed(123, 2));
-        ball.addToGame(this);
+        ballOne.setVelocity(Velocity.fromAngleAndSpeed(321, 3));
+        ballOne.addToGame(this);
+        Ball ballTwo = new Ball(new Point(215, 515), 5, Color.RED,
+                this.environment);
+        ballTwo.setVelocity(Velocity.fromAngleAndSpeed(123, 3));
+        ballTwo.addToGame(this);
         biuoop.KeyboardSensor keyboard = gui.getKeyboardSensor();
         Paddle paddle = new Paddle(keyboard, new Point(BALL_START_X, BALL_START_Y));
         paddle.addToGame(this);
-
     }
 
+
     public void createBorders() {
-        Block top = new Block(new Point(0, 0), WIDTH, 0);
-        Block left = new Block(new Point(0, 0), 0, HEIGHT);
-        Block right = new Block(new Point(WIDTH, 0), 0, HEIGHT);
-        Block bottom = new Block(new Point(0, HEIGHT), WIDTH, 0);
+        Block top = new Block(new Point(0, 0), WIDTH, 15, Color.LIGHT_GRAY, 1);
+        Block left = new Block(new Point(0, 0), 15, HEIGHT, Color.LIGHT_GRAY, 1);
+        Block right = new Block(new Point(WIDTH-15, 0), 15, HEIGHT, Color.LIGHT_GRAY, 1);
+        Block bottom = new Block(new Point(0, HEIGHT-15), WIDTH, 15, Color.LIGHT_GRAY, 1);
         top.addToGame(this);
         left.addToGame(this);
         right.addToGame(this);
@@ -54,15 +55,47 @@ public class Game {
     }
 
     public void createBlocks() {
-        for (int i = 100; i < 700; i += 100) {
-            for (int j = 35; j < 245; j += 35) {
-                Block newBlock = new Block(new Point(i, j), BLOCK_WIDTH, BLOCK_HEIGHT);
-                newBlock.addToGame(this);
-            }
+        int yPos = 100;
+        int xPos = 122;
+        int xOffset = 51;
+        int yOffset = 30;
+        int edgeLimit = WIDTH - xOffset;
+        for (int i = xPos; i < edgeLimit; i+= xOffset) {
+            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.CYAN, 2);
+            newBlock.addToGame(this);
+        }
+        xPos += xOffset;
+        yPos += yOffset;
+        for (int i = xPos; i < edgeLimit; i += xOffset) {
+            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.RED, 1);
+            newBlock.addToGame(this);
+        }
+        xPos += xOffset;
+        yPos += yOffset;
+        for (int i = xPos; i < edgeLimit; i += xOffset) {
+            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.YELLOW, 1);
+            newBlock.addToGame(this);
+        }
+        xPos += xOffset;
+        yPos += yOffset;
+        for (int i = xPos; i < edgeLimit; i += xOffset) {
+            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.MAGENTA, 1);
+            newBlock.addToGame(this);
+        }
+        xPos += xOffset;
+        yPos += yOffset;
+        for (int i = xPos; i < edgeLimit; i += xOffset) {
+            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.PINK, 1);
+            newBlock.addToGame(this);
+        }
+        xPos += xOffset;
+        yPos += yOffset;
+        for (int i = xPos; i < edgeLimit; i += xOffset) {
+            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.GREEN, 1);
+            newBlock.addToGame(this);
         }
     }
 
-    // Run the game -- start the animation loop.
     public void run() {
         int framesPerSecond = 60;
         int milisecondsPerFrame = 1000 / framesPerSecond;

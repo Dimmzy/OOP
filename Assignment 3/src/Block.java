@@ -1,4 +1,5 @@
 import biuoop.DrawSurface;
+import java.awt.Color;
 
 /**
  * Block method that consists of rectangles that can be collided with.
@@ -7,6 +8,7 @@ public class Block implements Collidable, Sprite {
 
     private Rectangle rectangle;
     private java.awt.Color color;
+    private int hp;
 
     /**
      * Constructs a new block from a passed rectangle.
@@ -17,15 +19,16 @@ public class Block implements Collidable, Sprite {
     }
 
     /**
-     * Constructs a new block by creating a rectangle using given parameters.
+     * Constructs a block with a given color and health.
      * @param upperLeft upper left point of the rectangle.
      * @param width the width of the rectangle.
      * @param height the height of the rectangle.
      */
-    public Block(Point upperLeft, double width, double height) {
+    public Block(Point upperLeft, double width, double height, java.awt.Color color,int hp) {
         Rectangle rect = new Rectangle(upperLeft, width, height);
         this.rectangle = rect;
-        this.color =  RandomColor.generateRandomColor();
+        this.color =  color;
+        this.hp = hp;
     }
 
     /**
@@ -52,6 +55,9 @@ public class Block implements Collidable, Sprite {
      * @return returns to the calling object it's velocity after the hit.
      */
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+        if (this.hp > 0) {
+            this.hp = this.hp - 1;
+        }
         Border borderHit = this.rectangle.pointLocation(collisionPoint);
         if (borderHit == Border.LEFT || borderHit == Border.RIGHT) {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
@@ -74,6 +80,16 @@ public class Block implements Collidable, Sprite {
         Point topLeft = this.rectangle.getUpperLeft();
         surface.fillRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
                 .rectangle.getHeight());
+        surface.setColor(Color.BLACK);
+        if (this.hp > 0) {
+            surface.drawText((int) (this.rectangle.getUpperLeft().getX() + (this.rectangle.getWidth() / 2)), (int) (this
+                            .rectangle.getUpperLeft().getY() + (this.rectangle.getHeight()) / 1.5),
+                    Integer.toString(this.hp), 18);
+        }
+        else {
+            surface.drawText((int) (this.rectangle.getUpperLeft().getX() + (this.rectangle.getWidth() / 2)), (int) (this
+                            .rectangle.getUpperLeft().getY() + (this.rectangle.getHeight()) / 1.5), "X", 18);
+        }
     }
 
     /**

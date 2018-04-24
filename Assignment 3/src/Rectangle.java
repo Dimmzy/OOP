@@ -85,8 +85,8 @@ public class Rectangle {
         Point upperRight = new Point(upperLeft.getX() + width, upperLeft.getY());
         Point bottomLeft = new Point(upperLeft.getX(), upperLeft.getY() + height);
         Point bottomRight = new Point(upperLeft.getX() + width, upperLeft.getY() + height);
-        this.left.changeStart(upperRight);
-        this.left.changeEnd(bottomRight);
+        this.left.changeStart(upperLeft);
+        this.left.changeEnd(bottomLeft);
         this.right.changeStart(upperRight);
         this.right.changeEnd(bottomRight);
         this.top.changeStart(upperLeft);
@@ -100,7 +100,22 @@ public class Rectangle {
      * @return returns the enumerated Border on which the point resides
      */
     public Border pointLocation(Point point) {
-        System.out.println(point.toString());
+        if (this.left.hasPoint(point) && this.top.hasPoint(point)) {
+            System.out.println("Hit UpLEFT");
+            return Border.ULEFT;
+        }
+        if (this.left.hasPoint(point) && this.bottom.hasPoint(point)) {
+            System.out.println("Hit BottomLEFT");
+            return Border.BLEFT;
+        }
+        if (this.right.hasPoint(point) && this.top.hasPoint(point)) {
+            System.out.println("Hit UpRIGHT");
+            return Border.URIGHT;
+        }
+        if (this.right.hasPoint(point) && this.bottom.hasPoint(point)) {
+            System.out.println("Hit BottomRIGHT");
+            return Border.BRIGHT;
+        }
         if (this.left.hasPoint(point)) {
             System.out.println("Hit Right");
             return Border.RIGHT;

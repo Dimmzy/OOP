@@ -72,18 +72,24 @@ public class Ball implements Sprite{
         }
         Point endPoint = new Point(this.center.getX() + this.velocity.getDx(),
                 this.center.getY() + this.velocity.getDy());
+        // find a more elegant method
         Line trajectory = new Line(this.center, endPoint);
         CollisionInfo collisionCheck = gameEnvironment.getClosestCollision(trajectory);
         if (collisionCheck == null) {
             this.center = this.getVelocity().applyToPoint(this.center);
-            return;
         }
         else {
-            Velocity moveClose = new Velocity(Math.floor(this.velocity.getDx()), Math.floor(this.velocity.getDy()));
+            // Checks if we're stuck inside a paddle, teleport the ball upwards if we are.
+            if (collisionCheck.collisionObject() instanceof Paddle) {
+                
+            }
+                // Moves the ball close to the impact point (80% of the way).
+            Velocity moveClose = new Velocity(Math.floor(this.velocity.getDx() * 0.5), Math.floor(this.velocity.getDy
+                    ()) * 0.5);
             moveClose.applyToPoint(this.center);
+            // Calculates it's new direction after the hit and sets the ball to move in the new direction.
             this.velocity = collisionCheck.collisionObject().hit(collisionCheck.collisionPoint(), this.velocity);
             this.getVelocity().applyToPoint(this.center);
-            return;
         }
     }
 

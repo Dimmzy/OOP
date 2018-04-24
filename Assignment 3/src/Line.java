@@ -68,9 +68,7 @@ public class Line {
         return this.end;
     }
 
-    public void changeStart(Point newStart) {
-        this.start = newStart;
-    }
+    public void changeStart(Point newStart) { this.start = newStart; }
 
     public void changeEnd(Point newEnd) {
         this.end = newEnd;
@@ -97,23 +95,6 @@ public class Line {
         }
     }
 
-    /**
-     *
-     * @param start
-     * @param end
-     * @param orientation
-     * @return
-     */
-    public boolean onLine(Point start, Point end, Point orientation) {
-        if (end.getX() <= Math.max(start.getX(), orientation.getX())
-                && end.getX() >= Math.min(start.getX(), orientation.getX())
-                && end.getY() <= Math.max(start.getY(), orientation.getY())
-                && end.getY() >= Math.min(start.getY(), orientation.getY())) {
-            return true;
-        }
-        return false;
-    }
-
 
     /**
      * Checks if the point that was passed is on the current line segment
@@ -121,7 +102,8 @@ public class Line {
      * @return true if the point is on the line, false otherwise.
      */
     public boolean hasPoint(Point point) {
-        return this.start().distance(point) +  point.distance(this.end()) == this.start().distance(this.end);
+        return Math.floor(this.start().distance(point)) +  Math.floor(point.distance(this.end())) == Math.floor(this
+                .start().distance(this.end));
     }
 
     /**
@@ -135,34 +117,20 @@ public class Line {
      */
     public boolean isIntersecting(Line other) {
 
-        // Calculates the orienations
+        // Calculates the orientations
         int orientationOne = calcXProduct(this.start, this.end, other.start);
         int orientationTwo = calcXProduct(this.start, this.end, other.end);
         int orientationThree = calcXProduct(other.start, other.end, this.start);
         int orientationFour = calcXProduct(other.start, other.end, this.end);
 
-        // General case
+
         if (orientationOne != orientationTwo && orientationThree != orientationFour) {
             return true;
         }
 
-        if (orientationOne == 0 && onLine(this.start, this.end, other.start)) {
-            return true;
+        else {
+            return false;
         }
-
-        if (orientationTwo == 0 && onLine(this.start, other.end, other.start)) {
-            return true;
-        }
-
-        if (orientationThree == 0 && onLine(other.start, this.start, other.end)) {
-            return true;
-        }
-
-        if (orientationFour == 0 && onLine(other.start, this.end, other.end)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -179,7 +147,20 @@ public class Line {
             return null;
         }
         // Otherwise creates and returns the intersection point
-        return calcIntersect(other);
+        Point intersectPoint = calcIntersect(other);
+        if (intersectPoint == null) {
+            if (this.start().getX() == this.end.getX()) {
+                Point insect =  new Point(this.start.getX(), other.start().getY());
+                System.out.println(insect.toString() + "*");
+                return insect;
+            }
+            else {
+                Point insect = new Point(other.start.getX(), this.start().getY());
+                System.out.println(insect.toString() + "**");
+                return insect;
+            }
+        }
+        return intersectPoint;
     }
 
 
@@ -201,30 +182,11 @@ public class Line {
         double numeratorX = (x2 * y1 - x1 * y2) * (x4 - x3) - (x4 * y3 - x3 * y4) * (x2 - x1);
         double numeratorY =  (x2 * y1 - x1 * y2) * (y4 - y3) - (x4 * y3 - x3 * y4) * (y2 - y1);
         double denominator = (x2 - x1) * (y4 - y3) - (x4 - x3) * (y2 - y1);
+        if (denominator == 0) {
+            return null;
+        }
         return new Point(numeratorX / denominator, numeratorY / denominator);
     }
-
-    /* BACKUP CODE, DELETE WHEN DONE
-    /**
-     * Calculates the y value of the intersection point using the linear line
-     * equation and the x value we calculated previously.
-     * (slope * (x_intersection - x_1) + y_1)
-     *
-     * @param xIntersect uses the x value of the intersection point to
-     *                   calculate the y value.
-     * @return returns the y value of the intersection point.
-    public double yIntersect(Line other) {
-        return (this.getSlope() * xIntersect) + this.getFreeVal();
-    }
-
-    BACKUP OF X:
-            // In our case, we define the slope of both vertical and horizontal lines as "0", and check by-case here.
-        double deltaX = this.getSlope() - other.getSlope();
-        double deltaFree = other.getFreeVal() - this.getFreeVal();
-        return deltaFree / deltaX;
-
-
-    */
 
 
     /**
@@ -239,32 +201,11 @@ public class Line {
         }
         Point closestIntersect = intersectionPoints.get(0);
         for (int i = 0; i < intersectionPoints.size(); i++) {
-            if (closestIntersect.distance(this.start) > intersectionPoints.get(i).distance(this.start)) {
+            if (closestIntersect.distance(this.end) > intersectionPoints.get(i).distance(this.end)) {
                 closestIntersect = intersectionPoints.get(i);
             }
         }
         Point hitPoint = new Point(Math.ceil(closestIntersect.getX()), Math.ceil(closestIntersect.getY()));
         return hitPoint;
     }
-
-    /* BACKUP CODE, DELETE WHEN DONE
-    /**
-     * @return returns the slope of the current line
-
-
-    public double getSlope() {
-        // Defines the slope of a vertical line as zero (so it would actually return something as it's undefined)
-        if (end.getX() == start.getX()) {
-            return 0;
-        }
-        return (end.getY() - start.getY()) / (end.getX() - start.getX());
-    }
-
-    /**
-     * @return returns the free value of the current line
-
-    public double getFreeVal() {
-        return (this.getSlope() * -(start.getX())) + start.getY();
-    }
-    */
 }

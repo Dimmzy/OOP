@@ -25,7 +25,7 @@ public class Paddle implements Sprite, Collidable {
      */
     public void moveLeft() {
         // Check if the paddle isn't going to pass the screen's edge, if it does, don't move.
-        if (this.rectangle.getUpperLeft().getX() - velocity.getDx() < 0) {
+        if (this.rectangle.getUpperLeft().getX() - velocity.getDx() < 15) {
             return;
         }
         Point moveLeft = new Point(this.rectangle.getUpperLeft().getX() - velocity.getDx(), this.rectangle
@@ -37,7 +37,7 @@ public class Paddle implements Sprite, Collidable {
      * Displaces the paddle to the right.
      */
     public void moveRight() {
-        if (this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + velocity.getDx() > 800) {
+        if (this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + velocity.getDx() > 785) {
             return;
         }
         Point moveRight = new Point(this.rectangle.getUpperLeft().getX() + velocity.getDx(), this.rectangle
@@ -118,7 +118,6 @@ public class Paddle implements Sprite, Collidable {
         }
         // Object hits the edge of the paddle
         else {
-            System.out.println("HIT EDGE!!!!");
             return new Velocity(-currentVelocity.getDx(), -currentVelocity.getDy());
         }
     }
