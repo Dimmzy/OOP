@@ -12,9 +12,12 @@ public abstract class UnaryExpression extends BaseExpression {
 
     public double evaluate(Map<String, Double> assignment) throws Exception {
         for (String key : assignment.keySet()) {
+            if (!(exLeft.getVariables().contains(key))) {
+                throw new Exception ("Mapped Variable does not exist in Expression");
+            }
             super.exLeft = super.exLeft.assign(key, new Num(assignment.get(key)));
         }
-        return super.exLeft.evaluate();
+        return exLeft.evaluate();
     }
 
 

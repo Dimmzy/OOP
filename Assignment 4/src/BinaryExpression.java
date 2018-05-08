@@ -1,11 +1,19 @@
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Binary Expression that consists of two expression.
+ */
 public abstract class BinaryExpression extends BaseExpression {
 
     protected Expression leftEx;
     protected Expression rightEx;
 
+    /**
+     * Constructor for the object, using two passed exprssions from it's children expressions.
+     * @param leftEx the left expression
+     * @param rightEx the right expression.
+     */
     public BinaryExpression(Expression leftEx, Expression rightEx) {
         super(leftEx,rightEx);
         this.leftEx = leftEx;
