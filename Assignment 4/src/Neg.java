@@ -22,7 +22,11 @@ public class Neg extends UnaryExpression implements Expression{
 
     @Override
     public double evaluate() throws Exception {
-        return this.exLeft.evaluate() * -1;
+        try {
+            return this.exLeft.evaluate() * -1;
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     @Override
@@ -41,7 +45,7 @@ public class Neg extends UnaryExpression implements Expression{
 
     @Override
     public Expression differentiate(String var) {
-        return super.exLeft.differentiate(var);
+        return new Mult(new Num(-1), super.exLeft.differentiate(var));
     }
 
     /**
@@ -50,6 +54,18 @@ public class Neg extends UnaryExpression implements Expression{
      */
     @Override
     public Expression simplify() {
-        return super.simplify();
+
+        try {
+            Expression exSim = super.exLeft.simplify();
+            if (exSim.getVariables().isEmpty()) {
+                return new Num(exSim.evaluate());
+            }
+            else {
+                return this;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }

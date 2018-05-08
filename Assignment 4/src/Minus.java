@@ -79,15 +79,16 @@ public class Minus  extends BinaryExpression implements Expression{
             } else if (exLeftSim.getVariables().isEmpty()) {
                 if (exLeftSim.evaluate() == 0.0) {
                     return new Neg(exRightSim);
-                }
-                return new Minus(new Num(exLeftSim.evaluate()), exRightSim);
+                } else { return new Minus(new Num(exLeftSim.evaluate()), exRightSim);}
             } else if (exRightSim.getVariables().isEmpty()) {
                 if (exRightSim.evaluate() == 0.0) {
                     return exLeftSim;
-                }
-                return new Minus(exLeftSim, new Num(exRightSim.evaluate()));
-            } else {
-                return new Minus(exLeftSim, exRightSim);
+                } else { return new Minus(exLeftSim, new Num(exRightSim.evaluate())); }
+            } else if (exLeftSim.toString().equals(exRightSim.toString())) {
+                return new Num (0);
+            }
+            else {
+                return this;
             }
         } catch (Exception e) {
             e.getMessage();

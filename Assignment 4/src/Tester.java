@@ -122,7 +122,6 @@ public class Tester {
             System.out.println("#30:Error in" + ex);
         //simplify checking
         //x*1 or 1*x
-        /*
         ex = new Mult("x", 1);
         if (!ex.simplify().toString().equals("x"))
             System.out.println("#31 :Error in simplify of" + ex.simplify());
@@ -272,7 +271,7 @@ public class Tester {
             System.out.println("#71:Error in log(x, 0)" + ex.evaluate());
         } catch (Exception e2) {
         }
-        */
+
 //Differentitation
         ex = new Num(10);
         if (!ex.differentiate("x").toString().equals("0.0"))

@@ -77,11 +77,15 @@ public class Div extends BinaryExpression implements Expression{
     @Override
     public Expression simplify() {
         try {
-            if (super.getVariables().isEmpty()) {
-                return new Num(super.exLeft.evaluate());
-            } else if (super.exRight.evaluate() == 1) {
-                return super.exLeft.simplify();
-            } else if (super.exRight.evaluate() == super.exLeft.evaluate()) {
+            if (super.exLeft.getVariables().isEmpty() && super.exRight.getVariables().isEmpty()) {
+                return new Num(super.exLeft.evaluate() / super.exRight.evaluate());
+            } else if (super.exRight.getVariables().isEmpty()) {
+                if (super.exRight.evaluate() == 1 ) {
+                    return super.exLeft.simplify();
+                } else {
+                    return new Div(super.exLeft, new Num(1));
+                }
+            } else if (super.exRight.toString().equals(super.exLeft.toString())) {
                 return new Num(1);
             }
             else {

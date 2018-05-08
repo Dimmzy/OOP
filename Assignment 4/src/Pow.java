@@ -61,22 +61,33 @@ public class Pow extends BinaryExpression implements Expression {
 
     @Override
     public Expression differentiate(String var) {
-        try {
             // We'll use the mathematical e constant here so we'll create it
             Expression e = new Var("e");
             return new Mult(new Pow(super.exLeft, super.exRight), new Plus(new Mult(super.exLeft.differentiate(var),
                     new Div(super.exRight, super.exLeft)), new Mult(super.exRight.differentiate(var),
                     new Log(e, super.exLeft))));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
     }
 
     public Expression simplify() {
         try {
-            if (super.getVariables().isEmpty()) {
+            Expression exLeftSim = super.exLeft.simplify();
+            Expression exRightSim = super.exRight.simplify();
+            if (exLeftSim.getVariables().isEmpty() && exRightSim.getVariables().isEmpty()) {
                 return new Num(this.evaluate());
+            } else if (exRightSim.getVariables().isEmpty()) {
+                if (exRightSim.evaluate() == 0) {
+                    return new Num(1);
+                } else if (exRightSim.evaluate() == 1) {
+                    return exLeftSim;
+                } else {
+                    return this;
+                }
+            } else if (exLeftSim.getVariables().isEmpty()) {
+                if (exLeftSim.evaluate() == 0) {
+                    return new Num(0);
+                } else {
+                    return this;
+                }
             } else {
                 return this;
             }

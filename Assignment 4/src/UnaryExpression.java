@@ -4,9 +4,10 @@ import java.util.Map;
 
 public abstract class UnaryExpression extends BaseExpression {
 
-    private Expression unoexpressiono;
+
     public UnaryExpression (Expression e1) {
         super(e1);
+
     }
 
     public double evaluate(Map<String, Double> assignment) throws Exception {
@@ -22,19 +23,20 @@ public abstract class UnaryExpression extends BaseExpression {
         varList.addAll(this.exLeft.getVariables());
         return varList;
     }
-
+/*
     public Expression simplify() {
         try {
             if (this.getVariables().isEmpty()) {
                 return new Num(super.exLeft.evaluate());
             }
             else {
-                return this.unoexpressiono;
+                return super.exLeft.simplify();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
     }
+    */
 
 }

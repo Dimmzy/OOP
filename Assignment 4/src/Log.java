@@ -72,9 +72,11 @@ public class Log extends BinaryExpression implements Expression {
     @Override
     public Expression simplify() {
         try {
-            if (super.getVariables().isEmpty()) {
-                return new Num(super.exLeft.evaluate());
-            } else if (super.exLeft.toString().equals(super.exRight.toString())) {
+            Expression exLeftSim = super.exLeft.simplify();
+            Expression exRightSim = super.exRight.simplify();
+            if (exLeftSim.getVariables().isEmpty() && exRightSim.getVariables().isEmpty()) {
+                return new Num(this.evaluate());
+            } else if (exLeftSim.toString().equals(exRightSim.toString())) {
                 return new Num(1);
             }
             else {

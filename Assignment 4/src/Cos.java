@@ -45,6 +45,17 @@ public class Cos extends UnaryExpression implements Expression{
     }
 
     public Expression simplify() {
-        return super.simplify();
+        try {
+            Expression exSim = super.exLeft.simplify();
+            if (exSim.getVariables().isEmpty()) {
+                return new Num(exSim.evaluate());
+            }
+            else {
+                return new Cos(exSim);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }

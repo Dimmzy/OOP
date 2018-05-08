@@ -17,7 +17,7 @@ public class Var implements Expression{
         } else if (variable.equals("pi")) {
             return Math.PI;
         }
-        return 0;
+        throw new Exception("Cant evaluate empty variable");
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Var implements Expression{
         } else if (variable.equals("pi")) {
             return Math.PI;
         }
-        return 0;
+        throw new Exception("Can't evalute empty variable");
     }
 
     @Override
