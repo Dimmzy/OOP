@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -6,30 +7,27 @@ import java.util.Map;
  */
 public class Num implements Expression{
 
-    double number;
+    private double number;
 
     public Num (double number) {
         this.number = number;
     }
 
-    public double evaluate(Map<String, Double> assignment) throws Exception {
-        throw new Exception ("Num holds no variables");
-    }
+    public double evaluate(Map<String, Double> assignment) throws Exception { return this.number; }
 
     /**
      *
      * @return
      * @throws Exception
      */
-    public double evaluate() throws Exception{
-        return this.number;
-    }
+    public double evaluate() throws Exception{ return this.number; }
 
     /**
-     * @return Returns null since number isn't a variable. (?)
+     * @return returns an empty list (Num isn't a variable)
      */
     public List<String> getVariables() {
-        return null;
+        List<String> varList = new LinkedList<String>();
+        return varList;
     }
 
     /**
@@ -46,7 +44,15 @@ public class Num implements Expression{
      * @param expression
      * @return
      */
-    Expression assign(String var, Expression expression) {
+    public Expression assign(String var, Expression expression) { return this; }
 
+    @Override
+    public Expression differentiate(String var) {
+        return new Num(0);
+    }
+
+    @Override
+    public Expression simplify() {
+        return this;
     }
 }

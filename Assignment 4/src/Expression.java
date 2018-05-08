@@ -14,4 +14,9 @@ public interface Expression {
     String toString();
 
     Expression assign(String var, Expression expression);
+
+    Expression differentiate(String var);
+
+    Expression simplify();
+
 }
