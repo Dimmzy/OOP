@@ -1,38 +1,97 @@
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Public class defining the Minus expression. extends Binary Expression and implements the Expression interface.
+ */
 public class Minus  extends BinaryExpression implements Expression{
 
+    /**
+     * Constructor using a variable and an number. Creates expressions from them and passes them to the superclass.
+     * @param variable a variable (left expression).
+     * @param number a number (right expression).
+     */
     public Minus (String variable, double number) {
         super(new Var(variable),new Num(number));
     }
 
+    /**
+     * Constructor using two expressions. Passes them to the superclass.
+     * @param e1 the left expression.
+     * @param e2 the right expression.
+     */
     public Minus (Expression e1, Expression e2) {
         super(e1,e2);
     }
 
+    /**
+     * Constructor using two numbers. Creates expressions from them and passes them to the superclass.
+     * @param num1 first number (left expression).
+     * @param num2 second number (right expression).
+     */
     public Minus (double num1, double num2) {
         super(new Num(num1), new Num(num2));
     }
 
+    /**
+     * Constructuor using a number and a variable. Creates expressions from them and passes them to the superclass.
+     * @param num a number (left expression).
+     * @param var a variable (right expression).
+     */
     public Minus (double num, String var) {
         super(new Num(num), new Var(var));
     }
 
+    /**
+     * Constructuor using two strings. Creates expressions from them and passes them to the superclass.
+     * @param var1 first variable (left expression).
+     * @param var2 second variable (right expression).
+     */
     public Minus (String var1, String var2) {
         super(new Var(var1), new Var(var2));
     }
 
+    /**
+     * Constructor using an expression and a number. Creates an expression from the number and passes them to the
+     * superclass.
+     * @param ex left expression.
+     * @param num a number (right expression).
+     */
     public Minus (Expression ex, double num) { super(ex, new Num(num)); }
 
+
+    /**
+     * Constructor using an expression and a number. Creates an expression from the number and passes them to the
+     * superclass.
+     * @param ex right expression.
+     * @param num a number (left expression).
+     */
     public Minus (double num, Expression ex) { super(new Num(num), ex); }
 
+    /**
+     * Constructor using an expression and a variable. Creates an expression from the variable and passes them to the
+     * superclass.
+     * @param ex left expression.
+     * @param var a variable (right expression)/
+     */
     public Minus (Expression ex, String var) { super(ex, new Var(var)); }
 
+
+    /**
+     * Constructor using an expression and a variable. Creates an expression from the variable and passes them to the
+     * superclass.
+     * @param ex right expression.
+     * @param var a variable (left expression)/
+     */
     public Minus (String var, Expression ex) { super(new Var(var), ex); }
 
 
+    /**
+     * Assigns the variable using from the map and evaluates the expression.
+     * @param assignment Maps each value to it's corresponding variable.
+     * @return returns the result of the evaluation of the expression.
+     * @throws Exception
+     */
     @Override
     public double evaluate(Map<String, Double> assignment) throws Exception {
         for (String key: assignment.keySet()) {
@@ -42,33 +101,69 @@ public class Minus  extends BinaryExpression implements Expression{
         return this.evaluate();
     }
 
+
+    /**
+     * Evaluates the expression without assiging anything.
+     * @return returns the evaluation of the expression.
+     * @throws Exception throws exception in case of undefined behavior in the difference calculation.
+     */
     @Override
     public double evaluate() throws Exception {
-        return this.exLeft.evaluate() - this.exRight.evaluate();
+        try {
+            return this.exLeft.evaluate() - this.exRight.evaluate();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
+
+    /**
+     * @return Returns a list of variables the expression contains. (Uses the super-class Binary Expression's method).
+     */
     @Override
     public List<String> getVariables() {
         return super.getVariables();
     }
 
-    // Returns a new expression in which all occurrences of the variable
-    // var are replaced with the provided expression (Does not modify the
-    // current expression).
+
+    /**
+     * Assigns all occurences of a variable to the expression and returns the new assigned expression.
+     * @param var the variable to assign to.
+     * @param expression the expression to assign the variable to.
+     * @return returns a new expression with the variable assigned.
+     */
     @Override
     public Expression assign(String var, Expression expression) {
         return new Minus(this.exLeft.assign(var, expression), this.exRight.assign(var, expression));
     }
 
+
+    /**
+     * @return Returns a string representation of the expression.
+     */
     public String toString() {
         return "(" +  this.exLeft.toString() + " - " + this.exRight.toString() + ")";
     }
 
+    /**
+     * Differentiates the expression according to differentiation rules.
+     * f(x) - g(x) = f`(x) - g`(x)
+     * @param var the variable we differentiate according to.
+     * @return returns the differentiated expression.
+     */
     @Override
     public Expression differentiate(String var) {
         return new Minus(super.exLeft.differentiate(var), super.exRight.differentiate(var));
     }
 
+    /**
+     * Simplifies the expression to improve readability.
+     * 1. If both expressions are numbers, calculate the difference and return it as a single expression.
+     * 2. If the left expression is the number 0, return the negation of the right expression.
+     * 3. Vice versa to 3.
+     * 4. If both experssions are equal, return zero (x-x=0).
+     * @return returns a simplfied expression.
+     */
     @Override
     public Expression simplify() {
         try {

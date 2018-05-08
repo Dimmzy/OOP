@@ -126,7 +126,7 @@ public class Div extends BinaryExpression implements Expression{
     }
 
     /**
-     * Assigns a variable to the expression and returns the new assigned expression.
+     * Assigns all occurences of a variable to the expression and returns the new assigned expression.
      * @param var the variable to assign to.
      * @param expression the expression to assign the variable to.
      * @return returns a new expression with the variable assigned.
@@ -147,7 +147,7 @@ public class Div extends BinaryExpression implements Expression{
 
 
     /**
-     * @return Returns a list of variables the expression contains. (Uses the super-class Unary Experssion's method).
+     * @return Returns a list of variables the expression contains. (Uses the super-class Binary Expression's method).
      */
     @Override
     public List<String> getVariables() {

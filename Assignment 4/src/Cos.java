@@ -62,7 +62,7 @@ public class Cos extends UnaryExpression implements Expression{
     }
 
     /**
-     * Assigns a variable to the expression and returns the new assigned expression.
+     * Assigns all occurences of a variable to the expression and returns the new assigned expression.
      * @param var the variable to assign to.
      * @param expression the expression to assign the variable to.
      * @return returns a new expression with the variable assigned.
