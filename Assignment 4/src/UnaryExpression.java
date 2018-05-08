@@ -2,44 +2,42 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Unary Expression superclass, extends BaseExpression.
+ */
 public abstract class UnaryExpression extends BaseExpression {
 
 
-    public UnaryExpression (Expression e1) {
-        super(e1);
 
+    /**
+     * Constructs a new UnaryExpression and passes it to Base Expression from a passed expression from it's children.
+     * @param e1 the expression passed from it's children.
+     */
+    public UnaryExpression(Expression e1) {
+        super(e1);
     }
 
+    /**
+     * Evaluates the expression after mapping each variable to it's value from the given assignment parameter.
+     * @param assignment a Map that maps each variable it's corresponding value.
+     * @return returns the evaluation of the expression after the assignment.
+     * @throws Exception throws an exception if there was a mismatch between the map's variables and the expression's.
+     */
     public double evaluate(Map<String, Double> assignment) throws Exception {
         for (String key : assignment.keySet()) {
-            if (!(exLeft.getVariables().contains(key))) {
-                throw new Exception ("Mapped Variable does not exist in Expression");
-            }
-            super.exLeft = super.exLeft.assign(key, new Num(assignment.get(key)));
+           super.setExLeft(getExLeft().assign(key, new Num(assignment.get(key))));
         }
-        return exLeft.evaluate();
+        return super.getExLeft().evaluate();
     }
 
 
+    /**
+     * @return Returns a list of the variables from the superclass's children.
+     */
     public List<String> getVariables() {
         List<String> varList = new LinkedList<String>();
-        varList.addAll(this.exLeft.getVariables());
+        varList.addAll(super.getVariables());
         return varList;
     }
-/*
-    public Expression simplify() {
-        try {
-            if (this.getVariables().isEmpty()) {
-                return new Num(super.exLeft.evaluate());
-            }
-            else {
-                return super.exLeft.simplify();
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-    */
 
 }

@@ -20,7 +20,7 @@ public class Log extends BinaryExpression implements Expression {
      * @param num1 first number (left expression).
      * @param num2 second number (right expression).
      */
-    public Log (double num1, double num2) {
+    public Log(double num1, double num2) {
         super(new Num(num1), new Num(num2));
     }
 
@@ -29,7 +29,7 @@ public class Log extends BinaryExpression implements Expression {
      * @param var a variable (left expression).
      * @param num a number (right expression).
      */
-    public Log (String var, double num) {
+    public Log(String var, double num) {
         super(new Var(var), new Num(num));
     }
 
@@ -39,7 +39,7 @@ public class Log extends BinaryExpression implements Expression {
      * @param var a variable (right expression).
      * @param num a number (left expression).
      */
-    public Log (double num, String var) {
+    public Log(double num, String var) {
         super(new Num(num), new Var(var));
     }
 
@@ -48,28 +48,28 @@ public class Log extends BinaryExpression implements Expression {
      * @param var1 first variable (left expression).
      * @param var2 second variable (right expression).
      */
-    public Log (String var1, String var2) { super(new Var(var1), new Var(var2)); }
+    public Log(String var1, String var2) { super(new Var(var1), new Var(var2)); }
 
     /**
      * Constructor using an expression and a number (turned into expression). Passes them to the superclass.
      * @param ex left expression.
      * @param num a number (right expression).
      */
-    public Log (Expression ex, double num) { super(ex, new Num(num)); }
+    public Log(Expression ex, double num) { super(ex, new Num(num)); }
 
     /**
      * Constructor using an expression and a number (turned into expression). Passes them to the superclass.
      * @param ex right expression.
      * @param num a number (left expression).
      */
-    public Log (double num, Expression ex) { super(new Num(num), ex); }
+    public Log(double num, Expression ex) { super(new Num(num), ex); }
 
     /**
      * Constructor using an expression and a variable (turned into expression). Passes them to the superclass.
      * @param ex left expression.
      * @param var a variable (right expression).
      */
-    public Log (Expression ex, String var) { super(ex, new Var(var)); }
+    public Log(Expression ex, String var) { super(ex, new Var(var)); }
 
 
     /**
@@ -77,22 +77,18 @@ public class Log extends BinaryExpression implements Expression {
      * @param ex right expression.
      * @param var a variable (left expression).
      */
-    public Log (String var, Expression ex) { super(new Var(var), ex); }
+    public Log(String var, Expression ex) { super(new Var(var), ex); }
 
 
     /**
      * Assigns the variable using from the map and evaluates the expression.
      * @param assignment Maps each value to it's corresponding variable.
      * @return returns the result of the evaluation of the expression.
-     * @throws Exception
+     * @throws Exception throws exception when encounters unexpected behavior.
      */
     @Override
     public double evaluate(Map<String, Double> assignment) throws Exception {
-        for (String key: assignment.keySet()) {
-            super.exLeft.assign(key, new Num(assignment.get(key)));
-            super.exRight.assign(key, new Num(assignment.get(key)));
-        }
-        return this.evaluate();
+        return (Math.log(super.getExRight().evaluate(assignment) / Math.log(super.getExLeft().evaluate(assignment))));
     }
 
     /**
@@ -103,12 +99,12 @@ public class Log extends BinaryExpression implements Expression {
      */
     @Override
     public double evaluate() throws Exception {
-        if (super.exLeft.evaluate() <= 0) {
+        if (super.getExLeft().evaluate() <= 0) {
             throw new Exception("Cannot compute logarithm of 0/negative number");
-        } else if (super.exRight.evaluate() <= 0) {
-            throw new Exception("Cannot compute logairthm with base 0/negative base");
+        } else if (super.getExRight().evaluate() <= 0) {
+            throw new Exception("Cannot compute logarithm with base 0/negative base");
         }
-        return Math.log(super.exRight.evaluate()) / Math.log(super.exLeft.evaluate());
+        return Math.log(super.getExRight().evaluate()) / Math.log(super.getExLeft().evaluate());
     }
 
 
@@ -121,11 +117,14 @@ public class Log extends BinaryExpression implements Expression {
 
     @Override
     public Expression assign(String var, Expression expression) {
-        return new Log(super.exLeft.assign(var, expression), super.exRight.assign(var, expression));
+        return new Log(super.getExLeft().assign(var, expression), super.getExRight().assign(var, expression));
     }
 
+    /**
+     * @return returns string representation of the expression.
+     */
     public String toString() {
-        return "log(" + super.exLeft.toString() + ", " + super.exRight.toString() + ")";
+        return "log(" + super.getExLeft().toString() + ", " + super.getExRight().toString() + ")";
     }
 
 
@@ -145,30 +144,29 @@ public class Log extends BinaryExpression implements Expression {
      * @return returns the differentiated expression.
      */
     public Expression differentiate(String var) {
-        if (super.exRight.getVariables().toString().equals("e")) {
-            return new Div(new Mult( new Num(1),super.exLeft.differentiate(var)), super.exLeft);
+        if (super.getExRight().getVariables().toString().equals("e")) {
+            return new Div(new Mult(new Num(1), super.getExLeft().differentiate(var)), super.getExLeft());
         }
         Expression e = new Var("e");
-        return new Div(new Num (1), new Mult(super.exRight, new Log(e,exLeft)));
+        return new Div(new Num(1), new Mult(super.getExRight(), new Log(e, getExLeft())));
     }
 
     /**
-     * Simplifes the expression to improve readability.
+     * Simplifies the expression to improve readability.
      * 1. If both the base and the value are numbers, calculate the expression and return the result as an expression.
      * 2. if both the base and the value are the same expressions, return one (log(x, x) = 1).
-     * @return returns the simmplfied expression.
+     * @return returns the simplified expression.
      */
     @Override
     public Expression simplify() {
         try {
-            Expression exLeftSim = super.exLeft.simplify();
-            Expression exRightSim = super.exRight.simplify();
+            Expression exLeftSim = super.getExLeft().simplify();
+            Expression exRightSim = super.getExRight().simplify();
             if (exLeftSim.getVariables().isEmpty() && exRightSim.getVariables().isEmpty()) {
                 return new Num(this.evaluate());
             } else if (exLeftSim.toString().equals(exRightSim.toString())) {
                 return new Num(1);
-            }
-            else {
+            } else {
                 return this;
             }
         } catch (Exception e) {

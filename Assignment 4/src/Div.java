@@ -5,14 +5,14 @@ import java.util.Map;
 /**
  * The Division expression class, a child of Binray Expression and implements Interface.
  */
-public class Div extends BinaryExpression implements Expression{
+public class Div extends BinaryExpression implements Expression {
 
     /**
      * Constructor using two expressions, left and right. Passes onto the superclass.
      * @param ex1 the left expression.
      * @param ex2 the right expression.
      */
-    public Div (Expression ex1, Expression ex2) {
+    public Div(Expression ex1, Expression ex2) {
         super(ex1, ex2);
     }
 
@@ -22,7 +22,7 @@ public class Div extends BinaryExpression implements Expression{
      * @param num2 the second number (creates right expression).
      */
 
-    public Div (double num1, double num2) {
+    public Div(double num1, double num2) {
         super(new Num(num1), new Num(num2));
     }
 
@@ -32,7 +32,7 @@ public class Div extends BinaryExpression implements Expression{
      * @param num the number (creates right expression).
      */
 
-    public Div (String var, double num) {
+    public Div(String var, double num) {
         super(new Var(var), new Num(num));
     }
 
@@ -43,7 +43,7 @@ public class Div extends BinaryExpression implements Expression{
      * @param num the number (creates left expression).
      */
 
-    public Div (double num, String var) {
+    public Div(double num, String var) {
         super(new Num(num), new Var(var));
     }
 
@@ -53,7 +53,7 @@ public class Div extends BinaryExpression implements Expression{
      * @param var2 the right variable (creates right expression).
      */
 
-    public Div (String var1, String var2) { super(new Var(var1), new Var(var2)); }
+    public Div(String var1, String var2) { super(new Var(var1), new Var(var2)); }
 
     /**
      * Constructor using an expression and a number.
@@ -62,7 +62,7 @@ public class Div extends BinaryExpression implements Expression{
      * @param num the number (creates right expression).
      */
 
-    public Div (Expression ex, double num) { super(ex, new Num(num)); }
+    public Div(Expression ex, double num) { super(ex, new Num(num)); }
 
     /**
      * Constructor using an expression and a number.
@@ -71,7 +71,7 @@ public class Div extends BinaryExpression implements Expression{
      * @param num the number (creates left expression).
      */
 
-    public Div (double num, Expression ex) { super(new Num(num), ex); }
+    public Div(double num, Expression ex) { super(new Num(num), ex); }
 
     /**
      * Constructor using an expression and a variable.
@@ -80,7 +80,7 @@ public class Div extends BinaryExpression implements Expression{
      * @param var the number (creates right experssion).
      */
 
-    public Div (Expression ex, String var) { super(ex, new Var(var)); }
+    public Div(Expression ex, String var) { super(ex, new Var(var)); }
 
     /**
      * Constructor using an expression and a variable.
@@ -89,21 +89,17 @@ public class Div extends BinaryExpression implements Expression{
      * @param var the number (creates left experssion).
      */
 
-    public Div (String var, Expression ex) { super(new Var(var), ex); }
+    public Div(String var, Expression ex) { super(new Var(var), ex); }
 
     /**
      * Assigns the variable using from the map and evaluates the expression.
      * @param assignment Maps each value to it's corresponding variable.
      * @return returns the result of the evaluation of the expression.
-     * @throws Exception
+     * @throws Exception throws exception if for unexpected behavior.
      */
     @Override
     public double evaluate(Map<String, Double> assignment) throws Exception {
-        for (String key: assignment.keySet()) {
-            super.exLeft.assign(key, new Num(assignment.get(key)));
-            super.exRight.assign(key, new Num(assignment.get(key)));
-        }
-        return this.evaluate();
+        return (super.getExLeft().evaluate(assignment) / super.getExRight().evaluate(assignment));
     }
 
     /**
@@ -115,13 +111,13 @@ public class Div extends BinaryExpression implements Expression{
      */
     @Override
     public double evaluate() throws Exception {
-        if (super.exLeft == null || super.exRight == null) {
-            throw new Exception ("Error: Undefined Behavior");
+        if (super.getExLeft() == null || super.getExRight() == null) {
+            throw new Exception("Error: Undefined Behavior");
         }
-        if (super.exRight.toString().equals("0.0")) {
-            throw new Exception ("Error: Division by Zero");
+        if (super.getExLeft().toString().equals("0.0")) {
+            throw new Exception("Error: Division by Zero");
         } else {
-            return super.exLeft.evaluate() / super.exRight.evaluate();
+            return super.getExLeft().evaluate() / super.getExRight().evaluate();
         }
     }
 
@@ -134,7 +130,7 @@ public class Div extends BinaryExpression implements Expression{
 
     @Override
     public Expression assign(String var, Expression expression) {
-        return new Div(super.exLeft.assign(var, expression), super.exRight.assign(var, expression));
+        return new Div(super.getExLeft().assign(var, expression), super.getExRight().assign(var, expression));
     }
 
 
@@ -142,7 +138,7 @@ public class Div extends BinaryExpression implements Expression{
      * @return Returns a string representation of the expression.
      */
     public String toString() {
-        return "(" +  super.exLeft.toString() + " / " + super.exRight.toString() + ")";
+        return "(" +  super.getExLeft().toString() + " / " + super.getExRight().toString() + ")";
     }
 
 
@@ -160,10 +156,10 @@ public class Div extends BinaryExpression implements Expression{
      * @param var the variable we differentiate according to.
      * @return returns the differentiated expression.
      */
-    public Expression differentiate(String var){
-        return new Div(new Minus(new Mult(super.leftEx.differentiate(var),super.rightEx),
-                new Mult(super.leftEx, super.rightEx.differentiate(var))),
-                new Pow(super.rightEx, new Num(2)));
+    public Expression differentiate(String var) {
+        return new Div(new Minus(new Mult(super.getExLeft().differentiate(var), super.getExRight()),
+                new Mult(super.getExLeft(), super.getExRight().differentiate(var))),
+                new Pow(super.getExRight(), new Num(2)));
     }
 
     /**
@@ -176,18 +172,17 @@ public class Div extends BinaryExpression implements Expression{
     @Override
     public Expression simplify() {
         try {
-            if (super.exLeft.getVariables().isEmpty() && super.exRight.getVariables().isEmpty()) {
-                return new Num(super.exLeft.evaluate() / super.exRight.evaluate());
-            } else if (super.exRight.getVariables().isEmpty()) {
-                if (super.exRight.evaluate() == 1 ) {
-                    return super.exLeft.simplify();
+            if (super.getExLeft().getVariables().isEmpty() && super.getExRight().getVariables().isEmpty()) {
+                return new Num(super.getExLeft().evaluate() / super.getExRight().evaluate());
+            } else if (super.getExRight().getVariables().isEmpty()) {
+                if (super.getExRight().evaluate() == 1) {
+                    return super.getExLeft().simplify();
                 } else {
                     return this;
                 }
-            } else if (super.exRight.toString().equals(super.exLeft.toString())) {
+            } else if (super.getExRight().toString().equals(super.getExLeft().toString())) {
                 return new Num(1);
-            }
-            else {
+            } else {
                 return this;
             }
         } catch (Exception e) {

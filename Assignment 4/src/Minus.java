@@ -4,15 +4,15 @@ import java.util.Map;
 /**
  * Public class defining the Minus expression. extends Binary Expression and implements the Expression interface.
  */
-public class Minus  extends BinaryExpression implements Expression{
+public class Minus  extends BinaryExpression implements Expression {
 
     /**
      * Constructor using a variable and an number. Creates expressions from them and passes them to the superclass.
      * @param variable a variable (left expression).
      * @param number a number (right expression).
      */
-    public Minus (String variable, double number) {
-        super(new Var(variable),new Num(number));
+    public Minus(String variable, double number) {
+        super(new Var(variable), new Num(number));
     }
 
     /**
@@ -20,8 +20,8 @@ public class Minus  extends BinaryExpression implements Expression{
      * @param e1 the left expression.
      * @param e2 the right expression.
      */
-    public Minus (Expression e1, Expression e2) {
-        super(e1,e2);
+    public Minus(Expression e1, Expression e2) {
+        super(e1, e2);
     }
 
     /**
@@ -29,7 +29,7 @@ public class Minus  extends BinaryExpression implements Expression{
      * @param num1 first number (left expression).
      * @param num2 second number (right expression).
      */
-    public Minus (double num1, double num2) {
+    public Minus(double num1, double num2) {
         super(new Num(num1), new Num(num2));
     }
 
@@ -38,7 +38,7 @@ public class Minus  extends BinaryExpression implements Expression{
      * @param num a number (left expression).
      * @param var a variable (right expression).
      */
-    public Minus (double num, String var) {
+    public Minus(double num, String var) {
         super(new Num(num), new Var(var));
     }
 
@@ -47,7 +47,7 @@ public class Minus  extends BinaryExpression implements Expression{
      * @param var1 first variable (left expression).
      * @param var2 second variable (right expression).
      */
-    public Minus (String var1, String var2) {
+    public Minus(String var1, String var2) {
         super(new Var(var1), new Var(var2));
     }
 
@@ -57,7 +57,7 @@ public class Minus  extends BinaryExpression implements Expression{
      * @param ex left expression.
      * @param num a number (right expression).
      */
-    public Minus (Expression ex, double num) { super(ex, new Num(num)); }
+    public Minus(Expression ex, double num) { super(ex, new Num(num)); }
 
 
     /**
@@ -66,7 +66,7 @@ public class Minus  extends BinaryExpression implements Expression{
      * @param ex right expression.
      * @param num a number (left expression).
      */
-    public Minus (double num, Expression ex) { super(new Num(num), ex); }
+    public Minus(double num, Expression ex) { super(new Num(num), ex); }
 
     /**
      * Constructor using an expression and a variable. Creates an expression from the variable and passes them to the
@@ -74,7 +74,7 @@ public class Minus  extends BinaryExpression implements Expression{
      * @param ex left expression.
      * @param var a variable (right expression)/
      */
-    public Minus (Expression ex, String var) { super(ex, new Var(var)); }
+    public Minus(Expression ex, String var) { super(ex, new Var(var)); }
 
 
     /**
@@ -83,22 +83,18 @@ public class Minus  extends BinaryExpression implements Expression{
      * @param ex right expression.
      * @param var a variable (left expression)/
      */
-    public Minus (String var, Expression ex) { super(new Var(var), ex); }
+    public Minus(String var, Expression ex) { super(new Var(var), ex); }
 
 
     /**
      * Assigns the variable using from the map and evaluates the expression.
      * @param assignment Maps each value to it's corresponding variable.
      * @return returns the result of the evaluation of the expression.
-     * @throws Exception
+     * @throws Exception exception if unexpected behavior occurs.
      */
     @Override
     public double evaluate(Map<String, Double> assignment) throws Exception {
-        for (String key: assignment.keySet()) {
-            exLeft = exLeft.assign(key, new Num(assignment.get(key)));
-            exRight = exRight.assign(key, new Num(assignment.get(key)));
-        }
-        return this.evaluate();
+        return (super.getExLeft().evaluate(assignment) - super.getExRight().evaluate(assignment));
     }
 
 
@@ -110,7 +106,7 @@ public class Minus  extends BinaryExpression implements Expression{
     @Override
     public double evaluate() throws Exception {
         try {
-            return this.exLeft.evaluate() - this.exRight.evaluate();
+            return this.getExLeft().evaluate() - this.getExRight().evaluate();
         } catch (Exception e) {
             throw e;
         }
@@ -127,14 +123,14 @@ public class Minus  extends BinaryExpression implements Expression{
 
 
     /**
-     * Assigns all occurences of a variable to the expression and returns the new assigned expression.
+     * Assigns all occurrences of a variable to the expression and returns the new assigned expression.
      * @param var the variable to assign to.
      * @param expression the expression to assign the variable to.
      * @return returns a new expression with the variable assigned.
      */
     @Override
     public Expression assign(String var, Expression expression) {
-        return new Minus(this.exLeft.assign(var, expression), this.exRight.assign(var, expression));
+        return new Minus(this.getExLeft().assign(var, expression), this.getExRight().assign(var, expression));
     }
 
 
@@ -142,7 +138,7 @@ public class Minus  extends BinaryExpression implements Expression{
      * @return Returns a string representation of the expression.
      */
     public String toString() {
-        return "(" +  this.exLeft.toString() + " - " + this.exRight.toString() + ")";
+        return "(" +  this.getExLeft().toString() + " - " + this.getExRight().toString() + ")";
     }
 
     /**
@@ -153,7 +149,7 @@ public class Minus  extends BinaryExpression implements Expression{
      */
     @Override
     public Expression differentiate(String var) {
-        return new Minus(super.exLeft.differentiate(var), super.exRight.differentiate(var));
+        return new Minus(super.getExLeft().differentiate(var), super.getExRight().differentiate(var));
     }
 
     /**
@@ -161,28 +157,27 @@ public class Minus  extends BinaryExpression implements Expression{
      * 1. If both expressions are numbers, calculate the difference and return it as a single expression.
      * 2. If the left expression is the number 0, return the negation of the right expression.
      * 3. Vice versa to 3.
-     * 4. If both experssions are equal, return zero (x-x=0).
-     * @return returns a simplfied expression.
+     * 4. If both expressions are equal, return zero (x-x=0).
+     * @return returns a simplified expression.
      */
     @Override
     public Expression simplify() {
         try {
-            Expression exLeftSim = super.exLeft.simplify();
-            Expression exRightSim = super.exRight.simplify();
+            Expression exLeftSim = super.getExLeft().simplify();
+            Expression exRightSim = super.getExRight().simplify();
             if (exLeftSim.getVariables().isEmpty() && exRightSim.getVariables().isEmpty()) {
                 return new Num(exLeftSim.evaluate() - exRightSim.evaluate());
             } else if (exLeftSim.getVariables().isEmpty()) {
                 if (exLeftSim.evaluate() == 0.0) {
                     return new Neg(exRightSim);
-                } else { return new Minus(new Num(exLeftSim.evaluate()), exRightSim);}
+                } else { return new Minus(new Num(exLeftSim.evaluate()), exRightSim); }
             } else if (exRightSim.getVariables().isEmpty()) {
                 if (exRightSim.evaluate() == 0.0) {
                     return exLeftSim;
                 } else { return new Minus(exLeftSim, new Num(exRightSim.evaluate())); }
             } else if (exLeftSim.toString().equals(exRightSim.toString())) {
-                return new Num (0);
-            }
-            else {
+                return new Num(0);
+            } else {
                 return this;
             }
         } catch (Exception e) {

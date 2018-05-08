@@ -10,7 +10,7 @@ public interface Expression {
      * Assigns the variable using from the map and evaluates the expression.
      * @param assignment Maps each value to it's corresponding variable.
      * @return returns the result of the evaluation of the expression.
-     * @throws Exception
+     * @throws Exception throws exception for unexpected behavior.
      */
     double evaluate(Map<String, Double> assignment) throws Exception;
 

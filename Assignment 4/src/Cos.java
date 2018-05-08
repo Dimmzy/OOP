@@ -4,13 +4,13 @@ import java.util.Map;
 /**
  * The Consine expression class, a child of Unary Expression and implements the Expression interface.
  */
-public class Cos extends UnaryExpression implements Expression{
+public class Cos extends UnaryExpression implements Expression {
 
     /**
      * Constrcutor using expression, passses the expression to the super class.
      * @param expression expression to construct with.
      */
-    public Cos(Expression expression){ super(expression); }
+    public Cos(Expression expression) { super(expression); }
 
     /**
      * Constructor using a double number, we'll create a new Expression and then pass it to the super class.
@@ -32,11 +32,7 @@ public class Cos extends UnaryExpression implements Expression{
      */
     @Override
     public double evaluate(Map<String, Double> assignment) throws Exception {
-        try {
-            return super.evaluate(assignment);
-        } catch (Exception e) {
-            throw e;
-        }
+        return Math.cos(Math.toRadians(super.getExLeft().evaluate(assignment)));
     }
 
     /**
@@ -47,7 +43,7 @@ public class Cos extends UnaryExpression implements Expression{
     @Override
     public double evaluate() throws Exception {
         try {
-            return Math.cos(Math.toRadians(this.exLeft.evaluate()));
+            return Math.cos(Math.toRadians(super.getExLeft().evaluate()));
         } catch (Exception e) {
             throw e;
         }
@@ -62,14 +58,14 @@ public class Cos extends UnaryExpression implements Expression{
     }
 
     /**
-     * Assigns all occurences of a variable to the expression and returns the new assigned expression.
+     * Assigns all occurrences of a variable to the expression and returns the new assigned expression.
      * @param var the variable to assign to.
      * @param expression the expression to assign the variable to.
      * @return returns a new expression with the variable assigned.
      */
     @Override
     public Expression assign(String var, Expression expression) {
-        return new Cos(super.exLeft.assign(var, expression));
+        return new Cos(super.getExLeft().assign(var, expression));
     }
 
     /**
@@ -77,7 +73,7 @@ public class Cos extends UnaryExpression implements Expression{
      */
     @Override
     public String toString() {
-        return "cos(" + super.exLeft.toString() + ")";
+        return "cos(" + super.getExLeft().toString() + ")";
     }
 
     /**
@@ -87,21 +83,20 @@ public class Cos extends UnaryExpression implements Expression{
      * @return returns the differentiated expression.
      */
     public Expression differentiate(String var) {
-            return new Neg(new Mult(new Sin(super.exLeft), super.exLeft.differentiate(var)));
+            return new Neg(new Mult(new Sin(super.getExLeft()), super.getExLeft().differentiate(var)));
     }
 
     /**
      * Simplifies our expression for better readability.
-     * If we don't have any variables, we'll simple calculate the expression and return the result (as an Expression).
+     * If we don't have any variables, we'll simply calculate the expression and return the result (as an Expression).
      * @return returns the simplified expression.
      */
     public Expression simplify() {
         try {
-            Expression exSim = super.exLeft.simplify();
+            Expression exSim = super.getExLeft().simplify();
             if (exSim.getVariables().isEmpty()) {
                 return new Num(exSim.evaluate());
-            }
-            else {
+            } else {
                 return new Cos(exSim);
             }
         } catch (Exception e) {

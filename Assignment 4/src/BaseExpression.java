@@ -1,30 +1,41 @@
-
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Base Expression abstract class, gets extended by Unary and Binary Expressions.
  */
 public abstract class BaseExpression {
 
-    protected Expression exLeft;
-    protected Expression exRight;
+    private Expression exLeft;
 
     /**
      * Object constructor, using two expressions. (Used by binary expression).
      * @param exLeft left expression.
-     * @param exRight right expression.
      */
-    public BaseExpression(Expression exLeft, Expression exRight) {
+    public BaseExpression(Expression exLeft) {
         this.exLeft = exLeft;
-        this.exRight = exRight;
     }
 
     /**
-     * Constructs the object using only one expression (used by Unary Expression).
-     * @param singleExp the only expression passed from unary expression.
+     * @return left expression getter.
      */
-    public BaseExpression(Expression singleExp) {
-        this.exLeft = singleExp;
+    public Expression getExLeft() {
+        return this.exLeft;
     }
 
+    /**
+     * @return Returns a list of the variables from the superclass's children.
+     */
+    public List<String> getVariables() {
+        List<String> varList = new LinkedList<String>();
+        varList.addAll(this.exLeft.getVariables());
+        return varList;
+    }
+
+
+    /**
+     * @param exL left expression setter.
+     */
+    public void setExLeft(Expression exL) { this.exLeft = exL; }
 
 }
