@@ -1,43 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="318fca58-3ea6-433f-8cea-a9e678ee39d8" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/leets.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/biuoop_1_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Animation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AnimationRunner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/BallRemover.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/BlockRemover.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/CountdownAnimation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Counter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HitListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HitNotifier.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/LivesIndicator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PauseScreen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PrintingHitListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ScoreIndicator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ScoreTrackingListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ass3Game.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameObjects/Block.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameObjects/Game.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameObjects/GameEnvironment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameObjects/Paddle.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Geometry/Ball.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Geometry/Border.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Geometry/Collidable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Geometry/CollisionInfo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Geometry/Line.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Geometry/Point.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Geometry/Rectangle.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Geometry/Velocity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/Sprite.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Graphics/SpriteCollection.java" beforeDir="false" />
-    </list>
+    <list default="true" id="318fca58-3ea6-433f-8cea-a9e678ee39d8" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -344,16 +308,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1526557416737</updated>
-      <workItem from="1526557420030" duration="19910000" />
+      <workItem from="1526557420030" duration="19998000" />
     </task>
+    <task id="LOCAL-00001" summary="Assignment 5 progress. Finishing part 5 (need to fix countdown)">
+      <created>1526578191653</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1526578191653</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19910000" />
+    <option name="totallyTimeSpent" value="19998000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -365,7 +336,7 @@
       <window_info anchor="right" id="Maven Projects" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" weight="0.32938388" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32938388" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32938388" />
       <window_info anchor="bottom" id="CheckStyle" />
       <window_info anchor="bottom" id="Terminal" weight="0.09557662" />
       <window_info id="Capture Tool" />
@@ -391,6 +362,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Assignment 5 progress. Finishing part 5 (need to fix countdown)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Assignment 5 progress. Finishing part 5 (need to fix countdown)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
