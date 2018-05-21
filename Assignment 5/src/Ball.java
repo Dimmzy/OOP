@@ -1,4 +1,5 @@
 import biuoop.DrawSurface;
+import java.awt.Color;
 
 /**
  * Ball class. Holds the values that define a Ball object in our program and it's movement behavior.
@@ -9,31 +10,41 @@ public class Ball implements Sprite {
     private Point center;
     private Point startingLoc;
     private int radius;
-    private java.awt.Color color;
     private Velocity velocity;
     private GameEnvironment gameEnvironment;
 
     /**
      * The Ball object constructor.
-     * @param center the center point of the ball.
-     * @param r the radius of the ball.
-     * @param color the color of the ball.
-     * @param environment the game environment the ball is a part of.
+     * @param center The center point of the ball.
+     * @param r The radius of the ball.
+     * @param color The color of the ball.
+     * @param environment The game environment the ball is a part of.
      */
-    public Ball(Point center, int r, java.awt.Color color, GameEnvironment environment) {
+    public Ball(Point center, int r, GameEnvironment environment) {
         this.center = center;
         this.startingLoc = center;
         this.radius = r;
-        this.color = color;
         this.gameEnvironment = environment;
     }
 
     /**
-     * Adds the ball to the game (as a sprite).
-     * @param game the game object to add the ball to.
+     * Constructs the ball without gameenvironment (which will be added through a setter later on)
+     * @param center The center point of the ball.
+     * @param r The radius of the ball.
+     * @param color The color of the ball.
      */
-    public void addToGame(Game game) {
-        game.addSprite(this);
+    public Ball(Point center, int r) {
+        this.center = center;
+        this.startingLoc = center;
+        this.radius = r;
+    }
+
+    /**
+     * Adds the ball to the gameLevel (as a sprite).
+     * @param gameLevel the gameLevel object to add the ball to.
+     */
+    public void addToGame(GameLevel gameLevel) {
+        gameLevel.addSprite(this);
     }
 
     /**
@@ -41,8 +52,10 @@ public class Ball implements Sprite {
      * @param surface the surface (defined through the DrawSurface class) to draw the ball on.
      */
     public void drawOn(DrawSurface surface) {
-        surface.setColor(this.color);
+        surface.setColor(Color.WHITE);
         surface.fillCircle(this.getX(), this.getY(), this.radius);
+        surface.setColor(Color.BLACK);
+        surface.drawCircle(this.getX(), this.getY(), this.radius);
     }
 
     /**
@@ -141,15 +154,21 @@ public class Ball implements Sprite {
         return this.radius;
     }
 
+
     /**
-     * @return returns this object's color.
+     * Removes the ball from the level.
+     * @param gameLevel the level to remove the ball from.
      */
-    public java.awt.Color getColor() {
-        return this.color;
+    public void removeFromGame(GameLevel gameLevel) {
+        gameLevel.removeSprite(this);
     }
 
-    public void removeFromGame(Game game) {
-        game.removeSprite(this);
+    /**
+     * Sets the game environment of the ball to the one passed through a parameter.
+     * @param ge The game environment we'll use with the ball.
+     */
+    public void setGameEnvironment(GameEnvironment ge) {
+        this.gameEnvironment = ge;
     }
 
 }

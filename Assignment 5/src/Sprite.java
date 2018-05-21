@@ -12,7 +12,7 @@ public interface Sprite {
     void drawOn(DrawSurface d);
 
     /**
-     * Tells the object that "time" has passed (per intervals specified in the Game class).
+     * Tells the object that "time" has passed (per intervals specified in the GameLevel class).
      */
     void timePassed();
 }

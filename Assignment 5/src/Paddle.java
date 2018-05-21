@@ -11,21 +11,19 @@ public class Paddle implements Sprite, Collidable {
     private Rectangle rectangle;
     private biuoop.KeyboardSensor keyboard;
     private Velocity velocity;
-    private int ballSpeed;
 
     /**
      * Constructs the paddle object.
      * @param keyboard The provided keyboard sensor from the game object that was created through the GUI.
-     * @param ballStart The starting location of the ball (The paddle is created beneath the ball).
-     * @param ballSpeed The starting speed of the ball. We store it so we can keep the speed the same between hits.
+     * @param paddleStart The starting upper left point of the paddle.
+     * @param paddleWidth The width of the created paddle.
+     * @param paddleSpeed The speed of the created paddle.
      */
-    public Paddle(biuoop.KeyboardSensor keyboard, Point ballStart, int ballSpeed) {
+    public Paddle(biuoop.KeyboardSensor keyboard, Point paddleStart, int paddleWidth, int paddleSpeed) {
         this.keyboard = keyboard;
-        this.rectangle = new Rectangle(new Point(ballStart.getX(), ballStart.getY() + 20), 50, 10);
+        this.rectangle = new Rectangle(new Point(paddleStart.getX(), paddleStart.getY()), paddleWidth, 10);
         // Paddle movement is defined only on the X axis.
-        this.velocity = new Velocity(5, 0);
-        // We save the ball speed be able to keep it between paddle hits.
-        this.ballSpeed = ballSpeed;
+        this.velocity = new Velocity(paddleSpeed, 0);
     }
 
     /**
@@ -72,9 +70,13 @@ public class Paddle implements Sprite, Collidable {
      * @param d The surface to draw the paddle on.
      */
     public void drawOn(DrawSurface d) {
-        d.setColor(Color.BLACK);
+        d.setColor(Color.ORANGE);
         Point topLeft = this.rectangle.getUpperLeft();
         d.fillRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
+                .rectangle.getHeight());
+        // Draws a black border around the paddle for better visbility.
+        d.setColor(Color.BLACK);
+        d.drawRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
                 .rectangle.getHeight());
     }
 
@@ -89,7 +91,7 @@ public class Paddle implements Sprite, Collidable {
     /**
      * The hit method of the paddle. Provides the hitting object with new velocity according to the area hit.
      * @param collisionPoint The collision point of the object with the paddle.
-     * @param currentVelocity The velocity that the object hits the paddle with/
+     * @param currentVelocity The velocity that the object hits the paddle with.
      * @return returns a new velocity according to the area that was hit on the paddle.
      */
     public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
@@ -105,15 +107,15 @@ public class Paddle implements Sprite, Collidable {
         } else if (borderHit == Border.TOP) {
             int dXHit = (int) (collisionPoint.getX() - this.rectangle.getUpperLeft().getX());
             if (dXHit < 10) {
-                return Velocity.fromAngleAndSpeed(300, this.ballSpeed);
+                return Velocity.fromAngleAndSpeed(300, currentVelocity.getSpeed());
             } else if (dXHit < 20) {
-                return Velocity.fromAngleAndSpeed(330, this.ballSpeed);
+                return Velocity.fromAngleAndSpeed(330, currentVelocity.getSpeed());
             } else if (dXHit < 30) {
-                return Velocity.fromAngleAndSpeed(0, this.ballSpeed);
+                return Velocity.fromAngleAndSpeed(0, currentVelocity.getSpeed());
             } else if (dXHit < 40) {
-                return Velocity.fromAngleAndSpeed(30 , this.ballSpeed);
+                return Velocity.fromAngleAndSpeed(30 , currentVelocity.getSpeed());
             } else {
-                return Velocity.fromAngleAndSpeed(60, this.ballSpeed);
+                return Velocity.fromAngleAndSpeed(60, currentVelocity.getSpeed());
             }
         } else if (borderHit == Border.BOTTOM) {
             return new Velocity(currentVelocity.getDx(), -currentVelocity.getDy());
@@ -127,7 +129,7 @@ public class Paddle implements Sprite, Collidable {
      * Adds the paddle to the game as a collidable object and a sprite.
      * @param g The game object to add the paddle to.
      */
-    public void addToGame(Game g) {
+    public void addToGame(GameLevel g) {
         g.addCollidable(this);
         g.addSprite(this);
     }

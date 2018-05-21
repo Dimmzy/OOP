@@ -6,21 +6,18 @@ import biuoop.KeyboardSensor;
 import java.awt.Color;
 
 /**
- * The Game Class. Creates the objects and sets the game in motion.
+ * The GameLevel Class. Creates the objects and sets the game in motion.
  */
 
-public class Game implements Animation {
+public class GameLevel implements Animation {
 
     // Constant values we'll use to define the the window, blocks size and ball location.
-    private static final int WIDTH = 800, HEIGHT = 600, BLOCK_WIDTH = 50, BLOCK_HEIGHT = 30;
+    private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600, BLOCK_WIDTH = 50, BLOCK_HEIGHT = 30;
     private static final int STARTING_LIVES = 4;
     private static final int DEATH_ZONE = 650;
-    private static final int BORDER_HEIGHT = 15, BORDER_WIDTH = 15;
-    private static final int PADDLE_START_X = 300, PADDLE_START_Y = 555;
-    private static final int BALL_ONE_START_X = 320, BALL_ONE_START_Y = 550, BALL_ONE_START_ANGLE = 123;
-    private static final int BALL_TWO_START_X = 340, BALL_TWO_START_Y = 550, BALL_TWO_START_ANGLE = 321;
-    private static final int BALL_SPEED = 5;
-    private static final int BALL_RADIUS = 5;
+    private static final int BORDER_HEIGHT = 20, BORDER_WIDTH = 20;
+    private static final int PADDLE_START_X = 375, PADDLE_START_Y = 555;
+    private LevelInformation levelInfo;
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
@@ -28,6 +25,14 @@ public class Game implements Animation {
     private AnimationRunner runner;
     private boolean running;
     private biuoop.KeyboardSensor keyboard;
+
+    /**
+     * Constructs the GameLevel object using passed level information.
+     * @param levelInfo The information about the level design.
+     */
+    public GameLevel(LevelInformation levelInfo) {
+        this.levelInfo = levelInfo;
+    }
 
     /**
      * Adds the collidable to the environment.
@@ -69,7 +74,7 @@ public class Game implements Animation {
      * and a paddle.
      */
     public void initialize() {
-        this.gui = new GUI("Arkanoid", WIDTH, HEIGHT);
+        this.gui = new GUI("Arkanoid", SCREEN_WIDTH, SCREEN_HEIGHT);
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.runner = new AnimationRunner(gui);
@@ -78,11 +83,12 @@ public class Game implements Animation {
         HitListener blockRemover = new BlockRemover(this, this.blockCounter);
         HitListener ballRemover = new BallRemover(this, this.ballCounter);
         HitListener scoreTracker = new ScoreTrackingListener(this.scoreCounter);
+        this.sprites.addSprite(levelInfo.getBackground());
         this.createBorders();
         this.createBlocks(blockRemover, scoreTracker);
         this.addSprite(new ScoreIndicator(this.scoreCounter));
         this.addSprite(new LivesIndicator(this.livesCounter));
-        Block deathBlock = new Block(new Point (0,DEATH_ZONE), WIDTH, 0, Color.LIGHT_GRAY, -1);
+        Block deathBlock = new Block(new Point (0,DEATH_ZONE), SCREEN_WIDTH, 0, Color.LIGHT_GRAY, -1);
         deathBlock.addHitListener(ballRemover);
         deathBlock.addToGame(this);
     }
@@ -103,75 +109,25 @@ public class Game implements Animation {
      * Creates blocks in the borders of the game window.
      */
     public void createBorders() {
-        Block top = new Block(new Point(0, 0), WIDTH, BORDER_HEIGHT, Color.LIGHT_GRAY, -1);
-        Block left = new Block(new Point(0, 0), BORDER_WIDTH, HEIGHT, Color.LIGHT_GRAY, -1);
-        Block right = new Block(new Point(WIDTH - BORDER_WIDTH, 0), BORDER_WIDTH, HEIGHT, Color.LIGHT_GRAY, -1);
+        Block top = new Block(new Point(0, 0), SCREEN_WIDTH, BORDER_HEIGHT, Color.LIGHT_GRAY, -1);
+        Block left = new Block(new Point(0, 0), BORDER_WIDTH, SCREEN_HEIGHT, Color.LIGHT_GRAY, -1);
+        Block right = new Block(new Point(SCREEN_WIDTH - BORDER_WIDTH, 0), BORDER_WIDTH, SCREEN_HEIGHT, Color
+                .LIGHT_GRAY, -1);
         top.addToGame(this);
         left.addToGame(this);
         right.addToGame(this);
     }
 
     /**
-     * Creates the blocks we'll be hitting and destroying. Four rows, starting at 12 block and decrementing by one
-     * each row. The distance between each block is defined by the X and Y offsets.
+     * Creates the blocks we'll be hitting and destroying. Uses the block list retrieved from the levelInfo and adds
+     * the required listeners to each block and then adds them to the game.
      */
     public void createBlocks(HitListener blockRemover, HitListener scoreTracker) {
-        int yPos = 100;
-        int xPos = 135;
-        int xOffset = 50;
-        int yOffset = 30;
-        int edgeLimit = WIDTH - xOffset;
-        for (int i = xPos; i < edgeLimit; i += xOffset) {
-            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.CYAN, 2);
-            newBlock.addHitListener(blockRemover);
-            newBlock.addHitListener(scoreTracker);
-            newBlock.addToGame(this);
-            this.blockCounter.increase(1);
-        }
-        xPos += xOffset;
-        yPos += yOffset;
-        for (int i = xPos; i < edgeLimit; i += xOffset) {
-            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.RED, 1);
-            newBlock.addHitListener(blockRemover);
-            newBlock.addHitListener(scoreTracker);
-            newBlock.addToGame(this);
-            this.blockCounter.increase(1);
-        }
-        xPos += xOffset;
-        yPos += yOffset;
-        for (int i = xPos; i < edgeLimit; i += xOffset) {
-            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.YELLOW, 1);
-            newBlock.addHitListener(blockRemover);
-            newBlock.addHitListener(scoreTracker);
-            newBlock.addToGame(this);
-            this.blockCounter.increase(1);
-        }
-        xPos += xOffset;
-        yPos += yOffset;
-        for (int i = xPos; i < edgeLimit; i += xOffset) {
-            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.MAGENTA, 1);
-            newBlock.addHitListener(blockRemover);
-            newBlock.addHitListener(scoreTracker);
-            newBlock.addToGame(this);
-            this.blockCounter.increase(1);
-        }
-        xPos += xOffset;
-        yPos += yOffset;
-        for (int i = xPos; i < edgeLimit; i += xOffset) {
-            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.PINK, 1);
-            newBlock.addHitListener(blockRemover);
-            newBlock.addHitListener(scoreTracker);
-            newBlock.addToGame(this);
-            this.blockCounter.increase(1);
-        }
-        xPos += xOffset;
-        yPos += yOffset;
-        for (int i = xPos; i < edgeLimit; i += xOffset) {
-            Block newBlock = new Block(new Point(i, yPos), BLOCK_WIDTH, BLOCK_HEIGHT, Color.GREEN, 1);
-            newBlock.addHitListener(blockRemover);
-            newBlock.addHitListener(scoreTracker);
-            newBlock.addToGame(this);
-            this.blockCounter.increase(1);
+        for (Block block : levelInfo.blocks()) {
+            block.addHitListener(blockRemover);
+            block.addHitListener(scoreTracker);
+            block.addToGame(this);
+            blockCounter.increase(1);
         }
     }
 
@@ -188,24 +144,20 @@ public class Game implements Animation {
             }
         }
         // If we don't, create it.
-        Paddle paddle = new Paddle(keyboard, new Point(PADDLE_START_X, PADDLE_START_Y), BALL_SPEED);
+        Paddle paddle = new Paddle(keyboard, new Point(PADDLE_START_X, PADDLE_START_Y),levelInfo.paddleWidth(),
+                levelInfo.paddleSpeed());
         paddle.addToGame(this);
     }
 
     /**
-     * Creates two balls on top of the paddle.
+     * Adds the balls created in the levelinformation class to our game.
      */
     public void createBalls() {
-        Ball ballOne = new Ball(new Point(BALL_ONE_START_X, BALL_ONE_START_Y), BALL_RADIUS, Color.BLUE,
-                this.environment);
-        ballOne.setVelocity(Velocity.fromAngleAndSpeed(BALL_ONE_START_ANGLE, BALL_SPEED));
-        ballOne.addToGame(this);
-        this.ballCounter.increase(1);
-        Ball ballTwo = new Ball(new Point(BALL_TWO_START_X, BALL_TWO_START_Y), BALL_RADIUS, Color.RED,
-                this.environment);
-        ballTwo.setVelocity(Velocity.fromAngleAndSpeed(BALL_TWO_START_ANGLE, BALL_SPEED));
-        ballTwo.addToGame(this);
-        this.ballCounter.increase(1);
+        for (Ball ball : levelInfo.balls()) {
+            ball.setGameEnvironment(this.environment);
+            ball.addToGame(this);
+            ballCounter.increase(1);
+        }
     }
     /**
      * Runs the game. Draws all the objects and then tells them time passed.

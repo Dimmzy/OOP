@@ -6,6 +6,7 @@ public class Velocity {
     // dx and dy start at 0 unless otherwise specified (no movement).
     private double dx = 0;
     private double dy = 0;
+    private double currentAngle = Math.atan(dy / dx);
 
     /**
      * Velocity constructor.
@@ -25,7 +26,6 @@ public class Velocity {
      * @return returns a new velocity object after converting the angle and speed to dx dy values.
      */
     public static Velocity fromAngleAndSpeed(double angle, double speed) {
-        // Check if angle is zero
         double dx = Math.sin(Math.toRadians(angle)) * speed;
         // Multiplies dy by -1 because we're dealing with inverted axis
         double dy = Math.cos(Math.toRadians(angle)) * speed * -1;
@@ -55,4 +55,6 @@ public class Velocity {
     public double getDy() {
         return this.dy;
     }
+
+    public int getSpeed() { return (int) (dx / currentAngle); }
 }

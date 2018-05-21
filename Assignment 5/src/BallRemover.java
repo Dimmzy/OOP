@@ -3,15 +3,15 @@
  */
 public class BallRemover implements HitListener{
     private Counter removedBalls;
-    private Game game;
+    private GameLevel gameLevel;
 
-    public BallRemover(Game game, Counter removedBalls) {
-        this.game = game;
+    public BallRemover(GameLevel gameLevel, Counter removedBalls) {
+        this.gameLevel = gameLevel;
         this.removedBalls = removedBalls;
     }
 
     public void hitEvent(Block beingHit, Ball hitter) {
-        hitter.removeFromGame(game);
+        hitter.removeFromGame(gameLevel);
         removedBalls.decrease(1);
     }
 }

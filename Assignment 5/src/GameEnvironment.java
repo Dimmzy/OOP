@@ -9,7 +9,7 @@ public class GameEnvironment {
     private List<Collidable> collidables;
 
     /**
-     * Game Environment constructor.
+     * GameLevel Environment constructor.
      */
     public GameEnvironment() {
         this.collidables = new ArrayList<Collidable>();

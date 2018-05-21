@@ -1,6 +1,6 @@
 
 /**
- * Assignment 3 Game Creator.
+ * Assignment 3 GameLevel Creator.
  */
 public class Ass3Game {
 
@@ -9,8 +9,9 @@ public class Ass3Game {
      * @param args nothing.
      */
     public static void main(String[] args) {
-        Game game = new Game();
-        game.initialize();
-        game.run();
+        LevelInformation levelOne = new LevelOne();
+        GameLevel gameLevel = new GameLevel(levelOne);
+        gameLevel.initialize();
+        gameLevel.run();
     }
 }

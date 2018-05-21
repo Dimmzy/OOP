@@ -37,21 +37,21 @@ public class Block implements Collidable, Sprite, HitNotifier {
     }
 
     /**
-     * Adds the block to the game (as both a sprite and a collidable object).
-     * @param game the game to add the block to.
+     * Adds the block to the gameLevel (as both a sprite and a collidable object).
+     * @param gameLevel the gameLevel to add the block to.
      */
-    public void addToGame(Game game) {
-        game.addSprite(this);
-        game.addCollidable(this);
+    public void addToGame(GameLevel gameLevel) {
+        gameLevel.addSprite(this);
+        gameLevel.addCollidable(this);
     }
 
     /**
-     * Calls the Game class to remove this block from the game.
-     * @param game The game object we remove this block from.
+     * Calls the GameLevel class to remove this block from the gameLevel.
+     * @param gameLevel The gameLevel object we remove this block from.
      */
-    public void removeFromGame(Game game) {
-        game.removeSprite(this);
-        game.removeCollidable(this);
+    public void removeFromGame(GameLevel gameLevel) {
+        gameLevel.removeSprite(this);
+        gameLevel.removeCollidable(this);
     }
 
     /**
@@ -120,15 +120,10 @@ public class Block implements Collidable, Sprite, HitNotifier {
         Point topLeft = this.rectangle.getUpperLeft();
         surface.fillRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
                 .rectangle.getHeight());
+        // Draws a black border around the block for better visibility.
         surface.setColor(Color.BLACK);
-        if (this.hp > 0) {
-            surface.drawText((int) (this.rectangle.getUpperLeft().getX() + (this.rectangle.getWidth() / 2)), (int) (this
-                            .rectangle.getUpperLeft().getY() + (this.rectangle.getHeight()) / 1.5),
-                    Integer.toString(this.hp), 18);
-        } else if (this.hp == 0) {
-            surface.drawText((int) (this.rectangle.getUpperLeft().getX() + (this.rectangle.getWidth() / 2)), (int) (this
-                            .rectangle.getUpperLeft().getY() + (this.rectangle.getHeight()) / 1.5), "X", 18);
-        }
+        surface.drawRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
+                .rectangle.getHeight());
     }
 
     /**
