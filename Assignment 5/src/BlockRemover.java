@@ -13,6 +13,7 @@ public class BlockRemover implements HitListener {
 
     public void hitEvent(Block beingHit, Ball hitter) {
         if (beingHit.getHitPoints() == 0) {
+            beingHit.removeHitListener(this);
             beingHit.removeFromGame(this.gameLevel);
             this.remainingBlocks.decrease(1);
         }
