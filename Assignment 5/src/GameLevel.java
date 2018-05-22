@@ -12,7 +12,7 @@ import java.awt.Color;
 public class GameLevel implements Animation {
 
     // Constant values we'll use to define the the window, blocks size and ball location.
-    private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600, BLOCK_WIDTH = 50, BLOCK_HEIGHT = 30;
+    private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
     private static final int STARTING_LIVES = 4;
     private static final int DEATH_ZONE = 650;
     private static final int BORDER_HEIGHT = 25, BORDER_WIDTH = 25;
@@ -88,6 +88,7 @@ public class GameLevel implements Animation {
         this.createBlocks(blockRemover, scoreTracker);
         this.addSprite(new ScoreIndicator(this.scoreCounter));
         this.addSprite(new LivesIndicator(this.livesCounter));
+        this.addSprite(new LevelIndicator(levelInfo.levelName()));
         Block deathBlock = new Block(new Point (0,DEATH_ZONE), SCREEN_WIDTH, 0, Color.LIGHT_GRAY, -1);
         deathBlock.addHitListener(ballRemover);
         deathBlock.addToGame(this);
@@ -109,13 +110,15 @@ public class GameLevel implements Animation {
      * Creates blocks in the borders of the game window.
      */
     public void createBorders() {
-        Block top = new Block(new Point(0, 0), SCREEN_WIDTH, BORDER_HEIGHT, Color.LIGHT_GRAY, -1);
+        Block top = new Block(new Point(0, 0), SCREEN_WIDTH, BORDER_HEIGHT * 1.5, Color.LIGHT_GRAY, -1);
         Block left = new Block(new Point(0, 0), BORDER_WIDTH, SCREEN_HEIGHT, Color.LIGHT_GRAY, -1);
         Block right = new Block(new Point(SCREEN_WIDTH - BORDER_WIDTH, 0), BORDER_WIDTH, SCREEN_HEIGHT, Color
                 .LIGHT_GRAY, -1);
+        Block gameInfo = new Block(new Point(0,0), SCREEN_WIDTH, BORDER_HEIGHT / 1.5, Color.WHITE, -1);
         top.addToGame(this);
         left.addToGame(this);
         right.addToGame(this);
+        gameInfo.addToGame(this);
     }
 
     /**
@@ -139,13 +142,14 @@ public class GameLevel implements Animation {
         // Checks if we already have a paddle, if we do, reset it's position.
         for (Collidable collidable : this.environment.getObjectList()) {
             if (collidable instanceof Paddle) {
-                collidable.getCollisionRectangle().setNewLocation((new Point(PADDLE_START_X, PADDLE_START_Y)));
+                collidable.getCollisionRectangle().setNewLocation(
+                        (new Point(SCREEN_WIDTH / 2 - levelInfo.paddleWidth() / 2, PADDLE_START_Y)));
                 return;
             }
         }
         // If we don't, create it.
-        Paddle paddle = new Paddle(keyboard, new Point(PADDLE_START_X, PADDLE_START_Y),levelInfo.paddleWidth(),
-                levelInfo.paddleSpeed());
+        Paddle paddle = new Paddle(keyboard, new Point(SCREEN_WIDTH / 2 - levelInfo.paddleWidth() / 2,
+                PADDLE_START_Y), levelInfo.paddleWidth(), levelInfo.paddleSpeed());
         paddle.addToGame(this);
     }
 

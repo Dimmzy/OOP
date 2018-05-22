@@ -2,7 +2,8 @@ import biuoop.DrawSurface;
 import java.awt.Color;
 
 public class ScoreIndicator implements Sprite {
-    private static final int SCOREBOARD_X = 300, SCOREBOARD_Y = 13, SCOREBOARD_FONT = 12;
+
+    private static final int SCOREBOARD_X = 350, SCOREBOARD_Y = 13, SCOREBOARD_FONT = 12;
     private Counter scoreCounter;
 
     public ScoreIndicator(Counter scoreCounter) {

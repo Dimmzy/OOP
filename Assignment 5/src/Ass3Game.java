@@ -9,8 +9,8 @@ public class Ass3Game {
      * @param args nothing.
      */
     public static void main(String[] args) {
-        LevelInformation levelTwo = new LevelTwo();
-        GameLevel gameLevel = new GameLevel(levelTwo);
+        LevelInformation currLevel = new LevelThree();
+        GameLevel gameLevel = new GameLevel(currLevel);
         gameLevel.initialize();
         gameLevel.run();
     }

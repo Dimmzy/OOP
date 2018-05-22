@@ -8,6 +8,7 @@ import java.awt.Color;
 
 public class Paddle implements Sprite, Collidable {
 
+    private static final int SCREEN_WIDTH = 800, BORDER_WIDTH = 25;
     private Rectangle rectangle;
     private biuoop.KeyboardSensor keyboard;
     private Velocity velocity;
@@ -21,7 +22,7 @@ public class Paddle implements Sprite, Collidable {
      */
     public Paddle(biuoop.KeyboardSensor keyboard, Point paddleStart, int paddleWidth, int paddleSpeed) {
         this.keyboard = keyboard;
-        this.rectangle = new Rectangle(new Point(paddleStart.getX(), paddleStart.getY()), paddleWidth, 10);
+        this.rectangle = new Rectangle(new Point(paddleStart.getX(), paddleStart.getY()), paddleWidth, 15);
         // Paddle movement is defined only on the X axis.
         this.velocity = new Velocity(paddleSpeed, 0);
     }
@@ -31,7 +32,7 @@ public class Paddle implements Sprite, Collidable {
      */
     public void moveLeft() {
         // Check if the paddle isn't going to pass the screen's edge, if it does, don't move.
-        if (this.rectangle.getUpperLeft().getX() - velocity.getDx() < 15) {
+        if (this.rectangle.getUpperLeft().getX() - velocity.getDx() < BORDER_WIDTH) {
             return;
         }
         // Otherwise moves the paddle to the left using the velocities deltaX.
@@ -44,7 +45,8 @@ public class Paddle implements Sprite, Collidable {
      * Displaces the paddle to the right.
      */
     public void moveRight() {
-        if (this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + velocity.getDx() > 785) {
+        if (this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + velocity.getDx()
+                > SCREEN_WIDTH - BORDER_WIDTH) {
             return;
         }
         Point moveRight = new Point(this.rectangle.getUpperLeft().getX() + velocity.getDx(), this.rectangle
@@ -106,13 +108,13 @@ public class Paddle implements Sprite, Collidable {
             return new Velocity(-currentVelocity.getDx(), currentVelocity.getDy());
         } else if (borderHit == Border.TOP) {
             int dXHit = (int) (collisionPoint.getX() - this.rectangle.getUpperLeft().getX());
-            if (dXHit < 10) {
+            if (dXHit < rectangle.getWidth() / 5 ) {
                 return Velocity.fromAngleAndSpeed(300, currentVelocity.getSpeed());
-            } else if (dXHit < 20) {
+            } else if (dXHit < (rectangle.getWidth() / 5) * 2) {
                 return Velocity.fromAngleAndSpeed(330, currentVelocity.getSpeed());
-            } else if (dXHit < 30) {
+            } else if (dXHit < (rectangle.getWidth() / 5) * 3) {
                 return Velocity.fromAngleAndSpeed(0, currentVelocity.getSpeed());
-            } else if (dXHit < 40) {
+            } else if (dXHit < (rectangle.getWidth() / 5) * 4) {
                 return Velocity.fromAngleAndSpeed(30 , currentVelocity.getSpeed());
             } else {
                 return Velocity.fromAngleAndSpeed(60, currentVelocity.getSpeed());

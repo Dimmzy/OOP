@@ -26,7 +26,7 @@ public class CountdownAnimation implements Animation {
         }
         gameScreen.drawAllOn(d);
         d.setColor(Color.RED);
-        d.drawText(d.getWidth() / 2, d.getHeight() / 2, Integer.toString(countFrom), 32);
+        d.drawText(d.getWidth() / 2, d.getHeight() / 2, Integer.toString(countFrom), 40);
         long timePassed = System.currentTimeMillis() - this.startTime;
         long counterUptime = ((long)this.numOfSeconds / this.countFrom) * 1000;
         if (timePassed < counterUptime) {

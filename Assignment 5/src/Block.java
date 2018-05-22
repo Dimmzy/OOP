@@ -120,10 +120,15 @@ public class Block implements Collidable, Sprite, HitNotifier {
         Point topLeft = this.rectangle.getUpperLeft();
         surface.fillRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
                 .rectangle.getHeight());
-        // Draws a black border around the block for better visibility.
-        surface.setColor(Color.BLACK);
-        surface.drawRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
-                .rectangle.getHeight());
+        /**
+         * Draws a black border around the blocks, excluding the border blocks and the information panel, which are
+         * marked with -1 hp.
+         */
+        if (this.hp != -1) {
+            surface.setColor(Color.BLACK);
+            surface.drawRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
+                    .rectangle.getHeight());
+        }
     }
 
     /**

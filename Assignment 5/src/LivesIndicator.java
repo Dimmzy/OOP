@@ -2,7 +2,8 @@ import biuoop.DrawSurface;
 import java.awt.Color;
 
 public class LivesIndicator implements Sprite {
-    private static final int LIVES_X = 250, LIVES_Y = 13, LIVES_FONT = 12;
+
+    private static final int LIVES_X = 200, LIVES_Y = 13, LIVES_FONT = 12;
     private Counter livesCounter;
 
     public LivesIndicator(Counter livesCounter) {

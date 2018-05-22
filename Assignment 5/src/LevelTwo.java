@@ -10,25 +10,33 @@ public class LevelTwo implements LevelInformation {
 
     public LevelTwo() {
         this.ballList = new ArrayList<Ball>();
-        this.createBalls();
         this.initialVList = new ArrayList<Velocity>();
 
     }
 
 
-    public void createBalls() {
+    private void createBalls() {
         final int BALL_START_X = 400, BALL_START_Y = 330;
+        final int startOffset = 50;
         int deltaX = 40;
-        int deltaY = 35;
+        final int deltaY = 20;
         for(int i = 0; i < 5; i++){
-            Ball ballLeft = new Ball(new Point(BALL_START_X - i * deltaX, BALL_START_Y + i * deltaY), 5);
-            ballLeft.setVelocity(Velocity.fromAngleAndSpeed(280,3));
-            ballList.add(ballLeft);
+            Ball ballLeft = new Ball(new Point(BALL_START_X - startOffset - i * deltaX,
+                    BALL_START_Y + i * deltaY), 5);
+            ballLeft.setVelocity(Velocity.fromAngleAndSpeed(315,3));
+            deltaX -= 3; // decreases the deltaX by a bit each iteration to create an arch
+            this.ballList.add(ballLeft);
+            this.initialVList.add(ballLeft.getVelocity());
+
         }
+        deltaX = 40;
         for (int i = 0; i < 5; i++){
-            Ball ballRight = new Ball(new Point(BALL_START_X + 50 + i * deltaX, BALL_START_Y + i * deltaY), 5);
+            Ball ballRight = new Ball(new Point(BALL_START_X + startOffset + i * deltaX,
+                    BALL_START_Y + i * deltaY), 5);
             ballRight.setVelocity(Velocity.fromAngleAndSpeed(45,3));
-            ballList.add(ballRight);
+            deltaX -= 3; // decreases the deltaX by a bit each iteration to create an arch
+            this.ballList.add(ballRight);
+            this.initialVList.add(ballRight.getVelocity());
         }
     }
 
@@ -45,7 +53,7 @@ public class LevelTwo implements LevelInformation {
     }
 
     public int paddleWidth() {
-        return 50;
+        return 650;
     }
 
     public String levelName() {
@@ -58,6 +66,7 @@ public class LevelTwo implements LevelInformation {
         List<Block> blockList = new ArrayList<Block>();
         List<Color> colorOrder = this.colorOrder();
         int j = 0;
+        // Iterates through the color lists, creating the corresponding blocks in order.
         for(int i = 25; i < 775; i += 50) {
             try {
                 Block scoreBlock = new Block(new Point(i, 280), 50, 20, colorOrder.get(j), 1);
@@ -93,7 +102,17 @@ public class LevelTwo implements LevelInformation {
 
 
     }
+
+    /**
+     * Returns a list containing all of the levels balls. If the list is empty it first creates them (After losing
+     * life for example).
+     * @return returns the list containing the level's balls.
+     */
     public List<Ball> balls() {
+        if (!(this.ballList.isEmpty())) {
+            this.ballList.clear();
+        }
+        this.createBalls();
         return this.ballList;
     }
 

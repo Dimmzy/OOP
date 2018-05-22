@@ -6,7 +6,6 @@ public class Velocity {
     // dx and dy start at 0 unless otherwise specified (no movement).
     private double dx = 0;
     private double dy = 0;
-    private double currentAngle = Math.atan(dy / dx);
 
     /**
      * Velocity constructor.
@@ -56,5 +55,8 @@ public class Velocity {
         return this.dy;
     }
 
-    public int getSpeed() { return (int) (dx / currentAngle); }
+    /**
+     * @return returns the current speed of the object.
+     */
+    public double getSpeed() { return Math.sqrt(Math.pow(this.dx,2) + Math.pow(this.dy,2)); }
 }
