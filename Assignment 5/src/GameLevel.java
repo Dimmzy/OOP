@@ -15,7 +15,7 @@ public class GameLevel implements Animation {
     private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600, BLOCK_WIDTH = 50, BLOCK_HEIGHT = 30;
     private static final int STARTING_LIVES = 4;
     private static final int DEATH_ZONE = 650;
-    private static final int BORDER_HEIGHT = 20, BORDER_WIDTH = 20;
+    private static final int BORDER_HEIGHT = 25, BORDER_WIDTH = 25;
     private static final int PADDLE_START_X = 375, PADDLE_START_Y = 555;
     private LevelInformation levelInfo;
     private SpriteCollection sprites;
