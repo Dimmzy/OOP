@@ -88,18 +88,12 @@ public class LevelThree implements LevelInformation{
         List<Color> colorOrder = this.colorOrder();
         int colorIndex = 0;
         int buildPosition = 275;
-        for (int i = buildPosition; i < 775; i += 50) {
-            for (int j = 175; j < 275; j += 20) {
-                try {
-                    Block gameBlock = new Block(new Point(i, j), 50, 20, colorOrder.get(colorIndex), 1);
-                    blockList.add(gameBlock);
-                    colorIndex++;
-                } catch (Exception e) {
-                    System.out.println("Caught Exception: Not enough colors specified for the blocks");
-                    break;
-                }
+        for (int i = 175; i < 275; i += 20) {
+            for (int j = buildPosition; j < 775; j += 50) {
+                Block gameBlock = new Block(new Point(j,i), 50, 20, colorOrder.get(colorIndex), 1);
+                blockList.add(gameBlock);
             }
-            colorIndex = 0;
+            colorIndex++;
             buildPosition += 50;
         }
         return blockList;

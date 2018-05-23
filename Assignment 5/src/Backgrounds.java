@@ -104,6 +104,57 @@ public class Backgrounds implements Sprite{
 
                 Color lighterGray = new Color(200,204,208);
 
+                // Left Cloud
+                d.setColor(Color.WHITE);
+                for (int j = 0; j < 70; j += 15) { // Rain Stream
+                    d.drawLine(80 + j, 360, 50 + j, 600);
+                }
+                d.setColor(lighterGray);
+                d.fillCircle(75,325,40);
+                d.fillCircle(100,345,40);
+                d.setColor(Color.LIGHT_GRAY);
+                d.fillCircle(95,318,44);
+                d.setColor(Color.GRAY);
+                d.fillCircle(145,325,35);
+                d.fillCircle(135,355,35);
+
+                // Middle Cloud
+                d.setColor(Color.YELLOW);
+                d.drawLine(430,400,400,500);
+                d.drawLine(400,500,420,500);
+                d.drawLine(420,500,400,550);
+                d.drawLine(480,400,450,500);
+                d.drawLine(450,500,470,500);
+                d.drawLine(470,500,450,550);
+                d.setColor(lighterGray);
+                d.fillCircle(420,400,40);
+                d.fillCircle(450,410,35);
+                d.setColor(Color.LIGHT_GRAY);
+                d.fillCircle(450,390,40);
+                d.setColor(Color.GRAY);
+                d.fillCircle(390,390,30);
+                d.fillCircle(420,360,30);
+
+                // Right Cloud
+                d.setColor(Color.WHITE);
+                for (int j = 0; j < 70; j += 15) { // Rain Drops
+                    for (int k = 450; k < 600; k += 10) {
+                        d.drawLine(650 + j, k, 645 + j, k + 5);
+                    }
+                }
+                d.setColor(lighterGray);
+                d.fillCircle(650,445,40);
+                d.fillCircle(680,420,35);
+                d.setColor(Color.GRAY);
+                d.fillCircle(665,455,35);
+                d.fillCircle(690,435,25);
+                d.setColor(Color.LIGHT_GRAY);
+                d.fillCircle(650,440,35);
+                d.fillCircle(670,435,30);
+
+
+
+
 
 
 

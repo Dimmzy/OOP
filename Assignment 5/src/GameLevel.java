@@ -32,8 +32,10 @@ public class GameLevel implements Animation {
      * Constructs the GameLevel object using passed level information.
      * @param levelInfo The information about the level design.
      */
-    public GameLevel(LevelInformation levelInfo) {
+    public GameLevel(LevelInformation levelInfo, KeyboardSensor keyboardSensor, AnimationRunner animationRunner) {
         this.levelInfo = levelInfo;
+        this.runner = animationRunner;
+        this.keyboard = keyboardSensor;
     }
 
     /**
