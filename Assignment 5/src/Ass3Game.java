@@ -9,7 +9,7 @@ public class Ass3Game {
      * @param args nothing.
      */
     public static void main(String[] args) {
-        LevelInformation currLevel = new LevelThree();
+        LevelInformation currLevel = new LevelFour();
         GameLevel gameLevel = new GameLevel(currLevel);
         gameLevel.initialize();
         gameLevel.run();

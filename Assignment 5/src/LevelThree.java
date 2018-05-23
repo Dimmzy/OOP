@@ -34,7 +34,7 @@ public class LevelThree implements LevelInformation{
     }
 
     public int paddleSpeed() {
-        return 3;
+        return 5    ;
     }
 
     public int paddleWidth() {
@@ -56,9 +56,14 @@ public class LevelThree implements LevelInformation{
         int buildPosition = 275;
         for (int i = buildPosition; i < 775; i += 50) {
             for (int j = 175; j < 275; j += 20) {
-                Block gameBlock = new Block(new Point(i,j),50,20,colorOrder.get(colorIndex),1);
-                blockList.add(gameBlock);
-                colorIndex++;
+                try {
+                    Block gameBlock = new Block(new Point(i, j), 50, 20, colorOrder.get(colorIndex), 1);
+                    blockList.add(gameBlock);
+                    colorIndex++;
+                } catch (Exception e) {
+                    System.out.println("Caught Exception: Not enough colors specified for the blocks");
+                    break;
+                }
             }
             colorIndex = 0;
             buildPosition += 50;

@@ -17,7 +17,6 @@ public class Ball implements Sprite {
      * The Ball object constructor.
      * @param center The center point of the ball.
      * @param r The radius of the ball.
-     * @param color The color of the ball.
      * @param environment The game environment the ball is a part of.
      */
     public Ball(Point center, int r, GameEnvironment environment) {
@@ -28,10 +27,9 @@ public class Ball implements Sprite {
     }
 
     /**
-     * Constructs the ball without gameenvironment (which will be added through a setter later on)
+     * Constructs the ball without a Game Environment (which will be added through a setter later on).
      * @param center The center point of the ball.
      * @param r The radius of the ball.
-     * @param color The color of the ball.
      */
     public Ball(Point center, int r) {
         this.center = center;
@@ -48,7 +46,7 @@ public class Ball implements Sprite {
     }
 
     /**
-     * Draws the ball using it's color and size on the given surface.
+     * Draws a white ball with black borders using it's  size on the given surface.
      * @param surface the surface (defined through the DrawSurface class) to draw the ball on.
      */
     public void drawOn(DrawSurface surface) {

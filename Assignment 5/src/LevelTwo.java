@@ -69,12 +69,12 @@ public class LevelTwo implements LevelInformation {
         // Iterates through the color lists, creating the corresponding blocks in order.
         for(int i = 25; i < 775; i += 50) {
             try {
-                Block scoreBlock = new Block(new Point(i, 280), 50, 20, colorOrder.get(j), 1);
+                Block gameBlock = new Block(new Point(i, 280), 50, 20, colorOrder.get(j), 1);
 
             j++;
-            blockList.add(scoreBlock);
+            blockList.add(gameBlock);
             } catch (Exception e) {
-                System.out.println("ERROR: Not enough colors specified for the blocks");
+                System.out.println("Caught Exception: Not enough colors specified for the blocks");
                 break;
             }
         }

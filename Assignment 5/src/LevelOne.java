@@ -29,11 +29,11 @@ public class LevelOne implements LevelInformation{
     }
 
     public int paddleSpeed() {
-        return 3;
+        return 5;
     }
 
     public int paddleWidth() {
-        return 50;
+        return 75;
     }
 
     public String levelName() {
