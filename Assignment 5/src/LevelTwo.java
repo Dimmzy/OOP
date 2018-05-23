@@ -2,12 +2,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Color;
 
+/**
+ * LevelTwo class contains information to design the second level.
+ */
 public class LevelTwo implements LevelInformation {
 
 
     private List<Ball> ballList;
     private List<Velocity> initialVList;
 
+    /**
+     * Constructs the LevelTwo object. Simply initializes the ball's list and their velocities list.
+     */
     public LevelTwo() {
         this.ballList = new ArrayList<Ball>();
         this.initialVList = new ArrayList<Velocity>();
@@ -15,6 +21,10 @@ public class LevelTwo implements LevelInformation {
     }
 
 
+    /**
+     * Creates the balls that will be a part of the level. 10 Balls in an arch pattern. Also populates the initial
+     * velocities list with the ball's velocities.
+     */
     private void createBalls() {
         final int BALL_START_X = 400, BALL_START_Y = 330;
         final int startOffset = 50;
@@ -40,28 +50,54 @@ public class LevelTwo implements LevelInformation {
         }
     }
 
+
+    /**
+     * @return returns the number of balls in the level.
+     */
     public int numberOfBalls() {
         return 10;
     }
 
+    /**
+     * @return Returns the inital ball velocities list.
+     */
     public List<Velocity> initialBallVelocities() {
         return this.initialVList;
     }
 
+    /**
+     * @return Returns the speed of the level's paddle.
+     */
     public int paddleSpeed() {
         return 3;
     }
 
+    /**
+     * @return Returns the width of the level's paddle.
+     */
     public int paddleWidth() {
         return 650;
     }
 
+    /**
+     * @return Returns the string representation of the level's name.
+     */
     public String levelName() {
         return "Wide Easy";
     }
 
+    /**
+     * @return Returns the level's background which is created through the Backgrounds class with 2 as a parameter.
+     */
     public Sprite getBackground() { return new Backgrounds(2); }
 
+
+    /**
+     * Creates the game blocks the player will be destroying.  A single row of 15 colorful blocks.
+     * We'll be creating them in different colors according to the order in the colorOrder list which is created
+     * using the classes's colorOrder method.
+     * @return returns the completed list with all of the level's destructible blocks.
+     */
     public List<Block> blocks() {
         List<Block> blockList = new ArrayList<Block>();
         List<Color> colorOrder = this.colorOrder();
@@ -81,6 +117,10 @@ public class LevelTwo implements LevelInformation {
         return blockList;
     }
 
+    /**
+     * Creates a list that will dictate the order of the coloring of the blocks.
+     * @return Returns the color order list.
+     */
     private List<Color> colorOrder() {
         List<Color> colorList = new ArrayList<Color>();
         colorList.add(Color.RED);
@@ -103,10 +143,13 @@ public class LevelTwo implements LevelInformation {
 
     }
 
+
     /**
-     * Returns a list containing all of the levels balls. If the list is empty it first creates them (After losing
-     * life for example).
-     * @return returns the list containing the level's balls.
+     * If the current ball list isn't empty (a new round is beginning) we'll clear it and recreate the balls.
+     * Otherwise we simply create the needed balls.
+     * Note: this isn't the list of the actual game's balls, but a placeholder list we'll use to check if we need to
+     * recreate the balls.
+     * @return Returns a list with all of the game's intended balls.
      */
     public List<Ball> balls() {
         if (!(this.ballList.isEmpty())) {
@@ -116,6 +159,9 @@ public class LevelTwo implements LevelInformation {
         return this.ballList;
     }
 
+    /**
+     * @return returns the number of the blocks we need to remove to complete the level.
+     */
     public int numberOfBlocksToRemove() {
         return 15;
     }

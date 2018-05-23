@@ -92,6 +92,8 @@ public class Paddle implements Sprite, Collidable {
 
     /**
      * The hit method of the paddle. Provides the hitting object with new velocity according to the area hit.
+     * If the paddle has been hit on the top, it'll change the ball's angle using a pre-defined list according to
+     * which fifth of the paddle has been hit.
      * @param collisionPoint The collision point of the object with the paddle.
      * @param currentVelocity The velocity that the object hits the paddle with.
      * @return returns a new velocity according to the area that was hit on the paddle.

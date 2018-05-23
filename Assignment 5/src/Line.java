@@ -139,11 +139,9 @@ public class Line {
         if (intersectPoint == null) {
             // In our case infinite slope is passed as zero and checked here. (Vertical)
             if (this.start().getX() == this.end.getX()) {
-                Point insect =  new Point(this.start.getX(), other.start().getY());
-                return insect;
+                return new Point(this.start.getX(), other.start().getY());
             } else {
-                Point insect = new Point(other.start.getX(), this.start().getY());
-                return insect;
+                return new Point(other.start.getX(), this.start().getY());
             }
         }
         return intersectPoint;
@@ -185,12 +183,11 @@ public class Line {
             return null;
         }
         Point closestIntersect = intersectionPoints.get(0);
-        for (int i = 0; i < intersectionPoints.size(); i++) {
-            if (closestIntersect.distance(this.end) > intersectionPoints.get(i).distance(this.end)) {
-                closestIntersect = intersectionPoints.get(i);
+        for (Point intersectPoint : intersectionPoints) {
+            if (closestIntersect.distance(this.end) > intersectPoint.distance(this.end)) {
+                closestIntersect = intersectPoint;
             }
         }
-        Point hitPoint = new Point(Math.ceil(closestIntersect.getX()), Math.ceil(closestIntersect.getY()));
-        return hitPoint;
+        return new Point(Math.ceil(closestIntersect.getX()), Math.ceil(closestIntersect.getY()));
     }
 }

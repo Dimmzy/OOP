@@ -1,6 +1,9 @@
 import biuoop.DrawSurface;
 import java.awt.Color;
 
+/**
+ * The CountDownAnimation class handles the countdown between rounds of the game. Implements Animation.
+ */
 public class CountdownAnimation implements Animation {
     private double numOfSeconds;
     private int countFrom;
@@ -9,6 +12,13 @@ public class CountdownAnimation implements Animation {
     private boolean stop;
 
 
+    /**
+     * Constructs the CountDownAnimation using variables that dictate the length and hiatus of the countdown.
+     * @param numOfSeconds Number of seconds between each numeral in the countdown.
+     * @param countFrom The number we count down from.
+     * @param gameScreen The game screen we'll draw in the background of the countdown (so we can see the game screen
+     *                  before it starts).
+     */
     public CountdownAnimation(double numOfSeconds, int countFrom, SpriteCollection gameScreen) {
         this.numOfSeconds = numOfSeconds;
         this.countFrom = countFrom;
@@ -17,6 +27,12 @@ public class CountdownAnimation implements Animation {
         this.stop = false;
     }
 
+    /**
+     * An animation method that dictates what happens in a single frame. In this case we'll be drawing the number
+     * we're currently at in the countdown, and if (num of seconds / countfrom) seconds have passed, we'll decrease
+     * the amount of numbers we still have to go.
+     * @param d The DrawSurface where we'll draw our countdown on.
+     */
     public void doOneFrame(DrawSurface d) {
         if (countFrom <= 0) {
             this.stop = true;

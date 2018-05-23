@@ -1,3 +1,4 @@
+
 /**
  * BlockRemover class is in charge of removing blocks from the gameLevel as well as keeping track of the number of blocks
  * left in the gameLevel,  using listener/observer logic.

@@ -11,12 +11,14 @@ import java.awt.Color;
 
 public class GameLevel implements Animation {
 
-    // Constant values we'll use to define the the window, blocks size and ball location.
-    private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
-    private static final int STARTING_LIVES = 4;
-    private static final int DEATH_ZONE = 650;
-    private static final int BORDER_HEIGHT = 25, BORDER_WIDTH = 25;
-    private static final int PADDLE_START_X = 375, PADDLE_START_Y = 555;
+    // Constant values we'll use to define certain constant sizes we'll be using throughout the class.
+    private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600; // Window resolution.
+    private static final int STARTING_LIVES = 7; // Amount of lives the player starts with.
+    private static final int DEATH_ZONE = 650; // The Y coordinate of the ball removal block (under the screen).
+    private static final int PADDLE_START_Y = 555; // The Y coordinate the paddle moves on.
+    private static final int BORDER_HEIGHT = 25, BORDER_WIDTH = 25; // Size of the border edges.
+
+
     private LevelInformation levelInfo;
     private SpriteCollection sprites;
     private GameEnvironment environment;
@@ -69,9 +71,10 @@ public class GameLevel implements Animation {
     public void removeSprite(Sprite s) {
         this.sprites.removeSprite(s);
     }
+
     /**
-     * Initializes all the needed variables for a new game: user interface, sprites, game environment, blocks, balls
-     * and a paddle.
+     * Initializes the needed variables for the game, the listeners,borders,blocks (through levelinformation),
+     * deathblock and sprites.
      */
     public void initialize() {
         this.gui = new GUI("Arkanoid", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -96,7 +99,7 @@ public class GameLevel implements Animation {
 
 
     /**
-     * Initializes the counter fields we'll be using in the game.
+     * Initializes the counter fields we'll be using in the game, and sets the number of starting lives.
      */
     public void initCounters() {
         this.blockCounter = new Counter();
@@ -108,12 +111,14 @@ public class GameLevel implements Animation {
 
     /**
      * Creates blocks in the borders of the game window.
+     * We'll be setting the health points of the border blocks to -1 so they won't ever be removed when hit.
      */
     public void createBorders() {
         Block top = new Block(new Point(0, 0), SCREEN_WIDTH, BORDER_HEIGHT * 1.5, Color.LIGHT_GRAY, -1);
         Block left = new Block(new Point(0, 0), BORDER_WIDTH, SCREEN_HEIGHT, Color.LIGHT_GRAY, -1);
         Block right = new Block(new Point(SCREEN_WIDTH - BORDER_WIDTH, 0), BORDER_WIDTH, SCREEN_HEIGHT, Color
                 .LIGHT_GRAY, -1);
+        // The game information panel that will host the number of lives, score, level name.
         Block gameInfo = new Block(new Point(0,0), SCREEN_WIDTH, BORDER_HEIGHT / 1.5, Color.WHITE, -1);
         top.addToGame(this);
         left.addToGame(this);
@@ -135,11 +140,11 @@ public class GameLevel implements Animation {
     }
 
     /**
-     * Creates a paddle if it doesn't exist, if it does, it resets the position of the paddle to the middle of the
-     * screen. (Happens when the player loses a life)
+     * Creates a paddle if it doesn't exist, if it does (new round has begun), it resets the position of the paddle to
+     * the middle of the screen.
      */
     public void createPaddle() {
-        // Checks if we already have a paddle, if we do, reset it's position.
+        // Checks if we already have a paddle, if we do, reset the paddle's position and return.
         for (Collidable collidable : this.environment.getObjectList()) {
             if (collidable instanceof Paddle) {
                 collidable.getCollisionRectangle().setNewLocation(
@@ -147,14 +152,14 @@ public class GameLevel implements Animation {
                 return;
             }
         }
-        // If we don't, create it.
+        // If we don't have a paddle, we'll create one with the center of the paddle in the center of the screen.
         Paddle paddle = new Paddle(keyboard, new Point(SCREEN_WIDTH / 2 - levelInfo.paddleWidth() / 2,
                 PADDLE_START_Y), levelInfo.paddleWidth(), levelInfo.paddleSpeed());
         paddle.addToGame(this);
     }
 
     /**
-     * Adds the balls created in the levelinformation class to our game.
+     * Adds the balls created in the levelInformation class to our game.
      */
     public void createBalls() {
         for (Ball ball : levelInfo.balls()) {
@@ -163,8 +168,10 @@ public class GameLevel implements Animation {
             ballCounter.increase(1);
         }
     }
+
     /**
-     * Runs the game. Draws all the objects and then tells them time passed.
+     * Plays one turn of the game. Creates the balls and the paddle, runs the countdown animation and afterwards starts
+     * running the game animation.
      */
     public void playOneTurn() {
         this.createBalls();
@@ -175,6 +182,9 @@ public class GameLevel implements Animation {
     }
 
 
+    /**
+     * Plays new turns so long as we have lives left.
+     */
     public void run() {
         while(livesCounter.getValue() >= 0) {
             this.playOneTurn();
@@ -183,10 +193,19 @@ public class GameLevel implements Animation {
         gui.close();
     }
 
+    /**
+     * @return Method that returns if we should stop running the animation.
+     */
     public boolean shouldStop() {
         return !this.running;
     }
 
+    /**
+     * Each frame of the game we'll draw all the sprites we have to draw and tell them that time has passed.
+     * Also allows for pausing of the game by scanning for the 'p' keystroke, if it does runs the PauseScreen.
+     * If no more blocks or balls are left, we'll stop running the current level's animation.
+     * @param d The drawsurface we'll draw the sprites on.
+     */
     public void doOneFrame(DrawSurface d) {
         this.sprites.drawAllOn(d);
         this.sprites.notifyAllTimePassed();

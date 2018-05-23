@@ -56,6 +56,9 @@ public class SpriteCollection {
         }
     }
 
+    /**
+     * @return Returns the current list of sprites.
+     */
     public List<Sprite> getSpriteList() {
         return this.spriteList;
     }
