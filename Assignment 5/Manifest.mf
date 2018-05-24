@@ -1,0 +1,4 @@
+Manifest-Version: 24.05.18
+Created-By: Dmitri Zinkevich
+Main-Class: Ass5Game
+Class-Path: biuoop-1.4.jar
