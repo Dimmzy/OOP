@@ -13,11 +13,10 @@ public class GameLevel implements Animation {
 
     // Constant values we'll use to define certain constant sizes we'll be using throughout the class.
     private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600; // Window resolution.
-    private static final int STARTING_LIVES = 7; // Amount of lives the player starts with.
-    private static final int DEATH_ZONE = 650; // The Y coordinate of the ball removal block (under the screen).
+    private static final int DEATH_ZONE = 625; // The Y coordinate of the ball removal block (under the screen).
     private static final int PADDLE_START_Y = 555; // The Y coordinate the paddle moves on.
+    private static final int BALL_START_Y = 525;
     private static final int BORDER_HEIGHT = 25, BORDER_WIDTH = 25; // Size of the border edges.
-
 
     private LevelInformation levelInfo;
     private SpriteCollection sprites;
@@ -26,16 +25,19 @@ public class GameLevel implements Animation {
     private Counter blockCounter, ballCounter, scoreCounter, livesCounter;
     private AnimationRunner runner;
     private boolean running;
-    private biuoop.KeyboardSensor keyboard;
+    private KeyboardSensor keyboard;
 
     /**
      * Constructs the GameLevel object using passed level information.
      * @param levelInfo The information about the level design.
      */
-    public GameLevel(LevelInformation levelInfo, KeyboardSensor keyboardSensor, AnimationRunner animationRunner) {
+    public GameLevel(LevelInformation levelInfo, KeyboardSensor keyboardSensor, AnimationRunner animationRunner,
+                     Counter lives, Counter score) {
         this.levelInfo = levelInfo;
         this.runner = animationRunner;
         this.keyboard = keyboardSensor;
+        this.scoreCounter = score;
+        this.livesCounter = lives;
     }
 
     /**
@@ -79,12 +81,10 @@ public class GameLevel implements Animation {
      * deathblock and sprites.
      */
     public void initialize() {
-        this.gui = new GUI("Arkanoid", SCREEN_WIDTH, SCREEN_HEIGHT);
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
-        this.runner = new AnimationRunner(gui);
-        this.keyboard = this.gui.getKeyboardSensor();
-        this.initCounters();
+        this.blockCounter = new Counter();
+        this.ballCounter = new Counter();
         HitListener blockRemover = new BlockRemover(this, this.blockCounter);
         HitListener ballRemover = new BallRemover(this, this.ballCounter);
         HitListener scoreTracker = new ScoreTrackingListener(this.scoreCounter);
@@ -99,17 +99,6 @@ public class GameLevel implements Animation {
         deathBlock.addToGame(this);
     }
 
-
-    /**
-     * Initializes the counter fields we'll be using in the game, and sets the number of starting lives.
-     */
-    public void initCounters() {
-        this.blockCounter = new Counter();
-        this.ballCounter = new Counter();
-        this.scoreCounter = new Counter();
-        this.livesCounter = new Counter();
-        this.livesCounter.increase(STARTING_LIVES);
-    }
 
     /**
      * Creates blocks in the borders of the game window.
@@ -164,10 +153,11 @@ public class GameLevel implements Animation {
      * Adds the balls created in the levelInformation class to our game.
      */
     public void createBalls() {
-        for (Ball ball : levelInfo.balls()) {
-            ball.setGameEnvironment(this.environment);
-            ball.addToGame(this);
-            ballCounter.increase(1);
+        for(Velocity velocity : levelInfo.initialBallVelocities()) {
+            Ball newBall = new Ball(new Point(SCREEN_WIDTH / 2, BALL_START_Y),5, this.environment);
+            newBall.setVelocity(velocity);
+            this.ballCounter.increase(1);
+            newBall.addToGame(this);
         }
     }
 
@@ -184,15 +174,13 @@ public class GameLevel implements Animation {
     }
 
 
-    /**
-     * Plays new turns so long as we have lives left.
-     */
-    public void run() {
-        while(livesCounter.getValue() >= 0) {
-            this.playOneTurn();
-            this.livesCounter.decrease(1);
-        }
-        gui.close();
+
+    public Counter getLivesCounter() {
+        return this.livesCounter;
+    }
+
+    public Counter getBlockCounter() {
+        return this.blockCounter;
     }
 
     /**
@@ -214,7 +202,11 @@ public class GameLevel implements Animation {
         if (this.keyboard.isPressed("p")) {
             this.runner.run(new PauseScreen(this.keyboard));
         }
-        if (this.blockCounter.getValue() == 0 || this.ballCounter.getValue() == 0) {
+        if (this.ballCounter.getValue() == 0) {
+            this.livesCounter.decrease(1);
+            this.running = false;
+        }
+        if (this.blockCounter.getValue() == 0) {
             this.running = false;
         }
     }

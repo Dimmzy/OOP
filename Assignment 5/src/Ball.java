@@ -100,7 +100,14 @@ public class Ball implements Sprite {
                         && this.center.getX() < colRect.getUpperLeft().getX() + colRect.getWidth()
                         && this.center.getX() > colRect.getUpperLeft().getX()) {
                     // offsets the ball y location to outside the paddle using the paddle y value and the balls' dy.
-                    this.center = new Point(this.center.getX(), colRect.getUpperLeft().getY() + this.velocity.getDy());
+                    if (this.getVelocity().getDy() < 0) {
+                        this.center = new Point(this.center.getX(), colRect.getUpperLeft().getY()
+                                + this.velocity.getDy());
+                    }
+                    else {
+                        this.center = new Point(this.center.getX(), colRect.getUpperLeft().getY()
+                                - this.velocity.getDy());
+                    }
                 }
             }
             // Calculates it's new direction after the hit and sets the ball to move in the new direction.

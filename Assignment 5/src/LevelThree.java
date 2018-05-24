@@ -7,45 +7,32 @@ import java.awt.Color;
  */
 public class LevelThree implements LevelInformation{
 
-    private List<Ball> ballList;
+    private final static int BALL_SPEED = 5;
     private List<Velocity> initialVList;
 
     /**
      * Constructs the LevelThree object. Simply initializes the ball's list and their velocities list.
      */
     public LevelThree() {
-        this.ballList = new ArrayList<Ball>();
         this.initialVList = new ArrayList<Velocity>();
-
     }
 
-    /**
-     * Creates the balls that will be a part of the level. 3 Balls in an arch pattern. Also populates the initial
-     * velocities list with the ball's velocities.
-     */
-    private void createBalls() {
-        Ball ballOne = new Ball(new Point(350,485),5);
-        ballOne.setVelocity(Velocity.fromAngleAndSpeed(315,3));
-        Ball ballTwo = new Ball(new Point(450,485),5);
-        ballTwo.setVelocity(Velocity.fromAngleAndSpeed(45,3));
-        this.ballList.add(ballOne);
-        this.ballList.add(ballTwo);
-        for(Ball ball : ballList) {
-            this.initialVList.add(ball.getVelocity());
-        }
-    }
 
     /**
      * @return returns the number of balls in the level.
      */
     public int numberOfBalls() {
-        return 2;
+        return this.initialVList.size();
     }
 
     /**
-     * @return Returns the inital ball velocities list.
+     * @return Returns the initial ball velocities list.
      */
     public List<Velocity> initialBallVelocities() {
+        Velocity velocityOne = Velocity.fromAngleAndSpeed(60,BALL_SPEED);
+        Velocity velocityTwo = Velocity.fromAngleAndSpeed(-60,BALL_SPEED);
+        this.initialVList.add(velocityOne);
+        this.initialVList.add(velocityTwo);
         return this.initialVList;
     }
 
@@ -53,7 +40,7 @@ public class LevelThree implements LevelInformation{
      * @return Returns the speed of the level's paddle.
      */
     public int paddleSpeed() {
-        return 5    ;
+        return 5;
     }
 
     /**
@@ -114,21 +101,6 @@ public class LevelThree implements LevelInformation{
         return colorOrder;
     }
 
-
-    /**
-     * If the current ball list isn't empty (a new round is beginning) we'll clear it and recreate the balls.
-     * Otherwise we simply create the needed balls.
-     * Note: this isn't the list of the actual game's balls, but a placeholder list we'll use to check if we need to
-     * recreate the balls.
-     * @return Returns a list with all of the game's intended balls.
-     */
-    public List<Ball> balls() {
-        if (!(this.ballList.isEmpty())) {
-            this.ballList.clear();
-        }
-        this.createBalls();
-        return this.ballList;
-    }
 
 
     /**

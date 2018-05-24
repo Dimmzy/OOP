@@ -7,15 +7,13 @@ import java.util.List;
  */
 public class LevelOne implements LevelInformation{
 
-    private static final int BALL_START_X = 400, BALL_START_Y = 500;
-    private List<Ball> ballList;
+    private static final int BALL_SPEED = 5;
     private List<Velocity> initialVList;
 
     /**
      * Constructs the LevelOne object. Simply initializes the ball's list and their velocities list.
      */
     public LevelOne() {
-        this.ballList = new ArrayList<Ball>();
         this.initialVList = new ArrayList<Velocity>();
     }
 
@@ -23,14 +21,16 @@ public class LevelOne implements LevelInformation{
      * @return returns the number of balls in the level.
      */
     public int numberOfBalls() {
-        return ballList.size();
+        return initialVList.size();
     }
 
     /**
      * @return Returns the inital ball velocities list.
      */
     public List<Velocity> initialBallVelocities() {
-        return initialVList;
+        Velocity ballOne = Velocity.fromAngleAndSpeed(0,BALL_SPEED);
+        this.initialVList.add(ballOne);
+        return this.initialVList;
     }
 
     /**
@@ -63,34 +63,7 @@ public class LevelOne implements LevelInformation{
         return new Backgrounds(1);
     }
 
-    /**
-     * Creates the balls that will be a part of the level. One ball shooting straight up. Also populates the initial
-     * velocities list with the ball's velocities.
-     */
-    private void createBalls() {
-        Ball ballOne = new Ball(new Point(BALL_START_X,BALL_START_Y),5);
-        ballOne.setVelocity(0,-2);
-        this.ballList.add(ballOne);
-        for (Ball ball : this.ballList) {
-            this.initialVList.add(ball.getVelocity());
-        }
-    }
 
-
-    /**
-     * If the current ball list isn't empty (a new round is beginning) we'll clear it and recreate the balls.
-     * Otherwise we simply create the needed balls.
-     * Note: this isn't the list of the actual game's balls, but a placeholder list we'll use to check if we need to
-     * recreate the balls.
-     * @return Returns a list with all of the game's intended balls.
-     */
-    public List<Ball> balls() {
-        if (!(this.ballList.isEmpty())) {
-            this.ballList.clear();
-        }
-        this.createBalls();
-        return this.ballList;
-    }
 
     /**
      * Creates the game blocks the player will be destroying.

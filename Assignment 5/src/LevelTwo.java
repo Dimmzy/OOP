@@ -7,47 +7,14 @@ import java.awt.Color;
  */
 public class LevelTwo implements LevelInformation {
 
-
-    private List<Ball> ballList;
+    private static final int BALL_SPEED = 5;
     private List<Velocity> initialVList;
 
     /**
      * Constructs the LevelTwo object. Simply initializes the ball's list and their velocities list.
      */
     public LevelTwo() {
-        this.ballList = new ArrayList<Ball>();
         this.initialVList = new ArrayList<Velocity>();
-
-    }
-
-
-    /**
-     * Creates the balls that will be a part of the level. 10 Balls in an arch pattern. Also populates the initial
-     * velocities list with the ball's velocities.
-     */
-    private void createBalls() {
-        final int BALL_START_X = 400, BALL_START_Y = 330;
-        final int startOffset = 50;
-        int deltaX = 40;
-        final int deltaY = 20;
-        for(int i = 0; i < 5; i++){
-            Ball ballLeft = new Ball(new Point(BALL_START_X - startOffset - i * deltaX,
-                    BALL_START_Y + i * deltaY), 5);
-            ballLeft.setVelocity(Velocity.fromAngleAndSpeed(315,3));
-            deltaX -= 3; // decreases the deltaX by a bit each iteration to create an arch
-            this.ballList.add(ballLeft);
-            this.initialVList.add(ballLeft.getVelocity());
-
-        }
-        deltaX = 40;
-        for (int i = 0; i < 5; i++){
-            Ball ballRight = new Ball(new Point(BALL_START_X + startOffset + i * deltaX,
-                    BALL_START_Y + i * deltaY), 5);
-            ballRight.setVelocity(Velocity.fromAngleAndSpeed(45,3));
-            deltaX -= 3; // decreases the deltaX by a bit each iteration to create an arch
-            this.ballList.add(ballRight);
-            this.initialVList.add(ballRight.getVelocity());
-        }
     }
 
 
@@ -55,13 +22,23 @@ public class LevelTwo implements LevelInformation {
      * @return returns the number of balls in the level.
      */
     public int numberOfBalls() {
-        return 10;
+        return initialVList.size();
     }
 
     /**
-     * @return Returns the inital ball velocities list.
+     * @return Returns the initial ball velocities list.
      */
     public List<Velocity> initialBallVelocities() {
+        // Right Side Balls
+        for(int i = 25; i < 125 ; i += 25) {
+            Velocity vel = Velocity.fromAngleAndSpeed(i,BALL_SPEED);
+            this.initialVList.add(vel);
+        }
+        // Left Side Balls
+        for(int i = 25; i > -125; i -= 25) {
+            Velocity vel = Velocity.fromAngleAndSpeed(i,BALL_SPEED);
+            this.initialVList.add(vel);
+        }
         return this.initialVList;
     }
 
@@ -69,14 +46,14 @@ public class LevelTwo implements LevelInformation {
      * @return Returns the speed of the level's paddle.
      */
     public int paddleSpeed() {
-        return 3;
+        return 5;
     }
 
     /**
      * @return Returns the width of the level's paddle.
      */
     public int paddleWidth() {
-        return 650;
+        return 550;
     }
 
     /**
@@ -139,25 +116,8 @@ public class LevelTwo implements LevelInformation {
         colorList.add(Color.CYAN);
         colorList.add(Color.CYAN);
         return colorList;
-
-
     }
 
-
-    /**
-     * If the current ball list isn't empty (a new round is beginning) we'll clear it and recreate the balls.
-     * Otherwise we simply create the needed balls.
-     * Note: this isn't the list of the actual game's balls, but a placeholder list we'll use to check if we need to
-     * recreate the balls.
-     * @return Returns a list with all of the game's intended balls.
-     */
-    public List<Ball> balls() {
-        if (!(this.ballList.isEmpty())) {
-            this.ballList.clear();
-        }
-        this.createBalls();
-        return this.ballList;
-    }
 
     /**
      * @return returns the number of the blocks we need to remove to complete the level.

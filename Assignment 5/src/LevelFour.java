@@ -7,14 +7,13 @@ import java.awt.Color;
  */
 public class LevelFour implements LevelInformation {
 
-    private List<Ball> ballList;
+    private final static int BALL_SPEED = 5;
     private List<Velocity> initialVList;
 
     /**
      * Constructs the LevelFour object. Simply initializes the ball's list and their velocities list.
      */
     public LevelFour() {
-        this.ballList = new ArrayList<Ball>();
         this.initialVList = new ArrayList<Velocity>();
     }
 
@@ -23,33 +22,20 @@ public class LevelFour implements LevelInformation {
      * @return returns the number of balls in the level.
      */
     public int numberOfBalls() {
-        return 3;
+        return this.initialVList.size();
     }
 
-    /**
-     * Creates the balls that will be a part of the level. 3 Balls in an arch pattern. Also populates the initial
-     * velocities list with the ball's velocities.
-     */
-    private void createBalls() {
-        Ball ballOne = new Ball(new Point(350,485),5);
-        ballOne.setVelocity(Velocity.fromAngleAndSpeed(315,3));
-        Ball ballTwo = new Ball(new Point(450,485),5);
-        ballTwo.setVelocity(Velocity.fromAngleAndSpeed(45,3));
-        Ball ballThree = new Ball(new Point(400,435), 5);
-        ballThree.setVelocity(Velocity.fromAngleAndSpeed(0,3));
-        this.ballList.add(ballOne);
-        this.ballList.add(ballTwo);
-        this.ballList.add(ballThree);
-        for(Ball ball : ballList) {
-            this.initialVList.add(ball.getVelocity());
-        }
-
-    }
 
     /**
      * @return Returns the inital ball velocities list.
      */
     public List<Velocity> initialBallVelocities() {
+        Velocity velocityOne = Velocity.fromAngleAndSpeed(0,BALL_SPEED + 1);
+        Velocity velocityTwo = Velocity.fromAngleAndSpeed(30,BALL_SPEED);
+        Velocity velocityThree = Velocity.fromAngleAndSpeed(-30,BALL_SPEED);
+        this.initialVList.add(velocityOne);
+        this.initialVList.add(velocityTwo);
+        this.initialVList.add(velocityThree);
         return this.initialVList;
     }
 
@@ -123,21 +109,6 @@ public class LevelFour implements LevelInformation {
         colorOrder.add(Color.PINK);
         colorOrder.add(Color.CYAN);
         return colorOrder;
-    }
-
-    /**
-     * If the current ball list isn't empty (a new round is beginning) we'll clear it and recreate the balls.
-     * Otherwise we simply create the needed balls.
-     * Note: this isn't the list of the actual game's balls, but a placeholder list we'll use to check if we need to
-     * recreate the balls.
-     * @return Returns a list with all of the game's intended balls.
-     */
-    public List<Ball> balls() {
-        if (!(this.ballList.isEmpty())) {
-            this.ballList.clear();
-        }
-        this.createBalls();
-        return this.ballList;
     }
 
     /**

@@ -41,11 +41,6 @@ public interface LevelInformation {
     List<Block> blocks();
 
     /**
-     * @return Returns a list of the balls that will be created in the level.
-     */
-    List<Ball> balls();
-
-    /**
      * @return Returns the number of blocks that need to be removed to finish the level.
      */
     int numberOfBlocksToRemove();

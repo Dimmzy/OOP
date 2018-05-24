@@ -1,5 +1,6 @@
 import biuoop.KeyboardSensor;
 import biuoop.DrawSurface;
+import java.awt.Color;
 
 /**
  * The PauseScreen class provides logic to creating a pause screen animation when the player pressed the P key.
@@ -23,7 +24,10 @@ public class PauseScreen implements Animation {
      * @param d The surface we'll draw the pause screen on.
      */
     public void doOneFrame(DrawSurface d) {
-        d.drawText(10, d.getHeight() / 2, "paused -- press space to continue", 32);
+        d.setColor(Color.RED);
+        d.drawText(300, (int)(d.getHeight() / 2.5), "Paused", 35);
+        d.setColor(Color.BLACK);
+        d.drawText(200,d.getHeight() / 2, " Press SPACE to continue", 25);
         if (this.keyboard.isPressed(KeyboardSensor.SPACE_KEY)) { this.stop = true; }
     }
 
