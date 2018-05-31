@@ -10,12 +10,14 @@ import biuoop.DrawSurface;
 public class SpriteCollection {
 
     private List<Sprite> spriteList;
+    private double deltaTime;
 
     /**
      * SpriteCollection constructor. Creates the list we will populate with sprites.
      */
-    public SpriteCollection() {
+    public SpriteCollection(double dt) {
         this.spriteList = new ArrayList<>();
+        this.deltaTime = dt;
     }
 
     /**
@@ -42,7 +44,7 @@ public class SpriteCollection {
     public void notifyAllTimePassed() {
         List<Sprite> sprites = new ArrayList<Sprite>(this.spriteList);
         for (Sprite sprite : sprites) {
-            sprite.timePassed();
+            sprite.timePassed(this.deltaTime);
         }
     }
 

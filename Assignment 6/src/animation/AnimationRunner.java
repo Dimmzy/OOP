@@ -31,7 +31,7 @@ public class AnimationRunner {
         while (!animation.shouldStop()) {
             long startTime = System.currentTimeMillis();
             DrawSurface d = gui.getDrawSurface();
-            animation.doOneFrame(d, 1/this.framesPerSecond);
+            animation.doOneFrame(d, 1.0 / this.framesPerSecond);
             gui.show(d);
             long usedTime = System.currentTimeMillis() - startTime;
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;

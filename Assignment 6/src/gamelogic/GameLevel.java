@@ -39,6 +39,7 @@ public class GameLevel implements Animation {
     private static final int PADDLE_START_Y = 555; // The Y coordinate the paddle moves on.
     private static final int BALL_START_Y = 525;
     private static final int BORDER_HEIGHT = 25, BORDER_WIDTH = 25; // Size of the border edges.
+    private static final int FPS = 60;
 
     private LevelInformation levelInfo;
     private SpriteCollection sprites;
@@ -107,7 +108,7 @@ public class GameLevel implements Animation {
      * deathblock and sprites.
      */
     public void initialize() {
-        this.sprites = new SpriteCollection();
+        this.sprites = new SpriteCollection(1.0 / FPS);
         this.environment = new GameEnvironment();
         this.blockCounter = new Counter();
         this.ballCounter = new Counter();
@@ -228,7 +229,7 @@ public class GameLevel implements Animation {
      * If no more blocks or balls are left, we'll stop running the current level's animation.
      * @param d The DrawSurface we'll draw the sprites on.
      */
-    public void doOneFrame(DrawSurface d) {
+    public void doOneFrame(DrawSurface d, double dt) {
         this.sprites.drawAllOn(d);
         this.sprites.notifyAllTimePassed();
         if (this.keyboard.isPressed("p")) {

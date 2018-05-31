@@ -33,5 +33,5 @@ public class ScoreIndicator implements Sprite {
     /**
      * Isn't used since the drawing doesn't change overtime (the counter does).
      */
-    public void timePassed() { }
+    public void timePassed(double dt) { }
 }

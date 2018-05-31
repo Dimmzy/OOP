@@ -32,5 +32,5 @@ public class LevelIndicator implements Sprite {
     /**
      * Isn't used since the name is a static sprite.
      */
-    public void timePassed() { }
+    public void timePassed(double dt) { }
 }

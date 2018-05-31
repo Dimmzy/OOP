@@ -147,7 +147,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
     /**
      * Required as the class implements Collidable, does nothing (behaviour is through rectangle).
      */
-    public void timePassed() { }
+    public void timePassed(double dt) { }
 
     /**
      * @return Returns the amount of health this block has remaining.

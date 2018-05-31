@@ -162,5 +162,5 @@ public class Backgrounds implements Sprite {
     /**
      * Does nothing since the class draws a static background image.
      */
-    public void timePassed() { }
+    public void timePassed(double dt) { }
 }

@@ -51,6 +51,7 @@ public class GameFlow {
             if (level.getLivesCounter().getValue() < 0) {
                 break;
             }
+            totalScore.increase(100);
         }
         // If the loop finished with lives still remaining, set the game completed to true.
         if (this.livesCounter.getValue() >= 0) {

@@ -12,7 +12,7 @@ import levels.LevelInformation;
  */
 public class GameFlow {
 
-    private static final int STARTING_LIVES = 7;
+    private static final int STARTING_LIVES = 0;
     private AnimationRunner animationRunner;
     private KeyboardSensor keyboardSensor;
     private Counter livesCounter, totalScore;

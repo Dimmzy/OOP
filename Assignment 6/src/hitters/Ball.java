@@ -132,7 +132,8 @@ public class Ball implements Sprite {
     /**
      * When timePassed is called, moves the ball by using moveOneStep.
      */
-    public void timePassed() {
+    public void timePassed(double dt) {
+        this.setVelocity(this.getVelocity().getDx() * dt, this.getVelocity().getDy() * dt);
         this.moveOneStep();
     }
 

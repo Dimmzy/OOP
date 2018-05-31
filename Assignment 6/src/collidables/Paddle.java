@@ -66,7 +66,8 @@ public class Paddle implements Sprite, Collidable {
     /**
      * Checks if there was any user input from the keyboard, and moves the paddle accordingly.
      */
-    public void timePassed() {
+    public void timePassed(double dt) {
+        this.setVelocity(this.velocity.getDx() * dt, this.velocity.getDy() * dt);
         if (keyboard.isPressed(KeyboardSensor.LEFT_KEY)) {
             moveLeft();
             return;
@@ -150,5 +151,14 @@ public class Paddle implements Sprite, Collidable {
     public void addToGame(GameLevel g) {
         g.addCollidable(this);
         g.addSprite(this);
+    }
+
+    /**
+     * Sets the velocity of the paddle to a new value.
+     * @param dx The displacement on the x axis each frame.
+     * @param dy The displacement on the y axis each frame.
+     */
+    public void setVelocity(double dx, double dy) {
+        this.velocity = new Velocity(dx, dy);
     }
 }
