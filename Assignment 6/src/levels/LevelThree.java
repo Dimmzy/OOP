@@ -55,7 +55,7 @@ public class LevelThree implements LevelInformation {
      * @return Returns the speed of the level's paddle.
      */
     public int paddleSpeed() {
-        return 5;
+        return 300;
     }
 
     /**

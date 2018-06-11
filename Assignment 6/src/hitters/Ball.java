@@ -87,7 +87,7 @@ public class Ball implements Sprite {
      * Displaces the ball one "step" forward, it calculates whether the ball will be in bounds after the movement, if
      * it won't then it'll change it's movement direction and bounce it off the surface.
      */
-    public void moveOneStep() {
+    public void moveOneStep(double dt) {
         // If the balls speed is zero, do nothing.
         if (this.velocity == null) {
             return;
@@ -133,8 +133,7 @@ public class Ball implements Sprite {
      * When timePassed is called, moves the ball by using moveOneStep.
      */
     public void timePassed(double dt) {
-        this.setVelocity(this.getVelocity().getDx() * dt, this.getVelocity().getDy() * dt);
-        this.moveOneStep();
+        this.moveOneStep(dt);
     }
 
 

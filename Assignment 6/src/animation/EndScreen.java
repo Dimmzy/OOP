@@ -19,12 +19,10 @@ public class EndScreen implements Animation {
      * The EndScreen constructor.
      * @param gameCompleted Boolean value whether the game was won or not.
      * @param score The final score of the player.
-     * @param ks The keyboard sensor (to check if SPCAE was pressed to close the game)
      */
-    public EndScreen(boolean gameCompleted, int score, KeyboardSensor ks) {
+    public EndScreen(boolean gameCompleted, int score) {
         this.gameCompleted = gameCompleted;
         this.finalScore = score;
-        this.keySensor = ks;
         this.shouldStop = false;
     }
 
@@ -42,9 +40,6 @@ public class EndScreen implements Animation {
             Color defeatBlue = new Color(64, 120, 178);
             d.setColor(defeatBlue);
             d.drawText(200, 300, "Game Over. Your score is " + Integer.toString(finalScore), 25);
-        }
-        if (keySensor.isPressed(KeyboardSensor.SPACE_KEY)) {
-            this.shouldStop = true;
         }
     }
 

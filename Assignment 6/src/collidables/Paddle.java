@@ -38,27 +38,29 @@ public class Paddle implements Sprite, Collidable {
 
     /**
      * Displaces the paddle to the left.
+     * @param frameVelocity Velocity dependant on the fps.
      */
-    public void moveLeft() {
+    public void moveLeft(Velocity frameVelocity) {
         // Check if the paddle isn't going to pass the screen's edge, if it does, don't move.
-        if (this.rectangle.getUpperLeft().getX() - velocity.getDx() < BORDER_WIDTH) {
+        if (this.rectangle.getUpperLeft().getX() - frameVelocity.getDx() < BORDER_WIDTH) {
             return;
         }
         // Otherwise moves the paddle to the left using the velocities deltaX.
-        Point moveLeft = new Point(this.rectangle.getUpperLeft().getX() - velocity.getDx(), this.rectangle
+        Point moveLeft = new Point(this.rectangle.getUpperLeft().getX() - frameVelocity.getDx(), this.rectangle
                 .getUpperLeft().getY());
         this.rectangle.setNewLocation(moveLeft);
     }
 
     /**
      * Displaces the paddle to the right.
+     * @param frameVelocity Velocity dependant on the fps.
      */
-    public void moveRight() {
-        if (this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + velocity.getDx()
+    public void moveRight(Velocity frameVelocity) {
+        if (this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + frameVelocity.getDx()
                 > SCREEN_WIDTH - BORDER_WIDTH) {
             return;
         }
-        Point moveRight = new Point(this.rectangle.getUpperLeft().getX() + velocity.getDx(), this.rectangle
+        Point moveRight = new Point(this.rectangle.getUpperLeft().getX() + frameVelocity.getDx(), this.rectangle
                 .getUpperLeft().getY());
         this.rectangle.setNewLocation(moveRight);
     }
@@ -67,13 +69,13 @@ public class Paddle implements Sprite, Collidable {
      * Checks if there was any user input from the keyboard, and moves the paddle accordingly.
      */
     public void timePassed(double dt) {
-        this.setVelocity(this.velocity.getDx() * dt, this.velocity.getDy() * dt);
+        Velocity frameVelocity = new Velocity(this.velocity.getDx() * dt,this.velocity.getDy() * dt);
         if (keyboard.isPressed(KeyboardSensor.LEFT_KEY)) {
-            moveLeft();
+            moveLeft(frameVelocity);
             return;
         }
         if (keyboard.isPressed(KeyboardSensor.RIGHT_KEY)) {
-            moveRight();
+            moveRight(frameVelocity);
         }
     }
 
