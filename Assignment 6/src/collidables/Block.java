@@ -12,8 +12,11 @@ import sprites.Sprite;
 
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Block method that consists of rectangles that can be collided with.
@@ -22,8 +25,13 @@ public class Block implements Collidable, Sprite, HitNotifier {
 
     private List<HitListener> hitListeners;
     private Rectangle rectangle;
-    private java.awt.Color color;
+    private Color borderColor;
+    private Map<Integer, Color> blockColor;
+    private Map<Integer, Image> blockImages;
+    private Color defFillColor;
+    private Image defFillImage;
     private int hp;
+    private double width;
 
     /**
      * Constructs a new block from a passed rectangle.
@@ -38,15 +46,19 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * @param upperLeft upper left point of the rectangle.
      * @param width the width of the rectangle.
      * @param height the height of the rectangle.
-     * @param color the color of the block.
      * @param hp the starting hit points of the block.
      */
-    public Block(Point upperLeft, double width, double height, java.awt.Color color, int hp) {
+    public Block(Point upperLeft, double width, double height, int hp) {
         this.rectangle = new Rectangle(upperLeft, width, height);
-        this.color =  color;
+        this.blockColor = new TreeMap<Integer, Color>();
+        this.blockImages = new TreeMap<Integer, Image>();
         this.hp = hp;
         this.hitListeners = new ArrayList<HitListener>();
+        this.defFillColor = null;
+        this.defFillImage = null;
+        this.width = width;
     }
+
 
     /**
      * Adds the block to the gameLevel (as both a sprite and a collidable object).
@@ -129,23 +141,33 @@ public class Block implements Collidable, Sprite, HitNotifier {
      * @param surface the surface the rectangle will be drawn on.
      */
     public void drawOn(DrawSurface surface) {
-        surface.setColor(this.color);
         Point topLeft = this.rectangle.getUpperLeft();
-        surface.fillRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
-                .rectangle.getHeight());
-        /*
-         * Draws a black border around the blocks, excluding the border blocks and the information panel, which are
-         * marked with -1 hp.
-         */
-        if (this.hp != -1) {
-            surface.setColor(Color.BLACK);
+        if (this.blockColor.containsKey(this.hp)) {
+            surface.setColor(this.blockColor.get(this.hp));
+            surface.fillRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(),
+                    (int) this.rectangle.getHeight());
+        } else if (this.blockImages.containsKey(this.hp)) {
+            surface.drawImage((int) topLeft.getX(), (int) topLeft.getY(), this.blockImages.get(this.hp));
+        } else if (this.defFillColor != null) {
+            surface.setColor(this.defFillColor);
+            surface.fillRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(),
+                    (int) this.rectangle.getHeight());
+        } else {
+            surface.drawImage((int) topLeft.getX(), (int) topLeft.getY(), this.defFillImage);
+        }
+
+        if (this.borderColor != null) {
+            surface.setColor(this.borderColor);
             surface.drawRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(),
                     (int) this.rectangle.getHeight());
+        } else {
+            surface.drawImage((int) topLeft.getX(), (int) topLeft.getY(), this.defFillImage);
         }
     }
 
     /**
      * Required as the class implements Collidable, does nothing (behaviour is through rectangle).
+     * @param dt does nothing, static block
      */
     public void timePassed(double dt) { }
 
@@ -157,6 +179,13 @@ public class Block implements Collidable, Sprite, HitNotifier {
     }
 
     /**
+     * @return returns block width.
+     */
+    public double getWidth() {
+        return this.width;
+    }
+
+    /**
      * Notifies the listeners that the block has been hit and by which ball.
      * @param hitter The ball that hit the block.
      */
@@ -165,5 +194,45 @@ public class Block implements Collidable, Sprite, HitNotifier {
         for (HitListener hl : listeners) {
             hl.hitEvent(this, hitter);
         }
+    }
+
+    /**
+     * Sets the block color.
+     * @param blockColors The block color map.
+     */
+    public void setBlockColor(Map<Integer, Color> blockColors) {
+        this.blockColor = blockColors;
+    }
+
+    /**
+     * Sets the block images.
+     * @param blockImage The block images map.
+     */
+    public void setBlockImage(Map<Integer, Image> blockImage) {
+        this.blockImages = blockImage;
+    }
+
+    /**
+     * Sets the borders color.
+     * @param color The border color.
+     */
+    public void setBorderColor(Color color) {
+        this.borderColor = color;
+    }
+
+    /**
+     * Sets default border color.
+     * @param color the def border color.
+     */
+    public void setDefFillColor(Color color) {
+        this.defFillColor = color;
+    }
+
+    /**
+     * Sets the default image of the block.
+     * @param image The def image.
+     */
+    public void setDefFillImage(Image image) {
+        this.defFillImage = image;
     }
 }

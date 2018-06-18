@@ -42,11 +42,11 @@ public class GameEnvironment {
      * @return If found, returns the collision point. Otherwise, returns null.
      */
     public CollisionInfo getClosestCollision(Line trajectory) {
-        for (int i = 0; i < collidables.size(); i++) {
+        for (Collidable collidable : this.collidables) {
             // Creates a point from the output of the closest intersection method of the trajectory line.
-            Point colPoint = trajectory.closestIntersectionToStartOfLine(collidables.get(i).getCollisionRectangle());
+            Point colPoint = trajectory.closestIntersectionToStartOfLine(collidable.getCollisionRectangle());
             if (colPoint != null) {
-                return new CollisionInfo(colPoint, collidables.get(i));
+                return new CollisionInfo(colPoint, collidable);
             }
         }
         return null;

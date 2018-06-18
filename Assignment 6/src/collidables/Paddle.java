@@ -21,6 +21,7 @@ public class Paddle implements Sprite, Collidable {
     private Rectangle rectangle;
     private biuoop.KeyboardSensor keyboard;
     private Velocity velocity;
+    private double deltaTime;
 
     /**
      * Constructs the paddle object.
@@ -38,44 +39,45 @@ public class Paddle implements Sprite, Collidable {
 
     /**
      * Displaces the paddle to the left.
-     * @param frameVelocity Velocity dependant on the fps.
+     * @param dt the deltatime we use to normalize the paddle's speed.
      */
-    public void moveLeft(Velocity frameVelocity) {
+    public void moveLeft(double dt) {
         // Check if the paddle isn't going to pass the screen's edge, if it does, don't move.
-        if (this.rectangle.getUpperLeft().getX() - frameVelocity.getDx() < BORDER_WIDTH) {
+        if (this.rectangle.getUpperLeft().getX() - this.velocity.getDx() * dt < BORDER_WIDTH) {
             return;
         }
         // Otherwise moves the paddle to the left using the velocities deltaX.
-        Point moveLeft = new Point(this.rectangle.getUpperLeft().getX() - frameVelocity.getDx(), this.rectangle
-                .getUpperLeft().getY());
+        Point moveLeft = new Point(this.rectangle.getUpperLeft().getX() - this.velocity.getDx() * dt,
+                this.rectangle.getUpperLeft().getY());
         this.rectangle.setNewLocation(moveLeft);
     }
 
     /**
      * Displaces the paddle to the right.
-     * @param frameVelocity Velocity dependant on the fps.
+     * @param dt the deltatime we use to normalize the paddle's speed.
      */
-    public void moveRight(Velocity frameVelocity) {
-        if (this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + frameVelocity.getDx()
+    public void moveRight(double dt) {
+        if (this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() + this.velocity.getDx() * dt
                 > SCREEN_WIDTH - BORDER_WIDTH) {
             return;
         }
-        Point moveRight = new Point(this.rectangle.getUpperLeft().getX() + frameVelocity.getDx(), this.rectangle
-                .getUpperLeft().getY());
+        Point moveRight = new Point(this.rectangle.getUpperLeft().getX() + this.velocity.getDx() * dt,
+                this.rectangle.getUpperLeft().getY());
         this.rectangle.setNewLocation(moveRight);
     }
 
     /**
      * Checks if there was any user input from the keyboard, and moves the paddle accordingly.
+     * @param dt the deltatime we use to normalize the paddle's speed.
      */
     public void timePassed(double dt) {
-        Velocity frameVelocity = new Velocity(this.velocity.getDx() * dt,this.velocity.getDy() * dt);
+        this.deltaTime = dt;
         if (keyboard.isPressed(KeyboardSensor.LEFT_KEY)) {
-            moveLeft(frameVelocity);
+            moveLeft(dt);
             return;
         }
         if (keyboard.isPressed(KeyboardSensor.RIGHT_KEY)) {
-            moveRight(frameVelocity);
+            moveRight(dt);
         }
     }
 
@@ -124,7 +126,8 @@ public class Paddle implements Sprite, Collidable {
         } else if (borderHit == Border.TOP) {
             // Ball stuck in paddle check and fix
             if (hitter.getY() < this.getCollisionRectangle().getUpperLeft().getY()) {
-                hitter.setCenter(new Point(hitter.getX(), hitter.getY() - hitter.getVelocity().getDy()));
+                hitter.setCenter(new Point(hitter.getX(),
+                        hitter.getY() - hitter.getVelocity().getDy() * this.deltaTime));
             }
             int dXHit = (int) (collisionPoint.getX() - this.rectangle.getUpperLeft().getX());
             if (dXHit < rectangle.getWidth() / 5) {

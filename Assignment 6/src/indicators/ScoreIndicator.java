@@ -32,6 +32,7 @@ public class ScoreIndicator implements Sprite {
 
     /**
      * Isn't used since the drawing doesn't change overtime (the counter does).
+     * @param dt not used.
      */
     public void timePassed(double dt) { }
 }

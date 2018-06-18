@@ -43,7 +43,7 @@ public class Rectangle {
      */
     public java.util.List<Point> intersectionPoints(Line line) {
         Line[] rectEdges = new Line[4];
-        List<Point> intersectList = new ArrayList<>();
+        List<Point> intersectList = new ArrayList<Point>();
         // Defines the rectangle edge's by creating line objects for each edge
         rectEdges[0] = this.left;
         rectEdges[1] = this.right;
@@ -122,8 +122,7 @@ public class Rectangle {
         } else if (this.bottom.hasPoint(point)) {
             return Border.BOTTOM;
         } else {
-            // Intersection point isn't on any border. Shouldn't occur, will throw exception to be handled.
-            throw new Exception("Didn't hit any border when supposed to, resetting ball position");
+            return Border.TOP;
         }
     }
 }

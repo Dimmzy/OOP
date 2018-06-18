@@ -7,9 +7,8 @@ import geometry.Point;
  */
 public class Velocity {
 
-    // dx and dy start at 0 unless otherwise specified (no movement).
-    private double dx = 0;
-    private double dy = 0;
+    private double dx;
+    private double dy;
 
     /**
      * Velocity constructor.
@@ -39,10 +38,10 @@ public class Velocity {
      * Displaces the object from it's starting location to the location after the movement using the velocity values.
      * @param p The object's starting location.
      * @return Returns the final location of the object (after applying the velocity deltas).
+     * @param dt normalize's the balls speed to be pixels per seconds rather than frames per second.
      */
-    public Point applyToPoint(Point p) {
-        Point newPos = new Point(p.getX() + this.dx, p.getY() + this.dy);
-        return newPos;
+    public Point applyToPoint(Point p, double dt) {
+        return new Point(p.getX() + this.dx * dt, p.getY() + this.dy * dt);
     }
 
     /**

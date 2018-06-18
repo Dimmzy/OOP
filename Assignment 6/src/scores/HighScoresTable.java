@@ -1,11 +1,21 @@
 package scores;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
-public class HighScoresTable implements Serializable{
+/**
+ * A class in charge of arranging/loading/saving the high scores table file.
+ */
+public class HighScoresTable implements Serializable {
 
     private List<ScoreInfo> highScores;
     private int maxCapacity;
@@ -16,7 +26,7 @@ public class HighScoresTable implements Serializable{
      */
     public HighScoresTable(int size) {
         this.highScores = new ArrayList<ScoreInfo>(size + 1);
-        this.maxCapacity = size ;
+        this.maxCapacity = size;
     }
 
     /**
@@ -24,7 +34,7 @@ public class HighScoresTable implements Serializable{
      * @param score The score to add to the list.
      */
     public void add(ScoreInfo score) {
-        if (this.highScores.size() + 1 < maxCapacity) {
+        if (this.highScores.size() < maxCapacity) {
             this.highScores.add(score);
         } else {
             this.sortScores();
@@ -76,7 +86,7 @@ public class HighScoresTable implements Serializable{
     /**
      * We'll use the loadFromFile method to load the file, and retrieve the needed information from it.
      * @param filename The file we retrieve table information from
-     * @throws IOException
+     * @throws IOException Throws IO exception in case loading the file fails.
      */
     public void load(File filename) throws IOException {
         this.highScores = loadFromFile(filename).highScores;
@@ -86,7 +96,7 @@ public class HighScoresTable implements Serializable{
     /**
      * Saves this table's data to the specified file.
      * @param filename The name of the file we'll save to.
-     * @throws IOException
+     * @throws IOException throws IO exception in case saving the file fails.
      */
     public void save(File filename) throws IOException {
         ObjectOutputStream outputFile = null;
@@ -102,9 +112,12 @@ public class HighScoresTable implements Serializable{
         }
     }
 
-    // Read a table from file and return it.
-    // If the file does not exist, or there is a problem with
-    // reading it, an empty table is returned.
+    /**
+     * Reads a high scores table from the file.
+     * @param filename the file to load the table from.
+     * @return returns the high scores table.
+     * @throws IOException throws IO exception in case loading the file fails.
+     */
     public static HighScoresTable loadFromFile(File filename) throws IOException {
         ObjectInputStream fileStream = null;
         HighScoresTable fileTable;
@@ -125,20 +138,30 @@ public class HighScoresTable implements Serializable{
 
     /**
      * Sorts the array using the sortByScore nested class to compare two scores each time.
+     * @return returns a list of the scores sorting in an descending order.
      */
     private List<ScoreInfo> sortScores() {
         /**
          * We'll use the Comparator Interface to sort by scores
          */
-        class sortByScore implements Comparator<ScoreInfo> {
+        class SortByScore implements Comparator<ScoreInfo> {
+            /**
+             * Compares scores to sort them.
+             * @param scoreOne first compared score.
+             * @param scoreTwo second compared score.
+             * @return returns the highest one.
+             */
             public int compare(ScoreInfo scoreOne, ScoreInfo scoreTwo) {
                 return scoreTwo.getScore() - scoreOne.getScore();
             }
         }
-        this.highScores.sort(new sortByScore());
+        this.highScores.sort(new SortByScore());
         return this.highScores;
     }
 
+    /**
+     * @return String representation of the scores.
+     */
     public String toString() {
         String scoresTable = "";
         for (ScoreInfo player : this.highScores) {

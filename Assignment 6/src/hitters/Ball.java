@@ -86,6 +86,7 @@ public class Ball implements Sprite {
     /**
      * Displaces the ball one "step" forward, it calculates whether the ball will be in bounds after the movement, if
      * it won't then it'll change it's movement direction and bounce it off the surface.
+     * @param dt Lets us displace the ball "dt" pixels per frame.
      */
     public void moveOneStep(double dt) {
         // If the balls speed is zero, do nothing.
@@ -93,13 +94,13 @@ public class Ball implements Sprite {
             return;
         }
         // Calculates the trajectory of the ball by checking it's end point after applying the velocity to the location.
-        Point endPoint = new Point(this.center.getX() + this.velocity.getDx(),
-                this.center.getY() + this.velocity.getDy());
+        Point endPoint = new Point(this.getX() + (this.velocity.getDx() * dt * 1.25),
+                this.getY() + (this.velocity.getDy() * dt * 1.25));
         Line trajectory = new Line(this.center, endPoint);
         CollisionInfo collisionCheck = gameEnvironment.getClosestCollision(trajectory);
-        // If the ball doesn't collide with anything, move it as it's velocity dictates.
+        // If the ball doesn't collide w ith anything, move it as it's velocity dictates.
         if (collisionCheck == null) {
-            this.center = this.getVelocity().applyToPoint(this.center);
+            this.center = this.getVelocity().applyToPoint(this.center, dt);
         } else {
             Rectangle colRect = collisionCheck.collisionObject().getCollisionRectangle();
             // Checks if the ball is stuck inside of the paddle. If it is, free it.
@@ -110,10 +111,10 @@ public class Ball implements Sprite {
                 // offsets the ball y location to outside the paddle using the paddle y value and the balls' dy.
                 if (collisionCheck.collisionPoint().getY() == colRect.getUpperLeft().getY() + colRect.getHeight()) {
                     this.center = new Point(this.center.getX(), colRect.getUpperLeft().getY() + colRect.getHeight()
-                            + this.velocity.getDy());
+                            + this.velocity.getDy() * dt);
                 } else {
                     this.center = new Point(this.center.getX(), colRect.getUpperLeft().getY() + colRect.getHeight()
-                            + this.velocity.getDy());
+                            + this.velocity.getDy() * dt);
                 }
             }
             // Calculates it's new direction after the hit and sets the ball to move in the new direction.
@@ -125,12 +126,12 @@ public class Ball implements Sprite {
                 return;
             }
             this.velocity = newSpeed;
-            this.getVelocity().applyToPoint(this.center);
         }
     }
 
     /**
      * When timePassed is called, moves the ball by using moveOneStep.
+     * @param dt Used to displace the ball per pixel.
      */
     public void timePassed(double dt) {
         this.moveOneStep(dt);

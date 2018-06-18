@@ -28,7 +28,7 @@ public class Backgrounds implements Sprite {
             // Level One
             case(1):
                 d.setColor(Color.BLACK);
-                d.fillRectangle(25, 25, 775, 600); // Background
+                d.fillRectangle(25, 25, 775, 600); // BackgroundColor
                 d.setColor(Color.BLUE);
                 d.drawCircle(400, 150, 40); // Innermost Circle
                 d.drawCircle(400, 150, 60); // Inner Circle
@@ -42,7 +42,7 @@ public class Backgrounds implements Sprite {
             //Level Two
             case(2):
                 d.setColor(Color.WHITE);
-                d.fillRectangle(25, 25, 775, 600); // Background
+                d.fillRectangle(25, 25, 775, 600); // BackgroundColor
 
                 Color outer = new Color(239, 231, 176);
                 d.setColor(outer);
@@ -65,7 +65,7 @@ public class Backgrounds implements Sprite {
             case(3):
                 Color backgroundThree = new Color(42, 130, 21);
                 d.setColor(backgroundThree);
-                d.fillRectangle(25, 25, 775, 600);  // Background
+                d.fillRectangle(25, 25, 775, 600);  // BackgroundColor
 
                 Color building = new Color(46, 42, 41);
                 d.setColor(building);
@@ -102,7 +102,7 @@ public class Backgrounds implements Sprite {
             case(4):
                 Color backgroundFour = new Color(23, 136, 208);
                 d.setColor(backgroundFour);
-                d.fillRectangle(25, 25, 775, 600); // Background
+                d.fillRectangle(25, 25, 775, 600); // BackgroundColor
 
                 Color lighterGray = new Color(200, 204, 208);
 
@@ -161,6 +161,7 @@ public class Backgrounds implements Sprite {
 
     /**
      * Does nothing since the class draws a static background image.
+     * @param dt does nothing.
      */
     public void timePassed(double dt) { }
 }

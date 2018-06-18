@@ -15,6 +15,7 @@ public interface Sprite {
 
     /**
      * Tells the object that "time" has passed (per intervals specified in the GameLevel class).
+     * @param dt let's use normalize the speed of the moving objects to be pixels per second rather than fps.
      */
     void timePassed(double dt);
 }

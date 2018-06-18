@@ -10,14 +10,12 @@ import biuoop.DrawSurface;
 public class SpriteCollection {
 
     private List<Sprite> spriteList;
-    private double deltaTime;
 
     /**
      * SpriteCollection constructor. Creates the list we will populate with sprites.
      */
-    public SpriteCollection(double dt) {
-        this.spriteList = new ArrayList<>();
-        this.deltaTime = dt;
+    public SpriteCollection() {
+        this.spriteList = new ArrayList<Sprite>();
     }
 
     /**
@@ -40,11 +38,12 @@ public class SpriteCollection {
     /**
      * Iterates through all of the list elements and calls the "timePassed" method that tells them a certain interval
      * has passed and let's them change their behavior/state.
+     * @param dt let's use normalize the speed of the moving objects to be pixels per second rather than fps.
      */
-    public void notifyAllTimePassed() {
+    public void notifyAllTimePassed(double dt) {
         List<Sprite> sprites = new ArrayList<Sprite>(this.spriteList);
         for (Sprite sprite : sprites) {
-            sprite.timePassed(this.deltaTime);
+            sprite.timePassed(dt);
         }
     }
 

@@ -30,6 +30,7 @@ public class EndScreen implements Animation {
     /**
      * Draws a frame of the game completion screen.
      * @param d The DrawSurface we'll draw the sprites on.
+     * @param dt isn't used.
      */
     public void doOneFrame(DrawSurface d, double dt) {
         if (gameCompleted) {

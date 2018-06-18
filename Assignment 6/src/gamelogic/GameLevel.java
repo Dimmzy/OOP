@@ -5,7 +5,6 @@ import animation.AnimationRunner;
 import animation.CountdownAnimation;
 import animation.PauseScreen;
 import biuoop.DrawSurface;
-import biuoop.GUI;
 import biuoop.KeyboardSensor;
 import collidables.Block;
 import collidables.Collidable;
@@ -35,16 +34,14 @@ public class GameLevel implements Animation {
 
     // Constant values we'll use to define certain constant sizes we'll be using throughout the class.
     private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600; // Window resolution.
-    private static final int DEATH_ZONE = 625; // The Y coordinate of the ball removal block (under the screen).
+    private static final int DEATH_ZONE = 605; // The Y coordinate of the ball removal block (under the screen).
     private static final int PADDLE_START_Y = 555; // The Y coordinate the paddle moves on.
     private static final int BALL_START_Y = 525;
     private static final int BORDER_HEIGHT = 25, BORDER_WIDTH = 25; // Size of the border edges.
-    private static final int FPS = 60;
 
     private LevelInformation levelInfo;
     private SpriteCollection sprites;
     private GameEnvironment environment;
-    private GUI gui;
     private Counter blockCounter, ballCounter, scoreCounter, livesCounter;
     private AnimationRunner runner;
     private boolean running;
@@ -52,11 +49,12 @@ public class GameLevel implements Animation {
 
     /**
      * Constructs the GameLevel object using passed level information.
-     * @param levelInfo The information about the level design.
-     * @param keyboardSensor The keyboard sensor we'll use to scan for keystrokes.
+     *
+     * @param levelInfo       The information about the level design.
+     * @param keyboardSensor  The keyboard sensor we'll use to scan for keystrokes.
      * @param animationRunner The animation runner object that runs the animation of this level.
-     * @param lives The player's lives counter.
-     * @param score The player's score counter.
+     * @param lives           The player's lives counter.
+     * @param score           The player's score counter.
      */
     public GameLevel(LevelInformation levelInfo, KeyboardSensor keyboardSensor, AnimationRunner animationRunner,
                      Counter lives, Counter score) {
@@ -69,6 +67,7 @@ public class GameLevel implements Animation {
 
     /**
      * Adds the collidable to the environment.
+     *
      * @param c the collidable object to add.
      */
     public void addCollidable(Collidable c) {
@@ -77,6 +76,7 @@ public class GameLevel implements Animation {
 
     /**
      * Adds the sprite to the environment.
+     *
      * @param s the sprite to add.
      */
     public void addSprite(Sprite s) {
@@ -85,6 +85,7 @@ public class GameLevel implements Animation {
 
     /**
      * Calls the game environment to remove the collidable the method receives.
+     *
      * @param c The collidable to remove from the environment.
      */
     public void removeCollidable(Collidable c) {
@@ -97,6 +98,7 @@ public class GameLevel implements Animation {
 
     /**
      * Calls the sprite list to remove the sprite the method receives.
+     *
      * @param s The sprite to remove.
      */
     public void removeSprite(Sprite s) {
@@ -108,7 +110,7 @@ public class GameLevel implements Animation {
      * deathblock and sprites.
      */
     public void initialize() {
-        this.sprites = new SpriteCollection(1.0 / FPS);
+        this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.blockCounter = new Counter();
         this.ballCounter = new Counter();
@@ -121,7 +123,7 @@ public class GameLevel implements Animation {
         this.addSprite(new ScoreIndicator(this.scoreCounter));
         this.addSprite(new LivesIndicator(this.livesCounter));
         this.addSprite(new LevelIndicator(levelInfo.levelName()));
-        Block deathBlock = new Block(new Point(0, DEATH_ZONE), SCREEN_WIDTH, 0, Color.LIGHT_GRAY, -1);
+        Block deathBlock = new Block(new Point(0, DEATH_ZONE), SCREEN_WIDTH, 30, -1);
         deathBlock.addHitListener(ballRemover);
         deathBlock.addToGame(this);
     }
@@ -132,12 +134,15 @@ public class GameLevel implements Animation {
      * We'll be setting the health points of the border blocks to -1 so they won't ever be removed when hit.
      */
     public void createBorders() {
-        Block top = new Block(new Point(0, 0), SCREEN_WIDTH, BORDER_HEIGHT * 1.5, Color.LIGHT_GRAY, -1);
-        Block left = new Block(new Point(0, 0), BORDER_WIDTH, SCREEN_HEIGHT, Color.LIGHT_GRAY, -1);
-        Block right = new Block(new Point(SCREEN_WIDTH - BORDER_WIDTH, 0), BORDER_WIDTH, SCREEN_HEIGHT, Color
-                .LIGHT_GRAY, -1);
+        Block top = new Block(new Point(0, 0), SCREEN_WIDTH, BORDER_HEIGHT * 1.5, -1);
+        Block left = new Block(new Point(0, 0), BORDER_WIDTH, SCREEN_HEIGHT, -1);
+        Block right = new Block(new Point(SCREEN_WIDTH - BORDER_WIDTH, 0), BORDER_WIDTH, SCREEN_HEIGHT, -1);
+        top.setDefFillColor(Color.LIGHT_GRAY);
+        left.setDefFillColor(Color.LIGHT_GRAY);
+        right.setDefFillColor(Color.LIGHT_GRAY);
         // The game information panel that will host the number of lives, score, level name.
-        Block gameInfo = new Block(new Point(0, 0), SCREEN_WIDTH, BORDER_HEIGHT / 1.5, Color.WHITE, -1);
+        Block gameInfo = new Block(new Point(0, 0), SCREEN_WIDTH, BORDER_HEIGHT / 1.5, -1);
+        gameInfo.setDefFillColor(Color.WHITE);
         top.addToGame(this);
         left.addToGame(this);
         right.addToGame(this);
@@ -147,6 +152,7 @@ public class GameLevel implements Animation {
     /**
      * Creates the blocks we'll be hitting and destroying. Uses the block list retrieved from the levelInfo and adds
      * the required listeners to each block and then adds them to the game.
+     *
      * @param blockRemover The blockRemover listener's we will add to the blocks.
      * @param scoreTracker the scoreTracker listener's we will add to the blocks.
      */
@@ -227,11 +233,13 @@ public class GameLevel implements Animation {
      * Each frame of the game we'll draw all the sprites we have to draw and tell them that time has passed.
      * Also allows for pausing of the game by scanning for the 'p' keystroke, if it does runs the PauseScreen.
      * If no more blocks or balls are left, we'll stop running the current level's animation.
+     *
      * @param d The DrawSurface we'll draw the sprites on.
+     * @param dt isn't used.
      */
     public void doOneFrame(DrawSurface d, double dt) {
         this.sprites.drawAllOn(d);
-        this.sprites.notifyAllTimePassed();
+        this.sprites.notifyAllTimePassed(dt);
         if (this.keyboard.isPressed("p")) {
             this.runner.run(new PauseScreen(this.keyboard));
         }

@@ -24,6 +24,7 @@ public class PauseScreen implements Animation {
     /**
      * Each frame we draw the pause screen, if SPACE has been pressed we'll finish the animation.
      * @param d The surface we'll draw the pause screen on.
+     * @param dt not used.
      */
     public void doOneFrame(DrawSurface d, double dt) {
         // Small pause sprite

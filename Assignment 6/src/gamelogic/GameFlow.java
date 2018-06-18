@@ -12,7 +12,7 @@ import levels.LevelInformation;
  */
 public class GameFlow {
 
-    private static final int STARTING_LIVES = 0;
+    private static final int STARTING_LIVES = 3;
     private AnimationRunner animationRunner;
     private KeyboardSensor keyboardSensor;
     private Counter livesCounter, totalScore;
@@ -71,6 +71,16 @@ public class GameFlow {
      */
     public int getScore() {
         return this.totalScore.getValue();
+    }
+
+    /**
+     * Restarts the values of the level (for each game iteration).
+     */
+    public void restart() {
+        this.livesCounter = new Counter();
+        this.livesCounter.increase(3);
+        this.totalScore = new Counter();
+        this.gameCompleted = false;
     }
 
 }

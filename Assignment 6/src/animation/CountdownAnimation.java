@@ -36,6 +36,7 @@ public class CountdownAnimation implements Animation {
      * we're currently at in the countdown, and if (num of seconds / countfrom) seconds have passed, we'll decrease
      * the amount of numbers we still have to go.
      * @param d The DrawSurface where we'll draw our countdown on.
+     * @param dt isn't used.
      */
     public void doOneFrame(DrawSurface d, double dt) {
         gameScreen.drawAllOn(d);
