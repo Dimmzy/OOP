@@ -1,0 +1,66 @@
+
+# Level 1
+# Pineapple House
+
+START_LEVEL
+level_name: Pineapple House
+ball_velocities:50,500 150,400
+background:image(background_images/pineapple.jpg)
+paddle_speed:650
+paddle_width:160
+block_definitions:definitions/standard_block_definitions.txt
+blocks_start_x:25
+blocks_start_y:60
+row_height:25
+num_blocks:61
+START_BLOCKS
+----bbbb---
+----b--b---
+----b--b---
+----b--b---
+--yyyyyyyy-
+--y------y--w-w
+--y-r--r-y--w-w
+--y-r--r-y--w-w
+--y------y--www
+--y------y---w
+--y------y---w
+--y-yyyy-y---w
+--y-w--w-y---w
+--y------ywwww
+--yyyyyyyy----
+END_BLOCKS
+END_LEVEL
+
+
+# Level 2
+# Chumbucket
+
+START_LEVEL
+level_name: Chumbucket
+ball_velocities:50,500 150,500 250,500
+background:image(background_images/chumbucket.jpg)
+paddle_speed:650
+paddle_width:160
+block_definitions:definitions/standard_block_definitions.txt
+blocks_start_x:25
+blocks_start_y:30
+row_height:25
+num_blocks:61
+START_BLOCKS
+---gggggggggg-
+---g--------g-
+---g---ww---g-
+---g--wrrw--g-
+---g---ww---g-
+---g--------g-
+---g--------g-
+---g--------g-
+---g--------g-
+---g--------g-
+---gggggggggg-
+---g--------g-
+---g--------g-
+---g--------g-
+END_BLOCKS
+END_LEVEL
