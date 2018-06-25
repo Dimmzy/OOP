@@ -44,11 +44,11 @@ public class GameEnvironment {
     public CollisionInfo getClosestCollision(Line trajectory) {
         for (Collidable collidable : this.collidables) {
             // Creates a point from the output of the closest intersection method of the trajectory line.
-            Point colPoint = trajectory.closestIntersectionToStartOfLine(collidable.getCollisionRectangle());
-            if (colPoint != null) {
-                return new CollisionInfo(colPoint, collidable);
+                Point colPoint = trajectory.closestIntersectionToStartOfLine(collidable.getCollisionRectangle());
+                if (colPoint != null) {
+                    return new CollisionInfo(colPoint, collidable);
+                }
             }
-        }
         return null;
     }
 

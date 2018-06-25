@@ -6,7 +6,6 @@ import gamelogic.GameEnvironment;
 import gamelogic.GameLevel;
 import geometry.Line;
 import geometry.Point;
-import geometry.Rectangle;
 import sprites.Sprite;
 
 import java.awt.Color;
@@ -18,34 +17,25 @@ import java.awt.Color;
 public class Bullet implements Sprite {
 
     private Point center;
-    private Point startingLoc;
     private int radius;
     private Velocity velocity;
     private GameEnvironment gameEnvironment;
+    private Color color;
 
     /**
      * The Bullet object constructor.
      * @param center The center point of the ball.
      * @param r The radius of the ball.
      * @param environment The game environment the ball is a part of.
+     * @param color the color of the bullet.
      */
-    public Bullet(Point center, int r, GameEnvironment environment) {
+    public Bullet(Point center, int r, GameEnvironment environment, Color color) {
+        this.color = color;
         this.center = center;
-        this.startingLoc = center;
         this.radius = r;
         this.gameEnvironment = environment;
     }
 
-    /**
-     * Constructs the ball without a Game Environment (which will be added through a setter later on).
-     * @param center The center point of the ball.
-     * @param r The radius of the ball.
-     */
-    public Bullet(Point center, int r) {
-        this.center = center;
-        this.startingLoc = center;
-        this.radius = r;
-    }
 
     /**
      * Adds the ball to the gameLevel (as a sprite).
@@ -60,7 +50,7 @@ public class Bullet implements Sprite {
      * @param surface the surface (defined through the DrawSurface class) to draw the ball on.
      */
     public void drawOn(DrawSurface surface) {
-        surface.setColor(Color.WHITE);
+        surface.setColor(this.color);
         surface.fillCircle(this.getX(), this.getY(), this.radius);
         surface.setColor(Color.BLACK);
         surface.drawCircle(this.getX(), this.getY(), this.radius);
@@ -74,14 +64,6 @@ public class Bullet implements Sprite {
         this.velocity = v;
     }
 
-    /**
-     * Sets the velocity field of the ball by creating a new Velocity object using given dx and dy.
-     * @param dx delta x of the required velocity.
-     * @param dy delta y of the required velocity.
-     */
-    public void setVelocity(double dx, double dy) {
-        this.velocity = new Velocity(dx, dy);
-    }
 
     /**
      * Displaces the ball one "step" forward, it calculates whether the ball will be in bounds after the movement, if
@@ -102,30 +84,9 @@ public class Bullet implements Sprite {
         if (collisionCheck == null) {
             this.center = this.getVelocity().applyToPoint(this.center, dt);
         } else {
-            Rectangle colRect = collisionCheck.collisionObject().getCollisionRectangle();
-            // Checks if the ball is stuck inside of the paddle. If it is, free it.
-            if (this.center.getY() > colRect.getUpperLeft().getY()
-                    && this.center.getY() < colRect.getUpperLeft().getY() + colRect.getHeight()
-                    && this.center.getX() < colRect.getUpperLeft().getX() + colRect.getWidth()
-                    && this.center.getX() > colRect.getUpperLeft().getX()) {
-                // offsets the ball y location to outside the paddle using the paddle y value and the balls' dy.
-                if (collisionCheck.collisionPoint().getY() == colRect.getUpperLeft().getY() + colRect.getHeight()) {
-                    this.center = new Point(this.center.getX(), colRect.getUpperLeft().getY() + colRect.getHeight()
-                            + this.velocity.getDy() * dt);
-                } else {
-                    this.center = new Point(this.center.getX(), colRect.getUpperLeft().getY() + colRect.getHeight()
-                            + this.velocity.getDy() * dt);
-                }
-            }
-            // Calculates it's new direction after the hit and sets the ball to move in the new direction.
-            Velocity newSpeed = collisionCheck.collisionObject().hit(this, collisionCheck.collisionPoint(), this
-                    .velocity);
-            // If caught exception , reset the ball into it's starting position.
-            if (newSpeed == null) {
-                this.center = this.startingLoc;
-                return;
-            }
-            this.velocity = newSpeed;
+            // Ignores collisions with other aliens if an alien shot the bullet (remove for friendly fire)
+            collisionCheck.collisionObject().hit(this, collisionCheck.collisionObject().getCollisionRectangle(),
+                    this.velocity);
         }
     }
 
@@ -160,20 +121,11 @@ public class Bullet implements Sprite {
     }
 
     /**
-     * @return returns this object's radius.
+     * @return returns the bullet's color.
      */
-    public int getSize() {
-        return this.radius;
+    public Color getColor() {
+        return this.color;
     }
-
-    /**
-     * Lets us recenter the ball incase it gets stuck.
-     * @param newPoint The new center of the ball.
-     */
-    public void setCenter(Point newPoint) {
-        this.center = newPoint;
-    }
-
 
     /**
      * Removes the ball from the level.
@@ -183,12 +135,5 @@ public class Bullet implements Sprite {
         gameLevel.removeSprite(this);
     }
 
-    /**
-     * Sets the game environment of the ball to the one passed through a parameter.
-     * @param ge The game environment we'll use with the ball.
-     */
-    public void setGameEnvironment(GameEnvironment ge) {
-        this.gameEnvironment = ge;
-    }
 
 }

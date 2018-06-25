@@ -26,7 +26,7 @@ public class ScoreIndicator implements Sprite {
      * @param d The surface we'll draw the indicator on.
      */
     public void drawOn(DrawSurface d) {
-        d.setColor(Color.BLACK);
+        d.setColor(Color.BLUE);
         d.drawText(SCOREBOARD_X, SCOREBOARD_Y, "Score: " + Integer.toString(scoreCounter.getValue()), SCOREBOARD_FONT);
     }
 

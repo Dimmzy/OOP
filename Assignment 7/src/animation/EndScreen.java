@@ -1,8 +1,11 @@
 package animation;
 
 import biuoop.DrawSurface;
-import biuoop.KeyboardSensor;
+
+import utilities.ExtractImage;
+
 import java.awt.Color;
+import java.awt.Image;
 
 /**
  * EndScreen is an animation class that draws the final screen showing whether the player won or lost, and the final
@@ -10,19 +13,19 @@ import java.awt.Color;
  */
 public class EndScreen implements Animation {
 
-    private boolean gameCompleted;
     private int finalScore;
-    private KeyboardSensor keySensor;
+    private int levelsCleared;
     private boolean shouldStop;
-
+    private Image gameOverImg;
     /**
      * The EndScreen constructor.
-     * @param gameCompleted Boolean value whether the game was won or not.
      * @param score The final score of the player.
+     * @param levelsCleared the final amount of levels the player cleared before losing all of his lives.
      */
-    public EndScreen(boolean gameCompleted, int score) {
-        this.gameCompleted = gameCompleted;
+    public EndScreen(int score, int levelsCleared) {
+        this.gameOverImg = new ExtractImage("gameoverImage.png").getImage();
         this.finalScore = score;
+        this.levelsCleared = levelsCleared;
         this.shouldStop = false;
     }
 
@@ -33,15 +36,18 @@ public class EndScreen implements Animation {
      * @param dt isn't used.
      */
     public void doOneFrame(DrawSurface d, double dt) {
-        if (gameCompleted) {
-            Color victoryGreen = new Color(96, 203, 86);
-            d.setColor(victoryGreen);
-            d.drawText(200, 300, "You Win! Your score is " + Integer.toString(finalScore), 25);
-        } else {
-            Color defeatBlue = new Color(64, 120, 178);
-            d.setColor(defeatBlue);
-            d.drawText(200, 300, "Game Over. Your score is " + Integer.toString(finalScore), 25);
-        }
+        d.setColor(Color.BLACK);
+        d.fillRectangle(0, 0, 800, 600);
+        d.setColor(Color.GREEN);
+        d.drawText(250, 100, "SPACE INVADERS", 40);
+        d.setColor(Color.GREEN);
+        d.drawText(249, 99, "SPACE INVADERS", 40);
+        d.setColor(Color.RED);
+        d.drawText(300, 350, "Your final score is " + Integer.toString(this.finalScore), 25);
+        d.drawText(299, 349, "Your final score is " + Integer.toString(this.finalScore), 25);
+        d.drawText(300, 400, "And you cleared " + Integer.toString(this.levelsCleared) + " level(s)!", 25);
+
+        d.drawImage(300, 100, this.gameOverImg);
     }
 
     /**

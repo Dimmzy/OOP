@@ -26,7 +26,7 @@ public class LivesIndicator implements Sprite {
      * @param d The surface we'll draw the indicator on.
      */
     public void drawOn(DrawSurface d) {
-        d.setColor(Color.BLACK);
+        d.setColor(Color.BLUE);
         d.drawText(LIVES_X, LIVES_Y, "Lives: " + Integer.toString(livesCounter.getValue()), LIVES_FONT);
     }
 

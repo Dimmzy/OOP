@@ -37,7 +37,7 @@ public interface LevelInformation {
     String levelName();
 
     /**
-     * @return Returns a sprite that will be drawn as a background for the level (from Backgrounds class)
+     * @return Returns a sprite that will be drawn as a background for the level
      */
     Sprite getBackground();
 

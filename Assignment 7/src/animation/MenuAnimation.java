@@ -2,12 +2,12 @@ package animation;
 
 import biuoop.KeyboardSensor;
 import biuoop.DrawSurface;
+import utilities.ExtractImage;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * The menu animation class is in charge of displaying the menu animation.
@@ -15,14 +15,14 @@ import java.util.TreeMap;
  */
 public class MenuAnimation<T> implements Menu<T> {
 
-    private static final int X_TEXT = 300;
-    private static final int Y_OFFSET = 40;
+    private static final int X_TEXT = 280;
+    private static final int Y_OFFSET = 50;
     private KeyboardSensor keySensor;
     private String menuTitle;
     private List<MenuOptions<T>> optionList;
-    private Map<String, Menu<T>> subMenu;
     private T status;
     private boolean stop;
+    private Image menuBackground;
 
 
     /**
@@ -34,9 +34,9 @@ public class MenuAnimation<T> implements Menu<T> {
         this.menuTitle = menuTitle;
         this.keySensor = keySensor;
         this.optionList = new ArrayList<MenuOptions<T>>();
-        this.subMenu = new TreeMap<String, Menu<T>>();
         this.status = null;
         this.stop = false;
+        this.menuBackground = new ExtractImage("menuBackground.png").getImage();
     }
 
     /**
@@ -64,13 +64,18 @@ public class MenuAnimation<T> implements Menu<T> {
      * @param dt Frame dependant speed.
      */
     public void doOneFrame(DrawSurface d, double dt) {
-        int yText = 100;
-        d.setColor(Color.RED);
-        d.drawText(X_TEXT, yText, menuTitle, 30);
+        int yText = 70;
+        d.drawImage(0, 0, menuBackground);
+        d.setColor(Color.GREEN);
+        d.drawText(X_TEXT, yText, menuTitle, 40);
+        d.setColor(Color.GREEN);
+        d.drawText(X_TEXT - 1, yText - 1, menuTitle, 40);
+        yText += yText * 2;
         // Draws the animation
         for (MenuOptions<T> menuOp : optionList) {
             yText += Y_OFFSET;
-            d.drawText(X_TEXT, yText, menuOp.getKey().toUpperCase() + ". " + menuOp.getMessage(), 30);
+            d.setColor(Color.WHITE);
+            d.drawText(X_TEXT, yText, "(" + menuOp.getKey().toUpperCase() + ") " + menuOp.getMessage(), 30);
         }
         // Checks for key press
         for (MenuOptions<T> menuOp : optionList) {
@@ -96,16 +101,4 @@ public class MenuAnimation<T> implements Menu<T> {
         return this.stop;
     }
 
-
-    /**
-     * Adds a submenu to the main menu.
-     * @param key The key to enter the menu.
-     * @param message The message written in the menu,
-     * @param subMen The submenu itself that returns as a menu object.
-     */
-    @Override
-    public void addSubMenu(String key, String message, Menu<T> subMen) {
-        this.optionList.add(new MenuOptions<T>(key, message, subMen));
-        this.subMenu.put(key, subMen);
-    }
 }

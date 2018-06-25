@@ -25,7 +25,7 @@ public class LevelIndicator implements Sprite {
      * @param d The surface to draw the object on.
      */
     public void drawOn(DrawSurface d) {
-        d.setColor(Color.BLACK);
+        d.setColor(Color.BLUE);
         d.drawText(LEVEL_NAME_X, LEVEL_NAME_Y, "Level Name: " + this.levelName, LEVEL_NAME_FONT);
     }
 

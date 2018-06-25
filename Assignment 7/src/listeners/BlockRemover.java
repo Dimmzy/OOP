@@ -33,11 +33,10 @@ public class BlockRemover implements HitListener {
      *               itself)
      */
     public void hitEvent(Block beingHit, Bullet hitter) {
-        if (beingHit.getHitPoints() == 0) {
-            beingHit.removeHitListener(this);
-            beingHit.removeFromGame(this.gameLevel);
+        beingHit.removeHitListener(this);
+        beingHit.removeFromGame(this.gameLevel);
+        if (beingHit.isAlien()) {
             this.remainingBlocks.decrease(1);
         }
-
     }
 }

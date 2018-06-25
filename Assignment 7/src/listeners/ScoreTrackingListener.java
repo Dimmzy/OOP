@@ -27,10 +27,6 @@ public class ScoreTrackingListener implements HitListener {
      * @param hitter The ball that hit the block.
      */
     public void hitEvent(Block beingHit, Bullet hitter) {
-        if (beingHit.getHitPoints() == 0) {
-            currentScore.increase(15);
-        } else {
-            currentScore.increase(5);
-        }
+        currentScore.increase(100);
     }
 }

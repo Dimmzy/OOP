@@ -2,14 +2,18 @@ package collidables;
 
 import biuoop.KeyboardSensor;
 import biuoop.DrawSurface;
+import gamelogic.GameEnvironment;
 import gamelogic.GameLevel;
 import geometry.Point;
 import geometry.Rectangle;
 import hitters.Bullet;
 import hitters.Velocity;
 import sprites.Sprite;
+import utilities.ExtractImage;
 
 import java.awt.Color;
+import java.awt.Image;
+import java.util.Random;
 
 /**
  * Player controlled Ship class. A paddle is a sprite and a collidable object.
@@ -17,11 +21,15 @@ import java.awt.Color;
 
 public class Ship implements Sprite, Collidable {
 
-    private static final int SCREEN_WIDTH = 800, BORDER_WIDTH = 25;
+    private static final int SCREEN_WIDTH = 800, BORDER_WIDTH = 5;
     private Rectangle rectangle;
     private biuoop.KeyboardSensor keyboard;
     private Velocity velocity;
-    private double deltaTime;
+    private double timeSinceLastShot;
+    private GameEnvironment ge;
+    private GameLevel level;
+    private Random rand;
+    private Image shipImage;
 
     /**
      * Constructs the spaceship object.
@@ -29,12 +37,20 @@ public class Ship implements Sprite, Collidable {
      * @param paddleStart The starting upper left point of the paddle.
      * @param paddleWidth The width of the created paddle.
      * @param paddleSpeed The speed of the created paddle.
+     * @param ge the game environment the ship is a part of.
+     * @param level the level the ship is a part of.
      */
-    public Ship(biuoop.KeyboardSensor keyboard, Point paddleStart, int paddleWidth, int paddleSpeed) {
+    public Ship(biuoop.KeyboardSensor keyboard, Point paddleStart, int paddleWidth, int paddleSpeed,
+                GameEnvironment ge, GameLevel level) {
         this.keyboard = keyboard;
         this.rectangle = new Rectangle(new Point(paddleStart.getX(), paddleStart.getY()), paddleWidth, 15);
         // Ship movement is defined only on the X axis.
         this.velocity = new Velocity(paddleSpeed, 0);
+        this.timeSinceLastShot = 0;
+        this.ge = ge;
+        this.level = level;
+        this.rand = new Random();
+        this.shipImage = new ExtractImage("ship.png").getImage();
     }
 
     /**
@@ -71,7 +87,6 @@ public class Ship implements Sprite, Collidable {
      * @param dt the deltatime we use to normalize the paddle's speed.
      */
     public void timePassed(double dt) {
-        this.deltaTime = dt;
         if (keyboard.isPressed(KeyboardSensor.LEFT_KEY)) {
             moveLeft(dt);
             return;
@@ -79,6 +94,34 @@ public class Ship implements Sprite, Collidable {
         if (keyboard.isPressed(KeyboardSensor.RIGHT_KEY)) {
             moveRight(dt);
         }
+        if (keyboard.isPressed(KeyboardSensor.SPACE_KEY)) {
+            if (System.currentTimeMillis() - this.timeSinceLastShot >= 350) {
+                this.timeSinceLastShot = System.currentTimeMillis();
+                this.shoot();
+            }
+        }
+    }
+
+    /**
+     * Commands the ship to shoot. Rolls a 1 out of 10 chance to shoot two bullets to the sides in addition to a
+     * straight shot.
+     */
+    public void shoot() {
+        // 5% chance to shoot two shots to the sides
+        if (rand.nextInt(20) == 1) {
+            Bullet shotOne = new Bullet(new Point(this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() / 2,
+                    this.rectangle.getUpperLeft().getY() - 0.1), 3, ge, Color.BLUE);
+            shotOne.setVelocity(Velocity.fromAngleAndSpeed(45, 500));
+            shotOne.addToGame(level);
+            Bullet shotTwo = new Bullet(new Point(this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() / 2,
+                    this.rectangle.getUpperLeft().getY() - 0.1), 3, ge, Color.BLUE);
+            shotTwo.setVelocity(Velocity.fromAngleAndSpeed(-45, 500));
+            shotTwo.addToGame(level);
+        }
+        Bullet shot = new Bullet(new Point(this.rectangle.getUpperLeft().getX() + this.rectangle.getWidth() / 2, this
+                .rectangle.getUpperLeft().getY() - 0.1), 3, ge, Color.BLUE);
+        shot.setVelocity(Velocity.fromAngleAndSpeed(0, 500));
+        shot.addToGame(level);
     }
 
     /**
@@ -86,12 +129,16 @@ public class Ship implements Sprite, Collidable {
      * @param d The surface to draw the paddle on.
      */
     public void drawOn(DrawSurface d) {
-        d.setColor(Color.ORANGE);
         Point topLeft = this.rectangle.getUpperLeft();
+        if (this.shipImage != null) {
+            d.drawImage((int) topLeft.getX(), (int) topLeft.getY(), this.shipImage);
+            return;
+        }
+        d.setColor(Color.BLUE);
         d.fillRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
                 .rectangle.getHeight());
         // Draws a black border around the paddle for better visbility.
-        d.setColor(Color.BLACK);
+        d.setColor(Color.WHITE);
         d.drawRectangle((int) topLeft.getX(), (int) topLeft.getY(), (int) this.rectangle.getWidth(), (int) this
                 .rectangle.getHeight());
     }
@@ -104,18 +151,24 @@ public class Ship implements Sprite, Collidable {
         return this.rectangle;
     }
 
+
+
     /**
      * The hit method of the paddle. Provides the hitting object with new velocity according to the area hit.
      * If the paddle has been hit on the top, it'll change the ball's angle using a pre-defined list according to
      * which fifth of the paddle has been hit.
-     * @param collisionPoint The collision point of the object with the paddle.
+     * @param collisionRectangle The collision rectangle of the object that hit the paddle (won't be used).
      * @param currentVelocity The velocity that the object hits the paddle with.
      * @param hitter The bullet object hitting the spaceship.
      * @return returns a new velocity according to the area that was hit on the paddle.
      */
-    public Velocity hit(Bullet hitter, Point collisionPoint, Velocity currentVelocity) {
-
-
+    public Velocity hit(Bullet hitter, Rectangle collisionRectangle, Velocity currentVelocity) {
+        if (hitter.getColor() == Color.BLUE) {
+            return null;
+        }
+        this.level.stopAnimation();
+        this.level.getLivesCounter().decrease(1);
+        return null;
     }
 
     /**
@@ -135,4 +188,5 @@ public class Ship implements Sprite, Collidable {
     public void setVelocity(double dx, double dy) {
         this.velocity = new Velocity(dx, dy);
     }
+
 }

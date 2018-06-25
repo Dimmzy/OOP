@@ -17,12 +17,9 @@ public class BallRemover implements HitListener {
     /**
      * BallRemover constructor, sets the number of current balls and the current level we'll be working with.
      * @param gameLevel The current game level.
-     * @param removedBalls A counter that counts the *current* amount of balls remaining.(Didn't want to change the
-     *                     signature of the constructor, but we'll be referencing to the counter in a remaining sense)
      */
-    public BallRemover(GameLevel gameLevel, Counter removedBalls) {
+    public BallRemover(GameLevel gameLevel) {
         this.gameLevel = gameLevel;
-        this.removedBalls = removedBalls;
     }
 
     /**
@@ -33,6 +30,5 @@ public class BallRemover implements HitListener {
      */
     public void hitEvent(Block beingHit, Bullet hitter) {
         hitter.removeFromGame(gameLevel);
-        removedBalls.decrease(1);
     }
 }

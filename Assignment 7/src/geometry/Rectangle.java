@@ -1,6 +1,5 @@
 package geometry;
 
-import collidables.Border;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,31 +97,5 @@ public class Rectangle {
         this.bottom.changeStart(bottomLeft);
         this.bottom.changeEnd(bottomRight);
     }
-    /**
-     * checks on which side of the rectangle the passed point is located.
-     * @param point the point to be checked.
-     * @return Returns the enumerated Border on which the point resides.
-     * @throws Exception throws exception if hasPoint didnt identify any applicable borders that have been hit.
-     */
-    public Border pointLocation(Point point) throws Exception {
-        if (this.left.hasPoint(point) && this.top.hasPoint(point)) {
-            return Border.TLEFT;
-        } else if (this.left.hasPoint(point) && this.bottom.hasPoint(point)) {
-            return Border.BLEFT;
-        } else if (this.right.hasPoint(point) && this.top.hasPoint(point)) {
-            return Border.TRIGHT;
-        } else if (this.right.hasPoint(point) && this.bottom.hasPoint(point)) {
-            return Border.BRIGHT;
-        } else if (this.left.hasPoint(point)) {
-            return Border.LEFT;
-        } else if (this.right.hasPoint(point)) {
-            return Border.RIGHT;
-        } else if (this.top.hasPoint(point)) {
-            return Border.TOP;
-        } else if (this.bottom.hasPoint(point)) {
-            return Border.BOTTOM;
-        } else {
-            return Border.TOP;
-        }
-    }
+
 }

@@ -18,11 +18,4 @@ public interface Menu<T> extends Animation {
      */
     T getStatus();
 
-    /**
-     * Adds a selection submenu (for different level difficulties).
-     * @param key The key to enter the menu.
-     * @param message The message written in the menu,
-     * @param subMenu The submenu itself that returns as a menu object.
-     */
-    void addSubMenu(String key, String message, Menu<T> subMenu);
 }
