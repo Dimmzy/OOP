@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Assignment 5 Driver Class.
  */
-public class Ass6Game {
+public class Ass7Game {
 
     private static final String HS_FILE_NAME = "highscores.txt";
 
