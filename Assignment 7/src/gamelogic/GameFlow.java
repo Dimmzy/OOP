@@ -15,7 +15,7 @@ import utilities.ExtractImage;
  */
 public class GameFlow {
 
-    private static final int STARTING_LIVES = 0;
+    private static final int STARTING_LIVES = 3;
     private AnimationRunner animationRunner;
     private KeyboardSensor keyboardSensor;
     private Counter livesCounter, totalScore, levelsCleared;
