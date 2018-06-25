@@ -53,12 +53,7 @@ public class Ass7Game {
                 animationRunner.run(end);
                 if (hsTable.getRank(gameFlow.getScore()) < hsTable.size()) {
                     String playerName = dialog.showQuestionDialog("Name", "What is your name?", "");
-                    if (hsTable.size() < 10) {
-                        hsTable.add(new ScoreInfo(playerName, gameFlow.getScore()));
-                    } else {
-                        hsTable.getHighScores().remove(9);
-                        hsTable.add(new ScoreInfo(playerName, gameFlow.getScore()));
-                    }
+                    hsTable.add(new ScoreInfo(playerName, gameFlow.getScore()));
                     try {
                         hsTable.save(new File(HS_FILE_NAME));
                     } catch (IOException e) {

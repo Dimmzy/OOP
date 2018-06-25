@@ -38,7 +38,7 @@ public class HighScoresTable implements Serializable {
             this.highScores.add(score);
         } else {
             this.sortScores();
-            this.highScores.remove(maxCapacity);
+            this.highScores.remove(maxCapacity - 1);
             this.highScores.add(score);
         }
     }
