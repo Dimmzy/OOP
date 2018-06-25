@@ -180,13 +180,5 @@ public class Ship implements Sprite, Collidable {
         g.addSprite(this);
     }
 
-    /**
-     * Sets the velocity of the paddle to a new value.
-     * @param dx The displacement on the x axis each frame.
-     * @param dy The displacement on the y axis each frame.
-     */
-    public void setVelocity(double dx, double dy) {
-        this.velocity = new Velocity(dx, dy);
-    }
 
 }
